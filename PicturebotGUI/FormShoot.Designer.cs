@@ -66,7 +66,6 @@
             this.lbRaw.Size = new System.Drawing.Size(191, 346);
             this.lbRaw.Sorted = true;
             this.lbRaw.TabIndex = 1;
-            this.lbRaw.SelectedIndexChanged += new System.EventHandler(this.lbRaw_SelectedIndexChanged);
             this.lbRaw.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragDrop);
             this.lbRaw.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragEnter);
             // 

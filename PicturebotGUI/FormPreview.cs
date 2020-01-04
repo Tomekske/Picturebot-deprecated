@@ -72,6 +72,7 @@ namespace PicturebotGUI
             {
                 index = count;
             }
+
             Console.WriteLine($"index: {index}");
 
             pbPicture.ImageLocation = _lst[index - 1];

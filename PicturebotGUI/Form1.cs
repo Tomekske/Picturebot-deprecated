@@ -41,23 +41,12 @@ namespace PicturebotGUI
 
             config = JsonConvert.DeserializeObject<Config>(data);
             config.Location = Shell.ExectutePipeOuput("pb","config -l");
-
-            Console.WriteLine(config);
         }
 
         private void btnNewShoot_Click(object sender, EventArgs e)
         {
             FormShoot f = new FormShoot(this, config);
             f.Show();
-        }
-
-        private string[] SplitString(string str, bool reverse = false)
-        {
-            string[] tokens = str.Split(' ', '\t');
-
-            if (reverse) Array.Reverse(tokens);
-
-            return tokens;
         }
 
         private void UpdateBaseListBox()
@@ -89,12 +78,10 @@ namespace PicturebotGUI
         private string[] GetSortedFiles(string path)
         {
             string[] files = Directory.GetFiles(path);
-            //   var sortedFiles = new DirectoryInfo(path).GetFiles().OrderBy(f => f.LastWriteTime).ToList();
+
             DateTime[] creationTimes = new DateTime[files.Length];
             for (int i = 0; i < files.Length; i++)
                 creationTimes[i] = new FileInfo(files[i]).CreationTime;
-
-           // Array.Sort(creationTimes, files);
 
             return files;
         }
@@ -104,6 +91,7 @@ namespace PicturebotGUI
 
             lb.Items.Clear();
             int count = 0;
+
             foreach (var file in files)
             {
                 count++;
@@ -139,7 +127,6 @@ namespace PicturebotGUI
 
         private void btnBackup_Click(object sender, EventArgs e)
         {
-            //cpProcess. = 0;
             DisableButtons();
 
             if (!bgwBackup.IsBusy)
@@ -175,7 +162,6 @@ namespace PicturebotGUI
         private void ResetProgressBar()
         {
             cpProcess.Visible = false;
-            //cpProcess.StartAngle = 270;
             cpProcess.Value = 0;
         }
 
@@ -220,13 +206,11 @@ namespace PicturebotGUI
             cpProcess.Visible = true;
             lblProcess.Text = e.UserState.ToString();
             cpProcess.Value = e.ProgressPercentage;
-            //cpBackup.Text = $"{e.ProgressPercentage.ToString()} %";
             cpProcess.Update();
         }
 
         private void bgwBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //lblProcess.Text = "Finished";
             EnableButtons();
             ResetProgressBar();
         }
@@ -493,53 +477,21 @@ namespace PicturebotGUI
             Shell.Execute("pb", "config -s");
         }
 
-        private void lbSelection_DragDrop(object sender, DragEventArgs e)
-        {
-            //    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-        //    lbSelection.Items.Add(e.Data.GetData(DataFormats.Text));
-            Console.WriteLine("loool");
-        //    foreach (var file in files)
-        //    {
-        //        lbSelection.Items.Add(Picture.FileName(file));
-        //        Console.WriteLine(Picture.Selection(config, file));
-        //        File.Copy(file, Picture.Selection(config, file));
-        //    }
-        }
-
         private void lbSelection_DragEnter(object sender, DragEventArgs e)
         {
-            Console.WriteLine("!!!!!!!!!!");
-
-        //    lbSelection.Items.Add(e.Data.GetData(DataFormats.Text));
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
                 e.Effect = DragDropEffects.All;
                 lbSelection.Items.Add(e.Data.GetData(DataFormats.Text));
             }
         }
-/*
-        private void lbPreview_MouseDown(object sender, MouseEventArgs e)
-        {
-            Console.WriteLine("kaka");
 
-         //   Console.WriteLine(Picture.Preview(config, lbPreview.Text));
-            lbSelection.DoDragDrop(lbPreview.Text, DragDropEffects.Copy);
-            
-        }
-*/
         private void lbSelection_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
                 e.Effect = DragDropEffects.All;
             }
-
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void pbInstagram_Click(object sender, EventArgs e)

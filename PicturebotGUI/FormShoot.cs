@@ -21,7 +21,6 @@ namespace PicturebotGUI
             public string Source { get; set; }
             public string Destination { get; set; }
 
-
             public Drag(string source, string desitnation)
             {
                 Source = source;
@@ -43,8 +42,6 @@ namespace PicturebotGUI
         private void dtShoot_ValueChanged(object sender, EventArgs e)
         {
             string date = dtShoot.Text;
-
-            Console.WriteLine(date);
         }
 
         private void btnFinish_Click(object sender, EventArgs e)
@@ -63,13 +60,10 @@ namespace PicturebotGUI
 
             foreach(string file in lbRaw.Items)
             {
-
                 lblOutput.Text = $"{count}/{lenght}";
                 File.Copy(dictFiles[file].Source, dictFiles[file].Destination);
                 count++;
             }
-
-
 
             this.mainForm.UpdateShootListBox();
 
@@ -104,11 +98,6 @@ namespace PicturebotGUI
             {
                 e.Effect = DragDropEffects.All;
             }
-        }
-
-        private void lbRaw_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void bgwBackup_DoWork(object sender, DoWorkEventArgs e)
@@ -149,8 +138,6 @@ namespace PicturebotGUI
         private void bgwBackup_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             lblOutput.Text = e.UserState.ToString();
-        //    cpProcess.Value = e.ProgressPercentage;
-
         }
 
         private void bgwBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

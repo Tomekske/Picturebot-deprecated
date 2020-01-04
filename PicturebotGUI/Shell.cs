@@ -24,15 +24,14 @@ namespace PicturebotGUI
                         CreateNoWindow = true
                     }
                 };
-                process.Start();
 
+                process.Start();
                 process.WaitForExit();
             }
             catch (Exception ee)
             {
                 Console.WriteLine(ee.Message);
             }
-
         }
 
         public static string ExectutePipeOuput(string program, string arguments)
@@ -60,6 +59,7 @@ namespace PicturebotGUI
 
                 process.WaitForExit();
             }
+
             catch (Exception ee)
             {
                 Console.WriteLine(ee.Message);

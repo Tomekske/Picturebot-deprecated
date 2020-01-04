@@ -417,7 +417,6 @@
             this.lbSelection.Sorted = true;
             this.lbSelection.TabIndex = 1;
             this.lbSelection.SelectedIndexChanged += new System.EventHandler(this.lbSelection_SelectedIndexChanged);
-            this.lbSelection.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbSelection_DragDrop);
             this.lbSelection.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbSelection_DragEnter);
             this.lbSelection.DragOver += new System.Windows.Forms.DragEventHandler(this.lbSelection_DragOver);
             this.lbSelection.DoubleClick += new System.EventHandler(this.lbSelection_DoubleClick);
@@ -555,7 +554,6 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
