@@ -14,8 +14,6 @@ namespace PicturebotGUI
 {
     public partial class FormShoot : Form
     {
-
-
         private class Drag
         {
             public string Source { get; set; }
@@ -39,16 +37,10 @@ namespace PicturebotGUI
             InitializeComponent();
         }
 
-        private void dtShoot_ValueChanged(object sender, EventArgs e)
-        {
-            string date = dtShoot.Text;
-        }
-
         private void btnFinish_Click(object sender, EventArgs e)
         {
             string name = txtName.Text;
             string date = dtShoot.Text;
-
             string shootname = $"{name} {date}";
 
             Shell.Execute("pb", $"shoot -n {name} {date}");
@@ -80,10 +72,8 @@ namespace PicturebotGUI
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string name = txtName.Text;
             string date = dtShoot.Text;
-
             string shootname = $"{name} {date}";
 
-            Console.WriteLine(shootname);
             foreach (var file in files)
             {
                 string destination = Path.Combine(_config.Workspace, shootname, _config.BaseFlow, Picture.FileName(file));
@@ -128,10 +118,9 @@ namespace PicturebotGUI
                 }
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 bgwBackup.CancelAsync();
-                Console.WriteLine(ex);
             }
         }
 
@@ -170,7 +159,6 @@ namespace PicturebotGUI
                 {
                     if (!bgwConvert.CancellationPending)
                     {
-                        //Renaming: {picture} -> {newName} [{counter + 1}/{len(pictures)}
                         int procent = index++ * 100 / count;
                         bgwConvert.ReportProgress(procent, $"Converting: {index - 1}/{count}");
 
@@ -179,17 +167,15 @@ namespace PicturebotGUI
                 }
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 bgwConvert.CancelAsync();
-                Console.WriteLine(ex);
             }
         }
 
         private void bgwConvert_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             lblOutput.Text = e.UserState.ToString();
-
         }
 
         private void bgwConvert_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

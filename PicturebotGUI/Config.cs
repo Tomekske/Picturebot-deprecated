@@ -6,23 +6,9 @@ using System.Threading.Tasks;
 
 namespace PicturebotGUI
 {
-        /*
-        {
-        "workspace": "D:\\HI",
-        "workflow": [
-            "RAW",
-            "Selection",
-            "Edited",
-            "Affinity",
-            "Instagram",
-            "Backup"
-        ],
-        "baseflow": "RAW",
-        "backup": "Backup",
-        "selection": "Selection",
-        "edited": "Edited"
-    }
-    */
+    /// <summary>
+    /// POCO class for the picturebot configuration file
+    /// </summary>
     public class Config
     {
         public string Location { get; set; }

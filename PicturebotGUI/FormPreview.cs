@@ -14,7 +14,6 @@ namespace PicturebotGUI
 {
     public partial class FormPreview : Form
     {
-        private string previewPath;
         private int count = 0;
         private int index = 0;
         private string _path = string.Empty;
@@ -27,7 +26,7 @@ namespace PicturebotGUI
             _path = path;
             config = _config;
             pbPicture.ImageLocation = path;
-            previewPath = Path.GetDirectoryName(path);
+
             _lst = lst;
             count = lst.Count;
             index = Convert.ToInt32(Picture.Index(path));

@@ -101,7 +101,6 @@
             this.dtShoot.Name = "dtShoot";
             this.dtShoot.Size = new System.Drawing.Size(136, 20);
             this.dtShoot.TabIndex = 4;
-            this.dtShoot.ValueChanged += new System.EventHandler(this.dtShoot_ValueChanged);
             // 
             // txtName
             // 
