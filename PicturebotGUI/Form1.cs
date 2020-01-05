@@ -17,9 +17,8 @@ namespace PicturebotGUI
 {
     public partial class Form1 : Form
     {
-        public List<string> shoots = new List<string>();
         public Config config;
-        public string configLocation;
+
         public List<string> lstPreview = new List<string>();
         public List<string> lstSelection = new List<string>();
         public List<string> lstEdited = new List<string>();
@@ -75,28 +74,21 @@ namespace PicturebotGUI
                 }
             }
         }
-        private string[] GetSortedFiles(string path)
-        {
-            string[] files = Directory.GetFiles(path);
 
-            DateTime[] creationTimes = new DateTime[files.Length];
-            for (int i = 0; i < files.Length; i++)
-                creationTimes[i] = new FileInfo(files[i]).CreationTime;
-
-            return files;
-        }
         private void ListBoxFiles(ListBox lb, string path, List<string> lst)
         {
-            string[] files = GetSortedFiles(path);
+            string[] files = Helper.SortFiles(path);
+
+            lst.Clear();
 
             lb.Items.Clear();
-            int count = 0;
 
             foreach (var file in files)
             {
-                count++;
                 lb.Items.Add(Picture.FileName(file));
-                lst.Add(file);
+
+                if (Picture.Extension(file) == Extension.NEF) lst.Add(Picture.Preview(config, file));
+                else lst.Add(file);
             }
         }
 
@@ -193,12 +185,10 @@ namespace PicturebotGUI
                 }
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
                 bgwBackup.CancelAsync();
-                Console.WriteLine(ex);
             }
-
         }
 
         private void bgwBackup_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -277,15 +267,12 @@ namespace PicturebotGUI
                 string cwd = Directory.GetCurrentDirectory();
                 int count = Directory.GetFiles(cwd, "*.*", SearchOption.TopDirectoryOnly).Length;
 
-                string[] files = GetSortedFiles(cwd);
-
-                var sortedFiles = new DirectoryInfo(cwd).GetFiles().OrderBy(f => f.CreationTime).ToList();
+                string[] files = Helper.SortFiles(cwd);
 
                 foreach (var file in files)
                 {
                     if (!bgwRename.CancellationPending)
                     {
-                        //Renaming: {picture} -> {newName} [{counter + 1}/{len(pictures)}
                         int procent = index++ * 100 / count;
                         bgwRename.ReportProgress(procent, $"Renaming: {index - 1}/{count}");
 
@@ -313,6 +300,7 @@ namespace PicturebotGUI
             UpdateBaseListBox();
             EnableButtons();
             ResetProgressBar();
+            Update();
         }
 
         private void lbShoot_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,16 +310,21 @@ namespace PicturebotGUI
 
         private void lbPreview_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string PreviewPathSelectedFile = Picture.Preview(config, lbPreview.Text);
-
-            if (File.Exists(PreviewPathSelectedFile))
+            if (lbPreview.Text != string.Empty)
             {
-                pbPreview.ImageLocation = PreviewPathSelectedFile;
-            }
+                string PreviewPathSelectedFile = Picture.Preview(config, lbPreview.Text);
 
-            else
-            {
-                Console.WriteLine("ooooops");
+                string x = Picture.Extension(PreviewPathSelectedFile);
+
+                if (File.Exists(PreviewPathSelectedFile))
+                {
+                    pbPreview.ImageLocation = PreviewPathSelectedFile;
+                }
+
+                else
+                {
+                    Console.WriteLine("ooooops");
+                }
             }
         }
 
@@ -350,68 +343,71 @@ namespace PicturebotGUI
 
         private void lbSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (radioSingle.Checked == true)
+            if (lbSelection.Text != string.Empty)
             {
-                string selectionPathSelectedFile = Picture.Preview(config, lbSelection.Text);
-
-                Console.WriteLine(selectionPathSelectedFile);
-
-                pbSelection.ImageLocation = selectionPathSelectedFile;
-            }
-            else
-            {
-                string selectionPathSelectedFile = Picture.Preview(config, lbSelection.Text);
-                string EditedSelectedFile = Picture.Edited(config, lbSelection.Text);
-
-                if (File.Exists(selectionPathSelectedFile))
+                if (radioSingle.Checked == true)
                 {
-                    pbSelection.ImageLocation = selectionPathSelectedFile;
-                    pbEdited.ImageLocation = EditedSelectedFile;
+                    pbSelection.ImageLocation = Picture.Preview(config, lbSelection.Text);
                 }
 
                 else
                 {
-                    Console.WriteLine("ooooops");
+                    string selectionPathSelectedFile = Picture.Preview(config, lbSelection.Text);
+                    string EditedSelectedFile = Picture.Edited(config, lbSelection.Text);
+
+                    if (File.Exists(selectionPathSelectedFile))
+                    {
+                        pbSelection.ImageLocation = selectionPathSelectedFile;
+                        pbEdited.ImageLocation = EditedSelectedFile;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("ooooops");
+                    }
                 }
             }
         }
 
         private void lbEdited_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( radioSingle.Checked == true)
+            if (lbEdited.Text != string.Empty)
             {
-                string PreviewPathSelectedFile = Picture.Edited(config, lbEdited.Text);
-
-                if (File.Exists(PreviewPathSelectedFile))
+                if (radioSingle.Checked == true)
                 {
-                    pbEdited.ImageLocation = PreviewPathSelectedFile;
-                }
+                    string PreviewPathSelectedFile = Picture.Edited(config, lbEdited.Text);
 
+                    if (File.Exists(PreviewPathSelectedFile))
+                    {
+                        pbEdited.ImageLocation = PreviewPathSelectedFile;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("ooooops");
+                    }
+                }
                 else
                 {
-                    Console.WriteLine("ooooops");
-                }
-            }
-            else
-            {
-                string selectionPathSelectedFile = Picture.Preview(config, lbEdited.Text);
-                string EditedSelectedFile = Picture.Edited(config, lbEdited.Text);
+                    string selectionPathSelectedFile = Picture.Preview(config, lbEdited.Text);
+                    string EditedSelectedFile = Picture.Edited(config, lbEdited.Text);
 
-                if (File.Exists(selectionPathSelectedFile) && File.Exists(EditedSelectedFile))
-                {
-                    pbSelection.Visible = false;
-                    pbEdited.Visible = false;
+                    if (File.Exists(selectionPathSelectedFile) && File.Exists(EditedSelectedFile))
+                    {
+                        pbSelection.Visible = false;
+                        pbEdited.Visible = false;
 
-                    pbSelection.ImageLocation = selectionPathSelectedFile;
-                    pbEdited.ImageLocation = EditedSelectedFile;
+                        pbSelection.ImageLocation = selectionPathSelectedFile;
+                        pbEdited.ImageLocation = EditedSelectedFile;
 
-                    pbSelection.Visible = true;
-                    pbEdited.Visible = true;
-                }
+                        pbSelection.Visible = true;
+                        pbEdited.Visible = true;
+                    }
 
-                else
-                {
-                    Console.WriteLine("ooooops");
+                    else
+                    {
+                        Console.WriteLine("ooooops");
+                    }
                 }
             }
         }
@@ -445,25 +441,31 @@ namespace PicturebotGUI
 
         private void lbSelection_DoubleClick(object sender, EventArgs e)
         {
-            string selectionPathSelectedFile = Picture.Base(config, lbSelection.Text);
-            string prog = @"C:\Program Files\Affinity\Affinity Photo\Photo.exe";
+            if (lbSelection.Text != string.Empty)
+            {
+                string selectionPathSelectedFile = Picture.Base(config, lbSelection.Text);
+                string prog = @"C:\Program Files\Affinity\Affinity Photo\Photo.exe";
 
-            Shell.Execute(prog, $"\"{selectionPathSelectedFile}\"");
+                Shell.Execute(prog, $"\"{selectionPathSelectedFile}\"");
+            }
         }
 
         private void lbEdited_DoubleClick(object sender, EventArgs e)
         {
-            string selectionPathSelectedFile = Picture.Editing(config, lbEdited.Text);
-
-            if (File.Exists(selectionPathSelectedFile))
+            if (lbEdited.Text != string.Empty)
             {
-                string prog = @"C:\Program Files\Affinity\Affinity Photo\Photo.exe";
-                Shell.Execute(prog, $"\"{selectionPathSelectedFile}\"");
-            }
+                string selectionPathSelectedFile = Picture.Editing(config, lbEdited.Text);
 
-            else
-            {
-                MessageBox.Show($"{lbEdited.Text} has not been edited yet.");
+                if (File.Exists(selectionPathSelectedFile))
+                {
+                    string prog = @"C:\Program Files\Affinity\Affinity Photo\Photo.exe";
+                    Shell.Execute(prog, $"\"{selectionPathSelectedFile}\"");
+                }
+
+                else
+                {
+                    MessageBox.Show($"{lbEdited.Text} has not been edited yet.");
+                }
             }
         }
 
@@ -502,18 +504,20 @@ namespace PicturebotGUI
 
         private void lbInstagram_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string instagramPathSelectedFile = Picture.Instagram(config, lbInstagram.Text);
-            Console.WriteLine(instagramPathSelectedFile);
-
-
-            if (File.Exists(instagramPathSelectedFile))
+            if (lbInstagram.Text != string.Empty)
             {
-                pbInstagram.ImageLocation = instagramPathSelectedFile;
-            }
+                string instagramPathSelectedFile = Picture.Instagram(config, lbInstagram.Text);
+                Console.WriteLine(instagramPathSelectedFile);
 
-            else
-            {
-                Console.WriteLine("ooooops");
+                if (File.Exists(instagramPathSelectedFile))
+                {
+                    pbInstagram.ImageLocation = instagramPathSelectedFile;
+                }
+
+                else
+                {
+                    Console.WriteLine("ooooops");
+                }
             }
         }
 
@@ -560,7 +564,7 @@ namespace PicturebotGUI
                 string previewPathSelectedFile = Picture.Base(config, lbPreview.Text);
                 string selectionPathSelectedFile = Picture.Selection(config, lbPreview.Text);
 
-                lbSelection.Items.Add(lbPreview.Text);
+                lbSelection.Items.Add(Picture.FileName(selectionPathSelectedFile));
 
                 File.Copy(previewPathSelectedFile, selectionPathSelectedFile);
             }
@@ -583,6 +587,20 @@ namespace PicturebotGUI
                 }
 
                 Process.Start("https://photos.google.com/albums?hl=nl");
+            }
+        }
+
+        private void lbSelection_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Delete)
+            {
+                string selectionPath = Picture.Selection(config, lbSelection.Text);
+
+                if (File.Exists(selectionPath))
+                {
+                    File.Delete(selectionPath);
+                    UpdateBaseListBox();
+                }
             }
         }
     }
