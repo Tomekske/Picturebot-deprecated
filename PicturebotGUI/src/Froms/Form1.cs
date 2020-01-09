@@ -30,6 +30,8 @@ namespace PicturebotGUI
             ReadConfigFile();
             UpdateShootListBox();
             Directory.SetCurrentDirectory(config.Workspace);
+
+            Console.WriteLine("jooow");
         }
 
         private void ReadConfigFile()
@@ -48,7 +50,7 @@ namespace PicturebotGUI
             f.Show();
         }
 
-        private void UpdateBaseListBox()
+        public void UpdateBaseListBox()
         {
             if(lbShoot.Text != string.Empty)
             {
@@ -77,7 +79,7 @@ namespace PicturebotGUI
 
         private void ListBoxFiles(ListBox lb, string path, List<string> lst)
         {
-            string[] files = Helper.SortFiles(path);
+            string[] files = Helper.SortPicturesByCreationTime(path);
 
             lst.Clear();
 
@@ -267,7 +269,7 @@ namespace PicturebotGUI
                 string cwd = Directory.GetCurrentDirectory();
                 int count = Directory.GetFiles(cwd, "*.*", SearchOption.TopDirectoryOnly).Length;
 
-                string[] files = Helper.SortFiles(cwd);
+                string[] files = Helper.SortPicturesByCreationTime(cwd);
 
                 foreach (var file in files)
                 {
@@ -523,7 +525,7 @@ namespace PicturebotGUI
 
         private void lbEdited_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.C)
+            if (e.KeyCode == Keys.C)
             {
                 string selectionPathSelectedFile = Picture.Editing(config, lbEdited.Text);
 
@@ -539,7 +541,7 @@ namespace PicturebotGUI
                 }
             }
 
-            else if(e.KeyCode == Keys.U)
+            else if (e.KeyCode == Keys.U)
             {
                 try
                 {
@@ -554,6 +556,13 @@ namespace PicturebotGUI
                 }
 
                 Process.Start("https://photos.google.com/albums?hl=nl");
+            }
+
+            else if (e.KeyCode == Keys.T)
+            {
+                FormCrop f = new FormCrop(this, config, Picture.Edited(config, lbEdited.Text));
+                f.Show();
+              
             }
         }
 

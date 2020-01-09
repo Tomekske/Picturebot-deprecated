@@ -37,6 +37,4 @@ namespace PicturebotGUI
                    $"Hobbies: {string.Join(", ",Workflow.ToArray())}";
         }
     }
-
-
 }
