@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.VisualBasic;
 using System.Threading;
 using Newtonsoft.Json;
+using PicturebotGUI.src.Helper;
 
 namespace PicturebotGUI
 {
@@ -562,7 +563,13 @@ namespace PicturebotGUI
             {
                 FormCrop f = new FormCrop(this, config, Picture.Edited(config, lbEdited.Text));
                 f.Show();
-              
+            }
+
+            else if (e.KeyCode == Keys.Delete)
+            {
+                string editedPath = Picture.Edited(config, lbEdited.Text);
+
+                Helper.DeletePicture(this, editedPath, true);
             }
         }
 
@@ -576,6 +583,15 @@ namespace PicturebotGUI
                 lbSelection.Items.Add(Picture.FileName(selectionPathSelectedFile));
 
                 File.Copy(previewPathSelectedFile, selectionPathSelectedFile);
+            }
+
+            else if (e.KeyCode == Keys.Delete)
+            {
+                string previewPath = Picture.Preview(config, lbPreview.Text);
+                string basePath = Picture.Base(config, lbPreview.Text);
+
+                Helper.DeletePicture(this, basePath, true);
+                Helper.DeletePicture(this, previewPath);
             }
         }
 
@@ -597,6 +613,12 @@ namespace PicturebotGUI
 
                 Process.Start("https://photos.google.com/albums?hl=nl");
             }
+
+            else if(e.KeyCode == Keys.Delete)
+            {
+                string instagramPath = Picture.Instagram(config, lbInstagram.Text);
+                Helper.DeletePicture(this, instagramPath);
+            }
         }
 
         private void lbSelection_KeyDown(object sender, KeyEventArgs e)
@@ -605,11 +627,7 @@ namespace PicturebotGUI
             {
                 string selectionPath = Picture.Selection(config, lbSelection.Text);
 
-                if (File.Exists(selectionPath))
-                {
-                    File.Delete(selectionPath);
-                    UpdateBaseListBox();
-                }
+                Helper.DeletePicture(this, selectionPath);
             }
         }
     }

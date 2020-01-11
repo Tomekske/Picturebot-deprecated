@@ -302,7 +302,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.18692F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.81308F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel5.Controls.Add(this.btnRename, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnBackup, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnConvert, 0, 0);
@@ -317,9 +317,9 @@
             // btnRename
             // 
             this.btnRename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRename.Location = new System.Drawing.Point(107, 3);
+            this.btnRename.Location = new System.Drawing.Point(106, 3);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(69, 38);
+            this.btnRename.Size = new System.Drawing.Size(70, 38);
             this.btnRename.TabIndex = 15;
             this.btnRename.Text = "Rename files";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -328,7 +328,7 @@
             // btnBackup
             // 
             this.btnBackup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnBackup.Location = new System.Drawing.Point(45, 3);
+            this.btnBackup.Location = new System.Drawing.Point(44, 3);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(56, 38);
             this.btnBackup.TabIndex = 14;
@@ -342,7 +342,7 @@
             this.btnConvert.Enabled = false;
             this.btnConvert.Location = new System.Drawing.Point(3, 3);
             this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(36, 38);
+            this.btnConvert.Size = new System.Drawing.Size(35, 38);
             this.btnConvert.TabIndex = 13;
             this.btnConvert.Text = "Convert shoot";
             this.btnConvert.UseVisualStyleBackColor = true;
