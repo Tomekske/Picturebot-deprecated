@@ -302,7 +302,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.18692F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.81308F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.tableLayoutPanel5.Controls.Add(this.btnRename, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnBackup, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnConvert, 0, 0);
@@ -317,9 +317,9 @@
             // btnRename
             // 
             this.btnRename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRename.Location = new System.Drawing.Point(106, 3);
+            this.btnRename.Location = new System.Drawing.Point(105, 3);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(70, 38);
+            this.btnRename.Size = new System.Drawing.Size(71, 38);
             this.btnRename.TabIndex = 15;
             this.btnRename.Text = "Rename files";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -330,7 +330,7 @@
             this.btnBackup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnBackup.Location = new System.Drawing.Point(44, 3);
             this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(56, 38);
+            this.btnBackup.Size = new System.Drawing.Size(55, 38);
             this.btnBackup.TabIndex = 14;
             this.btnBackup.Text = "Backup shoot";
             this.btnBackup.UseVisualStyleBackColor = true;
@@ -383,6 +383,7 @@
             // 
             // pbSelection
             // 
+            this.pbSelection.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.pbSelection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbSelection.Location = new System.Drawing.Point(3, 3);
             this.pbSelection.Name = "pbSelection";
@@ -491,6 +492,7 @@
             // 
             // pbEdited
             // 
+            this.pbEdited.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.pbEdited.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbEdited.Location = new System.Drawing.Point(3, 3);
             this.pbEdited.Name = "pbEdited";
@@ -533,6 +535,7 @@
             // 
             // pbInstagram
             // 
+            this.pbInstagram.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.pbInstagram.Dock = System.Windows.Forms.DockStyle.Top;
             this.pbInstagram.Location = new System.Drawing.Point(3, 264);
             this.pbInstagram.Name = "pbInstagram";
