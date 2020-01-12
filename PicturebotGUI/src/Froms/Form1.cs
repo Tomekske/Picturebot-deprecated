@@ -331,6 +331,9 @@ namespace PicturebotGUI
             }
         }
 
+        /// <summary>
+        /// Maximize the preview image
+        /// </summary>
         private void pbPreview_Click(object sender, EventArgs e)
         {
             try
@@ -338,9 +341,9 @@ namespace PicturebotGUI
                 FormPreview f = new FormPreview(config, pbPreview.ImageLocation, lstPreview);
                 f.Show();
             }
-            catch (Exception)
+            catch (Exception ee)
             {
-                throw;
+                Console.WriteLine(ee);
             }
         }
 
@@ -415,16 +418,38 @@ namespace PicturebotGUI
             }
         }
 
+        /// <summary>
+        /// Maximize the preview image
+        /// </summary>
         private void pbSelection_Click(object sender, EventArgs e)
         {
-            FormPreview f = new FormPreview(config, pbSelection.ImageLocation, lstSelection);
-            f.Show();
+            try
+            {
+                FormPreview f = new FormPreview(config, pbSelection.ImageLocation, lstSelection);
+                f.Show();
+            }
+
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee);
+            }
         }
 
+        /// <summary>
+        /// Maximize the preview image
+        /// </summary>
         private void pbEdited_Click(object sender, EventArgs e)
         {
-            FormPreview f = new FormPreview(config, pbEdited.ImageLocation, lstEdited);
-            f.Show();
+            try
+            {
+                FormPreview f = new FormPreview(config, pbEdited.ImageLocation, lstEdited);
+                f.Show();
+            }
+
+            catch(Exception ee)
+            {
+                Console.WriteLine(ee);
+            }
         }
 
         private void openCurrentDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -499,10 +524,21 @@ namespace PicturebotGUI
             }
         }
 
+        /// <summary>
+        /// Maximize the preview image
+        /// </summary>
         private void pbInstagram_Click(object sender, EventArgs e)
         {
-            FormPreview f = new FormPreview(config, pbInstagram.ImageLocation, lstInstagram);
-            f.Show();
+            try
+            {
+                FormPreview f = new FormPreview(config, pbInstagram.ImageLocation, lstInstagram);
+                f.Show();
+            }
+
+            catch(Exception ee)
+            {
+                Console.WriteLine(ee);
+            }
         }
 
         private void lbInstagram_SelectedIndexChanged(object sender, EventArgs e)
