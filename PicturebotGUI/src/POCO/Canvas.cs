@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PicturebotGUI.POCO
+namespace PicturebotGUI.src.POCO
 {
     /// <summary>
     /// POCO class to store dimensions of the cropping canvas

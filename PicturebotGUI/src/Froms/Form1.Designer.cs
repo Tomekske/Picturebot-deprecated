@@ -66,6 +66,7 @@
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.lbInstagram = new System.Windows.Forms.ListBox();
             this.pbInstagram = new System.Windows.Forms.PictureBox();
+            this.comboWorkspace = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -214,6 +215,7 @@
             this.tableLayoutPanel2.Controls.Add(this.pbPreview, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.comboWorkspace, 1, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 24);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -302,7 +304,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.18692F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.81308F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 77F));
             this.tableLayoutPanel5.Controls.Add(this.btnRename, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnBackup, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnConvert, 0, 0);
@@ -317,9 +319,9 @@
             // btnRename
             // 
             this.btnRename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRename.Location = new System.Drawing.Point(105, 3);
+            this.btnRename.Location = new System.Drawing.Point(104, 3);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(71, 38);
+            this.btnRename.Size = new System.Drawing.Size(72, 38);
             this.btnRename.TabIndex = 15;
             this.btnRename.Text = "Rename files";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -328,7 +330,7 @@
             // btnBackup
             // 
             this.btnBackup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnBackup.Location = new System.Drawing.Point(44, 3);
+            this.btnBackup.Location = new System.Drawing.Point(43, 3);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(55, 38);
             this.btnBackup.TabIndex = 14;
@@ -342,7 +344,7 @@
             this.btnConvert.Enabled = false;
             this.btnConvert.Location = new System.Drawing.Point(3, 3);
             this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(35, 38);
+            this.btnConvert.Size = new System.Drawing.Size(34, 38);
             this.btnConvert.TabIndex = 13;
             this.btnConvert.Text = "Convert shoot";
             this.btnConvert.UseVisualStyleBackColor = true;
@@ -545,6 +547,15 @@
             this.pbInstagram.TabStop = false;
             this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
             // 
+            // comboWorkspace
+            // 
+            this.comboWorkspace.FormattingEnabled = true;
+            this.comboWorkspace.Location = new System.Drawing.Point(176, 318);
+            this.comboWorkspace.Name = "comboWorkspace";
+            this.comboWorkspace.Size = new System.Drawing.Size(121, 21);
+            this.comboWorkspace.TabIndex = 8;
+            this.comboWorkspace.SelectedIndexChanged += new System.EventHandler(this.comboWorkspace_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -620,6 +631,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.ListBox lbInstagram;
         private System.Windows.Forms.PictureBox pbInstagram;
+        private System.Windows.Forms.ComboBox comboWorkspace;
     }
 }
 

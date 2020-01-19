@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PicturebotGUI.src.POCO;
+using PicturebotGUI.src.Command;
 
 namespace PicturebotGUI
 {
@@ -43,7 +45,7 @@ namespace PicturebotGUI
             string date = dtShoot.Text;
             string shootname = $"{name} {date}";
 
-            Shell.Execute("pb", $"shoot -n {name} {date}");
+            src.Command.Shoot.NewShoot(_config.Index, name, date);
 
             Directory.SetCurrentDirectory(_config.Workspace);
 

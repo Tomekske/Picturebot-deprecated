@@ -13,26 +13,29 @@ using Microsoft.VisualBasic;
 using System.Threading;
 using Newtonsoft.Json;
 using PicturebotGUI.src.Helper;
+using PicturebotGUI.src.POCO;
+using PicturebotGUI.src.Enums;
 
 namespace PicturebotGUI
 {
     public partial class Form1 : Form
     {
         public Config config;
-
+        private List<Config> _config = new List<Config>();
         public List<string> lstPreview = new List<string>();
         public List<string> lstSelection = new List<string>();
         public List<string> lstEdited = new List<string>();
         public List<string> lstInstagram = new List<string>();
+
+        private int _wsIndex = 0;
 
         public Form1()
         {
             InitializeComponent();
             ReadConfigFile();
             UpdateShootListBox();
-            Directory.SetCurrentDirectory(config.Workspace);
+            Directory.SetCurrentDirectory(_config[_wsIndex].Workspace);
 
-            Console.WriteLine("jooow");
         }
 
         private void ReadConfigFile()
@@ -41,13 +44,22 @@ namespace PicturebotGUI
 
             string data = File.ReadAllText(Shell.ExectutePipeOuput("pb","config -l"));
 
-            config = JsonConvert.DeserializeObject<Config>(data);
-            config.Location = Shell.ExectutePipeOuput("pb","config -l");
+            _config = JsonConvert.DeserializeObject<List<Config>>(data);
+
+            foreach (var c in _config)
+            {
+                comboWorkspace.Items.Add(c.Workspace);
+            }
+
+            comboWorkspace.SelectedIndex = 0;
+            _wsIndex = comboWorkspace.SelectedIndex;
+
+            _config[_wsIndex].Index = _wsIndex;
         }
 
         private void btnNewShoot_Click(object sender, EventArgs e)
         {
-            FormShoot f = new FormShoot(this, config);
+            FormShoot f = new FormShoot(this, _config[_wsIndex]);
             f.Show();
         }
 
@@ -101,7 +113,7 @@ namespace PicturebotGUI
 
             // Get a list of all subdirectories  
             var dirs = from dir in
-                Directory.EnumerateDirectories(config.Workspace)
+                Directory.EnumerateDirectories(_config[_wsIndex].Workspace)
                        select dir;
 
             foreach (var dir in dirs)
@@ -665,6 +677,13 @@ namespace PicturebotGUI
 
                 Helper.DeletePicture(this, selectionPath);
             }
+        }
+
+        private void comboWorkspace_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _wsIndex = comboWorkspace.SelectedIndex;
+            _config[_wsIndex].Index = _wsIndex;
+            UpdateShootListBox();
         }
     }
 }

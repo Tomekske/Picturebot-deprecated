@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PicturebotGUI
+namespace PicturebotGUI.src.Enums
 {
     /// <summary>
     /// String enum with most common picture extensions
