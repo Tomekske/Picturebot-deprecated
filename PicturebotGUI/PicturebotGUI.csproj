@@ -60,6 +60,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Command\Base.cs" />
+    <Compile Include="src\Command\Config.cs" />
     <Compile Include="src\Command\Shoot.cs" />
     <Compile Include="src\Helper\Helper.cs" />
     <Compile Include="src\POCO\Config.cs" />

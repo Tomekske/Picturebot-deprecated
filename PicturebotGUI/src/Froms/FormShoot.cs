@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PicturebotGUI.src.POCO;
 using PicturebotGUI.src.Command;
+using Config = PicturebotGUI.src.POCO.Config;
 
 namespace PicturebotGUI
 {
