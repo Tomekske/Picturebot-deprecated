@@ -13,7 +13,7 @@ namespace PicturebotGUI.src.Command
     static public class Base
     {
         /// <summary>
-        /// Static method to backup all pictures within the backup flow
+        /// Static method to backup a picture within the backup flow
         /// </summary>
         /// <param name="index">Workspace index</param>
         /// <param name="file">File which is copied to the backup flow</param>
@@ -22,9 +22,15 @@ namespace PicturebotGUI.src.Command
             Shell.Execute(External.Picturebot, $"base -b {index} \"{file}\"");
         }
 
-        public static void Rename(int index, string file)
+        /// <summary>
+        /// Static method to rename a picture
+        /// </summary>
+        /// <param name="index">Workspace index</param>
+        /// <param name="order">Order of the image</param>
+        /// <param name="file">File which is copied to the backup flow</param>
+        public static void Rename(int index, int order, string file)
         {
-
+            Shell.Execute("pb", $"base -r {index} {order - 1} \"{file}\"");
         }
 
         /// <summary>

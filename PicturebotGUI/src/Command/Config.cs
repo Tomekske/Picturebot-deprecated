@@ -13,11 +13,29 @@ namespace PicturebotGUI.src.Command
     static public class Config
     {
         /// <summary>
-        /// Static method to print the picturebot's configuration file location
+        /// Static method returns the picturebot's configuration file location
         /// </summary>
+        /// <returns>Returns the picturebot's configuration file location</returns>
         public static string ConfigLocation()
         {
             return Shell.ExectutePipeOuput(External.Picturebot, "config -l");
+        }
+
+        /// <summary>
+        /// Static method to open the configuration file
+        /// </summary>
+        public static void OpenConfigFile()
+        {
+            Shell.Execute("pb", "config -s");
+        }
+
+        /// <summary>
+        /// Static method which returns the picturebot's script version
+        /// </summary>
+        /// <returns>Returns the picturebot's script version</returns>
+        public static string ScriptVersion()
+        {
+            return Shell.ExectutePipeOuput("pb", "config -v");
         }
     }
 }

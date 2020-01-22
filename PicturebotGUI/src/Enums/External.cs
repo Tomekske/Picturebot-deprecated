@@ -12,5 +12,7 @@ namespace PicturebotGUI.src.Enums
     public static class External
     {
         public static string Picturebot { get { return "pb"; } }
+        public static string Explorer { get { return "explorer"; } }
+        public static string Editing {  get { return @"C:\Program Files\Affinity\Affinity Photo\Photo.exe"; } }
     }
 }

@@ -35,7 +35,6 @@ namespace PicturebotGUI
             ReadConfigFile();
             UpdateShootListBox();
             Directory.SetCurrentDirectory(_config[_wsIndex].Workspace);
-
         }
 
         private void ReadConfigFile()
@@ -241,11 +240,10 @@ namespace PicturebotGUI
                 {
                     if (!bgwConvert.CancellationPending)
                     {
-                        //Renaming: {picture} -> {newName} [{counter + 1}/{len(pictures)}
                         int procent = index++ * 100 / count;
                         bgwConvert.ReportProgress(procent, $"Converting: {index - 1}/{count}");
 
-                        Shell.Execute("pb", $"base -c \"{file}\" 50");
+                        src.Command.Base.Convert(_config[_wsIndex].Index, file.ToString(), 50);
                     }
                 }
             }
@@ -292,7 +290,7 @@ namespace PicturebotGUI
                         int procent = index++ * 100 / count;
                         bgwRename.ReportProgress(procent, $"Renaming: {index - 1}/{count}");
 
-                        Shell.Execute("pb", $"base -r {index - 1} \"{file}\"");
+                        src.Command.Base.Rename(_config[_wsIndex].Index, index, file.ToString());
                     }
                 }
             }
@@ -382,7 +380,7 @@ namespace PicturebotGUI
 
                     else
                     {
-//Console.WriteLine("ooooops");
+                        //Console.WriteLine("ooooops");
                     }
                 }
             }
@@ -472,7 +470,7 @@ namespace PicturebotGUI
                 string shoot = Shoot.ShootName(_config[_wsIndex], Directory.GetCurrentDirectory());
                 string workspace = _config[_wsIndex].Workspace;
 
-                Shell.Execute("explorer", Path.Combine(workspace, shoot));
+                src.Command.GUI.Explorer(Path.Combine(workspace, shoot));
             }
             catch (Exception)
             {
@@ -485,9 +483,8 @@ namespace PicturebotGUI
             if (lbSelection.Text != string.Empty)
             {
                 string selectionPathSelectedFile = Picture.Base(_config[_wsIndex], lbSelection.Text);
-                string prog = @"C:\Program Files\Affinity\Affinity Photo\Photo.exe";
 
-                Shell.Execute(prog, $"\"{selectionPathSelectedFile}\"");
+                src.Command.GUI.EditingSoftware(selectionPathSelectedFile);
             }
         }
 
@@ -499,8 +496,7 @@ namespace PicturebotGUI
 
                 if (File.Exists(selectionPathSelectedFile))
                 {
-                    string prog = @"C:\Program Files\Affinity\Affinity Photo\Photo.exe";
-                    Shell.Execute(prog, $"\"{selectionPathSelectedFile}\"");
+                    src.Command.GUI.EditingSoftware(selectionPathSelectedFile);
                 }
 
                 else
@@ -512,12 +508,12 @@ namespace PicturebotGUI
 
         private void VersionTSMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Shell.ExectutePipeOuput("pb", "config -v"));
+            MessageBox.Show(src.Command.Config.ScriptVersion());
         }
 
         private void OpenConfigFileTStripMenuItem_Click(object sender, EventArgs e)
         {
-            Shell.Execute("pb", "config -s");
+            src.Command.Config.OpenConfigFile();
         }
 
         private void lbSelection_DragEnter(object sender, DragEventArgs e)
@@ -580,6 +576,7 @@ namespace PicturebotGUI
 
                 if (File.Exists(selectionPathSelectedFile))
                 {
+                    // Temporary
                     string prog = @"C:\Program Files\Adobe Lightroom Classic CC\Lightroom.exe";
                     Shell.Execute(prog, string.Empty);
                 }
@@ -590,6 +587,7 @@ namespace PicturebotGUI
                 }
             }
 
+            // Open the edited flow in explorer and open the google photo's website
             else if (e.KeyCode == Keys.U)
             {
                 try
@@ -597,14 +595,14 @@ namespace PicturebotGUI
                     string shoot = Shoot.ShootName(_config[_wsIndex], Directory.GetCurrentDirectory());
                     string workspace = _config[_wsIndex].Edited;
 
-                    Shell.Execute("explorer", Path.Combine(_config[_wsIndex].Workspace, shoot, workspace));
+                    src.Command.GUI.Explorer(Path.Combine(_config[_wsIndex].Workspace, shoot, workspace));
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("There is no selected shoot");
                 }
 
-                Process.Start("https://photos.google.com/albums?hl=nl");
+                src.Command.GUI.OpenWebsite("https://photos.google.com/albums?hl=nl");
             }
 
             else if (e.KeyCode == Keys.T)
@@ -652,14 +650,14 @@ namespace PicturebotGUI
                     string shoot = Shoot.ShootName(_config[_wsIndex], Directory.GetCurrentDirectory());
                     string workspace = _config[_wsIndex].Instagram;
 
-                    Shell.Execute("explorer", Path.Combine(_config[_wsIndex].Workspace, shoot, workspace));
+                    src.Command.GUI.Explorer(Path.Combine(_config[_wsIndex].Workspace, shoot, workspace));
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("There is no selected shoot");
                 }
 
-                Process.Start("https://photos.google.com/albums?hl=nl");
+                src.Command.GUI.OpenWebsite("https://photos.google.com/albums?hl=nl");
             }
 
             else if(e.KeyCode == Keys.Delete)
