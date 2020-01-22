@@ -20,7 +20,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="date">Date of the shoot</param>
         public static void NewShoot(int index, string name, string date)
         {
-            Shell.Execute(External.Picturebot, $"shoot -n {index} {name} {date}");
+            Shell.Execute(External.Picturebot, $"shoot -n {index} \"{name}\" {date}");
         }
     }
 }
