@@ -60,6 +60,8 @@ namespace PicturebotGUI
             {
                 lblOutput.Text = $"{count}/{lenght}";
                 File.Copy(dictFiles[file].Source, dictFiles[file].Destination);
+                src.Command.Base.Hash(_config[_wsIndex].Index, count, file.ToString());
+
                 count++;
             }
 
