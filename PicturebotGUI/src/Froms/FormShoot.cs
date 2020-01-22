@@ -29,14 +29,17 @@ namespace PicturebotGUI
             }
         }
 
-        private Config _config;
+        private List<Config> _config = new List<Config>();
         private Form1 mainForm = null;
         private Dictionary<string, Drag> dictFiles = new Dictionary<string, Drag>();
+        private int _wsIndex = 0;
 
-        public FormShoot(Form form, Config config)
+        public FormShoot(Form form)
         {
             mainForm = form as Form1;
-            _config = config;
+            _config = mainForm.config;
+            _wsIndex = mainForm.wsIndex;
+
             InitializeComponent();
         }
 
@@ -46,9 +49,9 @@ namespace PicturebotGUI
             string date = dtShoot.Text;
             string shootname = $"{name} {date}";
 
-            src.Command.Shoot.NewShoot(_config.Index, name, date);
+            src.Command.Shoot.NewShoot(_config[_wsIndex].Index, name, date);
 
-            Directory.SetCurrentDirectory(_config.Workspace);
+            Directory.SetCurrentDirectory(_config[_wsIndex].Workspace);
 
             int count = 1;
             int lenght = lbRaw.Items.Count;
@@ -62,7 +65,7 @@ namespace PicturebotGUI
 
             this.mainForm.UpdateShootListBox();
 
-            Directory.SetCurrentDirectory(Path.Combine(_config.Workspace, shootname, _config.BaseFlow));
+            Directory.SetCurrentDirectory(Path.Combine(_config[_wsIndex].Workspace, shootname, _config[_wsIndex].BaseFlow));
 
             if (!bgwBackup.IsBusy)
             {
@@ -79,7 +82,7 @@ namespace PicturebotGUI
 
             foreach (var file in files)
             {
-                string destination = Path.Combine(_config.Workspace, shootname, _config.BaseFlow, Picture.FileName(file));
+                string destination = Path.Combine(_config[_wsIndex].Workspace, shootname, _config[_wsIndex].BaseFlow, Picture.FileName(file));
                 dictFiles.Add(Picture.FileName(file), new Drag(file, destination));
                 lbRaw.Items.Add(Picture.FileName(file));
             }
@@ -110,13 +113,12 @@ namespace PicturebotGUI
                 {
                     if (!bgwBackup.CancellationPending)
                     {
-                        //Renaming: {picture} -> {newName} [{counter + 1}/{len(pictures)}
                         int procent = index++ * 100 / count;
                         bgwBackup.ReportProgress(procent, $"Backup: {index - 1}/{count}");
 
                         string f = $"{index - 1} {file}";
 
-                        Shell.Execute("pb", $"base -b {index - 1}\"{file}\"");
+                        src.Command.Base.Backup(_config[_wsIndex].Index, file);
                     }
                 }
             }
@@ -165,7 +167,7 @@ namespace PicturebotGUI
                         int procent = index++ * 100 / count;
                         bgwConvert.ReportProgress(procent, $"Converting: {index - 1}/{count}");
 
-                        Shell.Execute("pb", $"base -c \"{file}\" 50");
+                        src.Command.Base.Convert(_config[_wsIndex].Index, file.ToString(), 50);
                     }
                 }
             }
