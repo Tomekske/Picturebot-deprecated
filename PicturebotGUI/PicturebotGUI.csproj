@@ -60,9 +60,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Command\Base.cs" />
+    <Compile Include="src\Command\Config.cs" />
+    <Compile Include="src\Command\GUI.cs" />
+    <Compile Include="src\Command\Shoot.cs" />
     <Compile Include="src\Helper\Helper.cs" />
     <Compile Include="src\POCO\Config.cs" />
-    <Compile Include="Extension.cs" />
+    <Compile Include="src\Enums\Extension.cs" />
     <Compile Include="Flow.cs" />
     <Compile Include="src\Froms\Form1.cs">
       <SubType>Form</SubType>
@@ -94,6 +98,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="Shoot.cs" />
+    <Compile Include="src\Enums\External.cs" />
     <EmbeddedResource Include="src\Froms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
