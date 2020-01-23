@@ -67,9 +67,9 @@ namespace PicturebotGUI
 
             Directory.SetCurrentDirectory(Path.Combine(_config[_wsIndex].Workspace, shootname, _config[_wsIndex].BaseFlow));
 
-            if (!bgwBackup.IsBusy)
+            if (!bgwRename.IsBusy)
             {
-                bgwBackup.RunWorkerAsync();
+                bgwRename.RunWorkerAsync();
             }
         }
 
@@ -192,6 +192,24 @@ namespace PicturebotGUI
         private void txtName_TextChanged(object sender, EventArgs e)
         {
             lbRaw.Enabled = true;
+        }
+
+        private void bgwRename_DoWork(object sender, DoWorkEventArgs e)
+        {
+            src.Command.Base.Hash(_config[_wsIndex].Index);
+        }
+
+        private void bgwRename_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
+        private void bgwRename_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (!bgwBackup.IsBusy)
+            {
+                bgwBackup.RunWorkerAsync();
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="file">File which is copied to the backup flow</param>
         public static void Rename(int index, int order, string file)
         {
-            Shell.Execute("pb", $"base -r {index} {order - 1} \"{file}\"");
+            Shell.Execute("pb", $"base -r {index} {order} \"{file}\"");
         }
 
         /// <summary>
@@ -42,6 +42,17 @@ namespace PicturebotGUI.src.Command
         public static void Convert(int index, string file, int quality)
         {
             Shell.Execute("pb", $"base -c {index} \"{file}\" {quality}");
+        }
+
+        /// <summary>
+        /// Static method to hash-rename a picture
+        /// </summary>
+        /// <param name="index">Workspace index</param>
+        /// <param name="order">Order of the image</param>
+        /// <param name="file">File which is copied to the backup flow</param>
+        public static void Hash(int index)
+        {
+            Shell.Execute("pb", $"base -h {index}");
         }
     }
 }

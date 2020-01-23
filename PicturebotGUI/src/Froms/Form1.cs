@@ -226,6 +226,7 @@ namespace PicturebotGUI
                 Directory.GetCurrentDirectory();
 
                 string cwd = Directory.GetCurrentDirectory();
+
                 int count = Directory.GetFiles(cwd, "*.*", SearchOption.TopDirectoryOnly).Length;
 
                 string[] files = Directory.GetFiles(cwd);
@@ -278,6 +279,8 @@ namespace PicturebotGUI
                 string cwd = Directory.GetCurrentDirectory();
                 int count = Directory.GetFiles(cwd, "*.*", SearchOption.TopDirectoryOnly).Length;
 
+                src.Command.Base.Hash(config[wsIndex].Index);
+
                 string[] files = Helper.SortPicturesByCreationTime(cwd);
 
                 foreach (var file in files)
@@ -286,9 +289,22 @@ namespace PicturebotGUI
                     {
                         int procent = index++ * 100 / count;
                         bgwRename.ReportProgress(procent, $"Renaming: {index - 1}/{count}");
-
-                        src.Command.Base.Rename(config[wsIndex].Index, index, file.ToString());
+                        src.Command.Base.Rename(config[wsIndex].Index, index - 1, file.ToString());
                     }
+                }
+
+               index = 1;
+
+                string shoot = Shoot.ShootName(cwd);
+                string pathPreview = Path.Combine(config[wsIndex].Workspace, shoot, config[wsIndex].Preview);
+
+                Directory.SetCurrentDirectory(pathPreview);
+
+                files = Helper.SortPicturesByCreationTime(pathPreview);
+
+                foreach (var file in files)
+                {
+                    File.Delete(file);
                 }
             }
 
@@ -312,6 +328,11 @@ namespace PicturebotGUI
             EnableButtons();
             ResetProgressBar();
             Update();
+
+            if (!bgwConvert.IsBusy)
+            {
+                bgwConvert.RunWorkerAsync();
+            }
         }
 
         private void lbShoot_SelectedIndexChanged(object sender, EventArgs e)
