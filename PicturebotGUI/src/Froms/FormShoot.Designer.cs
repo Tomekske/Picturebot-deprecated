@@ -40,6 +40,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.bgwBackup = new System.ComponentModel.BackgroundWorker();
             this.bgwConvert = new System.ComponentModel.BackgroundWorker();
+            this.bgwRename = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -172,6 +173,12 @@
             this.bgwConvert.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwConvert_ProgressChanged);
             this.bgwConvert.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwConvert_RunWorkerCompleted);
             // 
+            // bgwRename
+            // 
+            this.bgwRename.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwRename_DoWork);
+            this.bgwRename.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwRename_ProgressChanged);
+            this.bgwRename.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwRename_RunWorkerCompleted);
+            // 
             // FormShoot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,5 +209,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.ComponentModel.BackgroundWorker bgwBackup;
         private System.ComponentModel.BackgroundWorker bgwConvert;
+        private System.ComponentModel.BackgroundWorker bgwRename;
     }
 }

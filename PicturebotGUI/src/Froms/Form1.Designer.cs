@@ -50,6 +50,7 @@
             this.btnRename = new System.Windows.Forms.Button();
             this.btnBackup = new System.Windows.Forms.Button();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.comboWorkspace = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.pbSelection = new System.Windows.Forms.PictureBox();
@@ -66,7 +67,6 @@
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.lbInstagram = new System.Windows.Forms.ListBox();
             this.pbInstagram = new System.Windows.Forms.PictureBox();
-            this.comboWorkspace = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -304,7 +304,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.18692F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.81308F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 78F));
             this.tableLayoutPanel5.Controls.Add(this.btnRename, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnBackup, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnConvert, 0, 0);
@@ -319,9 +319,9 @@
             // btnRename
             // 
             this.btnRename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRename.Location = new System.Drawing.Point(104, 3);
+            this.btnRename.Location = new System.Drawing.Point(103, 3);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(72, 38);
+            this.btnRename.Size = new System.Drawing.Size(73, 38);
             this.btnRename.TabIndex = 15;
             this.btnRename.Text = "Rename files";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -332,7 +332,7 @@
             this.btnBackup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnBackup.Location = new System.Drawing.Point(43, 3);
             this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(55, 38);
+            this.btnBackup.Size = new System.Drawing.Size(54, 38);
             this.btnBackup.TabIndex = 14;
             this.btnBackup.Text = "Backup shoot";
             this.btnBackup.UseVisualStyleBackColor = true;
@@ -349,6 +349,15 @@
             this.btnConvert.Text = "Convert shoot";
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // comboWorkspace
+            // 
+            this.comboWorkspace.FormattingEnabled = true;
+            this.comboWorkspace.Location = new System.Drawing.Point(176, 318);
+            this.comboWorkspace.Name = "comboWorkspace";
+            this.comboWorkspace.Size = new System.Drawing.Size(121, 21);
+            this.comboWorkspace.TabIndex = 8;
+            this.comboWorkspace.SelectedIndexChanged += new System.EventHandler(this.comboWorkspace_SelectedIndexChanged);
             // 
             // tableLayoutPanel6
             // 
@@ -546,15 +555,6 @@
             this.pbInstagram.TabIndex = 2;
             this.pbInstagram.TabStop = false;
             this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
-            // 
-            // comboWorkspace
-            // 
-            this.comboWorkspace.FormattingEnabled = true;
-            this.comboWorkspace.Location = new System.Drawing.Point(176, 318);
-            this.comboWorkspace.Name = "comboWorkspace";
-            this.comboWorkspace.Size = new System.Drawing.Size(121, 21);
-            this.comboWorkspace.TabIndex = 8;
-            this.comboWorkspace.SelectedIndexChanged += new System.EventHandler(this.comboWorkspace_SelectedIndexChanged);
             // 
             // Form1
             // 
