@@ -283,7 +283,6 @@ namespace PicturebotGUI
 
                 string[] files = Helper.SortPicturesByCreationTime(cwd);
 
-
                 foreach (var file in files)
                 {
                     if (!bgwRename.CancellationPending)
@@ -294,26 +293,18 @@ namespace PicturebotGUI
                     }
                 }
 
+               index = 1;
+
                 string shoot = Shoot.ShootName(cwd);
-                string x = Path.Combine(config[wsIndex].Workspace, shoot, config[wsIndex].Preview);
-                Console.WriteLine(x);
-                Console.WriteLine(shoot);
+                string pathPreview = Path.Combine(config[wsIndex].Workspace, shoot, config[wsIndex].Preview);
 
-                Directory.SetCurrentDirectory(x);
+                Directory.SetCurrentDirectory(pathPreview);
 
-                Console.WriteLine($"Current: {Directory.GetCurrentDirectory()}");
-
-                files = Helper.SortPicturesByCreationTime(x);
+                files = Helper.SortPicturesByCreationTime(pathPreview);
 
                 foreach (var file in files)
                 {
-                    Console.WriteLine($"FILE: {file}");
-
-                    if (!bgwRename.CancellationPending)
-                    {
-                        src.Command.Base.Rename(config[wsIndex].Index, index - 1, file.ToString());
-
-                    }
+                    File.Delete(file);
                 }
             }
 
@@ -337,6 +328,11 @@ namespace PicturebotGUI
             EnableButtons();
             ResetProgressBar();
             Update();
+
+            if (!bgwConvert.IsBusy)
+            {
+                bgwConvert.RunWorkerAsync();
+            }
         }
 
         private void lbShoot_SelectedIndexChanged(object sender, EventArgs e)
