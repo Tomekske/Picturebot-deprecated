@@ -33,7 +33,18 @@ namespace PicturebotGUI
             index = Convert.ToInt32(Picture.Index(path));
 
             UpdateMetaData(path);
+
+            Console.WriteLine($"X: {pbPicture.Size.Width}\r\ny: {pbPicture.Size.Height}");
+
+            int width = pbPicture.Size.Width;
+            int height = pbPicture.Size.Height;
+
+            //pbPicture.Size = width * 4;
+
+            Console.WriteLine($"X: {pbPicture.Size.Width}\r\ny: {pbPicture.Size.Height}");
+
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -94,6 +105,23 @@ namespace PicturebotGUI
                 case Keys.D: index += 1; UpdatePicture(); break;
                 case Keys.Escape: this.Close(); break;
             }
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pbArrowLeft_Click(object sender, EventArgs e)
+        {
+            index += 1; 
+            UpdatePicture();
+        }
+
+        private void pbArrowRight_Click(object sender, EventArgs e)
+        {
+            index -= 1;
+            UpdatePicture();
         }
     }
 }

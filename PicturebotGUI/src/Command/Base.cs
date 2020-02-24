@@ -30,7 +30,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="file">File which is copied to the backup flow</param>
         public static void Rename(int index, int order, string file)
         {
-            Shell.Execute("pb", $"base -r {index} {order} \"{file}\"");
+            Shell.Execute(External.Picturebot, $"base -r {index} {order} \"{file}\"");
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="quality">Quality of the converted image</param>
         public static void Convert(int index, string file, int quality)
         {
-            Shell.Execute("pb", $"base -c {index} \"{file}\" {quality}");
+            Shell.Execute(External.Picturebot, $"base -c {index} \"{file}\" {quality}");
         }
 
         /// <summary>
@@ -52,7 +52,12 @@ namespace PicturebotGUI.src.Command
         /// <param name="file">File which is copied to the backup flow</param>
         public static void Hash(int index)
         {
-            Shell.Execute("pb", $"base -h {index}");
+            Shell.Execute(External.Picturebot, $"base -h {index}");
+        }
+
+        public static void MassRename(int index)
+        {
+            Shell.Execute(External.Picturebot, $"base -mr {index}");
         }
     }
 }

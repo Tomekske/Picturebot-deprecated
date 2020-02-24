@@ -14,5 +14,6 @@ namespace PicturebotGUI.src.Enums
         public static string Picturebot { get { return "pb"; } }
         public static string Explorer { get { return "explorer"; } }
         public static string Editing {  get { return @"C:\Program Files\Affinity\Affinity Photo\Photo.exe"; } }
+        public static string Luminar { get { return @"C:\Program Files\Skylum\Luminar 4\Luminar 4.exe"; } }
     }
 }
