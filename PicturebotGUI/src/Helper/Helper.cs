@@ -1,4 +1,5 @@
-﻿using PicturebotGUI.src.POCO;
+﻿using Picturebot.src.POCO;
+using PicturebotGUI.src.POCO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,7 @@ namespace PicturebotGUI.src.Helper
                     if (File.Exists(path))
                     {
                         File.Delete(path);
-                        form.UpdateBaseListBox();
+                        //form.UpdateBaseListBox();
                     }
                 }
             }
@@ -39,7 +40,7 @@ namespace PicturebotGUI.src.Helper
                 if (File.Exists(path))
                 {
                     File.Delete(path);
-                    form.UpdateBaseListBox();
+                    //form.UpdateBaseListBox();
                 }
             }
         }
@@ -52,7 +53,7 @@ namespace PicturebotGUI.src.Helper
         /// <param name="confirmation">A confirmation box is shown on when the boolean is set to true</param>
         public static void DeletePictureBasePreview(Form1 form, Config config, string path, bool confirmation = false)
         {
-            string previewPath = Picture.Preview(config, path);
+            //string previewPath = Picture.Preview(config, path);
 
             // Making sure the 'important' flows get a confirmation before a picture is getting deleted
             if (confirmation)
@@ -64,8 +65,8 @@ namespace PicturebotGUI.src.Helper
                     if (File.Exists(path))
                     {
                         File.Delete(path);
-                        File.Delete(previewPath);
-                        form.UpdateBaseListBox();
+                        //File.Delete(previewPath);
+                        //form.UpdateBaseListBox();
                     }
                 }
             }
@@ -75,7 +76,7 @@ namespace PicturebotGUI.src.Helper
                 if (File.Exists(path))
                 {
                     File.Delete(path);
-                    form.UpdateBaseListBox();
+                    //form.UpdateBaseListBox();
                 }
             }
         }
@@ -85,14 +86,14 @@ namespace PicturebotGUI.src.Helper
         /// </summary>
         /// <param name="path">Path to directory where the pictures are stored</param>
         /// <returns></returns>
-        public static string[] SortPicturesByCreationTime(string path)
+        public static string[] SortPicturesByLastWriteTime(string path)
         {
             string[] files = Directory.GetFiles(path);
 
             DateTime[] creationTimes = new DateTime[files.Length];
 
             for (int i = 0; i < files.Length; i++)
-                creationTimes[i] = new FileInfo(files[i]).CreationTime;
+                creationTimes[i] = new FileInfo(files[i]).LastWriteTime;
 
             return files;
         }

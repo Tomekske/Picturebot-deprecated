@@ -12,8 +12,10 @@ using System.Windows.Forms;
 using PicturebotGUI.src.POCO;
 using PicturebotGUI.src.Command;
 using PicturebotGUI.src.Background;
-using Config = PicturebotGUI.src.POCO.Config;
+using Picturebot;
+using Picturebot.src.POCO;
 using Convert = PicturebotGUI.src.Background.Convert;
+using PicturebotGUI.src.Helper;
 
 namespace PicturebotGUI
 {
@@ -34,9 +36,7 @@ namespace PicturebotGUI
         public FormShoot(Form form)
         {
             mainForm = form as Form1;
-            _config = mainForm.config;
-            _wsIndex = mainForm.wsIndex;
-
+          
             InitializeComponent();
 
             _bgwMove = new Move(bgwMove, _config[_wsIndex], _formLoading, dictFiles, lbRaw);
@@ -70,9 +70,9 @@ namespace PicturebotGUI
 
             foreach (var file in files)
             {
-                string destination = Path.Combine(_config[_wsIndex].Workspace, shootname, _config[_wsIndex].BaseFlow, Picture.FileName(file));
-                dictFiles.Add(Picture.FileName(file), new Drag(file, destination));
-                lbRaw.Items.Add(Picture.FileName(file));
+                //string destination = Path.Combine(_config[_wsIndex].Workspace, shootname, _config[_wsIndex].BaseFlow, Picture.FileName(file));
+                //dictFiles.Add(Picture.FileName(file), new Drag(file, destination));
+                //lbRaw.Items.Add(Picture.FileName(file));
             }
         }
 
@@ -97,7 +97,7 @@ namespace PicturebotGUI
 
         private void bgwMove_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.mainForm.UpdateShootListBox();
+            //this.mainForm.UpdateShootListBox();
             string currentDir = Path.Combine(_config[_wsIndex].Workspace, _shootname, _config[_wsIndex].BaseFlow);
             Directory.SetCurrentDirectory(currentDir);
 
@@ -176,15 +176,12 @@ namespace PicturebotGUI
         {
             string name = txtName.Text;
             string date = dtShoot.Text;
+
             _shootname = $"{name} {date}";
-
-            src.Command.Shoot.NewShoot(_config[_wsIndex].Index, name, date);
-
-            Directory.SetCurrentDirectory(_config[_wsIndex].Workspace);
+            Picturebot.Shoot sht = new Picturebot.Shoot(_config[_wsIndex]);
+            sht.Add(_shootname);
 
             _formLoading.Show();
-
-
             _bgwMove.Start();
         }
 

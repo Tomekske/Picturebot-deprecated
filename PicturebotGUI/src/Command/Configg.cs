@@ -10,7 +10,7 @@ namespace PicturebotGUI.src.Command
     /// <summary>
     /// Static class which implements commands to interact with the picturebot configurations
     /// </summary>
-    static public class Config
+    static public class Configg
     {
         /// <summary>
         /// Static method returns the picturebot's configuration file location

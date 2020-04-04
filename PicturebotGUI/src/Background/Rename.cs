@@ -7,6 +7,7 @@ using System.ComponentModel;
 using PicturebotGUI.src.POCO;
 using PicturebotGUI.src.Helper;
 using System.IO;
+using Picturebot.src.POCO;
 
 namespace PicturebotGUI.src.Background
 {
@@ -32,7 +33,7 @@ namespace PicturebotGUI.src.Background
 
                 src.Command.Base.Hash(Config.Index);
 
-                string[] files = src.Helper.Helper.SortPicturesByCreationTime(cwd);
+                /*string[] files = src.Helper.Helper.SortPicturesByCreationTime(cwd);
 
                 foreach (var file in files)
                 {
@@ -42,7 +43,7 @@ namespace PicturebotGUI.src.Background
                         BackgroundWorker.ReportProgress(procent, $"Renaming: {index - 1}/{count}");
                         src.Command.Base.Rename(Config.Index, index - 1, file.ToString());
                     }
-                }
+                }*/
 
                 index = 1;
 
@@ -57,17 +58,17 @@ namespace PicturebotGUI.src.Background
 
         private void RenamePreview(string cwd)
         {
-            string shoot = Shoot.ShootName(cwd);
+/*            string shoot = Shoot.ShootName(cwd);
             string pathPreview = Path.Combine(Config.Workspace, shoot, Config.Preview);
 
-            Directory.SetCurrentDirectory(pathPreview);
+            Directory.SetCurrentDirectory(pathPreview);*/
 
-            string[] files = src.Helper.Helper.SortPicturesByCreationTime(pathPreview);
+/*            string[] files = src.Helper.Helper.SortPicturesByCreationTime(pathPreview);
 
             foreach (var file in files)
             {
                 File.Delete(file);
-            }
+            }*/
         }
     }
 }

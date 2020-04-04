@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PicturebotGUI.src.POCO;
+using Picturebot.src.POCO;
 
 namespace PicturebotGUI
 {
@@ -212,10 +213,10 @@ namespace PicturebotGUI
                 img.Crop(new Rectangle(_coordframe.X, _coordframe.Y, _coordframe.X + _canvas.Width, _coordframe.Y + _canvas.Height)).Save(memory);
 
                 // File is currently saved to the Instagram flow
-                img.Save(Picture.Instagram(_config, _filepath));
+                //img.Save(Picture.Instagram(_config, _filepath));
 
                 // Update all the picture boxes on the main form
-                this._mainForm.UpdateBaseListBox();
+                //this._mainForm.UpdateBaseListBox();
                 // Close the current activated form
                 this.Close();
             }

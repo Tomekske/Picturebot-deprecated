@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 
-namespace PicturebotGUI
+namespace PicturebotGUI.Depricated
 {
     public static class Picture
     {

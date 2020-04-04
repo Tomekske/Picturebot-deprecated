@@ -117,53 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="bgwBackup.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>132, 17</value>
-  </metadata>
-  <metadata name="bgwRename.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>246, 13</value>
-  </metadata>
-  <metadata name="bgwConvert.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>365, 17</value>
-  </metadata>
-  <metadata name="bgwSelection.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>483, 17</value>
-  </metadata>
-  <metadata name="bgwEdited.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>608, 17</value>
-  </metadata>
-  <metadata name="bgwMassRename.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>717, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pbInstagram.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAN9JREFUSEvt
-        lLEJwkAYhYOVYukC9i7gAkLGcBRLO0dwAXEIg1a2LhBrO0vh/O7yyCmJ8UwisfCDR+69u7yfELjoz+9g
-        jInRGTUlRbFqPdpoi1S1Hm0Y2dqoptijvJsBxHuUyFbiSkDWo/zVgATtZCtxJSDrUV464BNU02wAx0Zo
-        i4aKcmyHRdajvLBBNNXSgR+ggz0La8U5ysMGYGfohpbyPbRBj8zdYaHs/QCWY3RxYcYCrbLlE1c00Wth
-        A3j00dEFYZyQ+x+ZDfiCuqimmwFfv+zsdd3GkPLr+k9HRNEdI+aoANoAt/IAAAAASUVORK5CYII=
-</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\config.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="pbSelection.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAN9JREFUSEvt
-        lLEJwkAYhYOVYukC9i7gAkLGcBRLO0dwAXEIg1a2LhBrO0vh/O7yyCmJ8UwisfCDR+69u7yfELjoz+9g
-        jInRGTUlRbFqPdpoi1S1Hm0Y2dqoptijvJsBxHuUyFbiSkDWo/zVgATtZCtxJSDrUV464BNU02wAx0Zo
-        i4aKcmyHRdajvLBBNNXSgR+ggz0La8U5ysMGYGfohpbyPbRBj8zdYaHs/QCWY3RxYcYCrbLlE1c00Wth
-        A3j00dEFYZyQ+x+ZDfiCuqimmwFfv+zsdd3GkPLr+k9HRNEdI+aoANoAt/IAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="pbEdited.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAN9JREFUSEvt
-        lLEJwkAYhYOVYukC9i7gAkLGcBRLO0dwAXEIg1a2LhBrO0vh/O7yyCmJ8UwisfCDR+69u7yfELjoz+9g
-        jInRGTUlRbFqPdpoi1S1Hm0Y2dqoptijvJsBxHuUyFbiSkDWo/zVgATtZCtxJSDrUV464BNU02wAx0Zo
-        i4aKcmyHRdajvLBBNNXSgR+ggz0La8U5ysMGYGfohpbyPbRBj8zdYaHs/QCWY3RxYcYCrbLlE1c00Wth
-        A3j00dEFYZyQ+x+ZDfiCuqimmwFfv+zsdd3GkPLr+k9HRNEdI+aoANoAt/IAAAAASUVORK5CYII=
-</value>
+  <data name="ConfigLocation" xml:space="preserve">
+    <value>"D:\Programs\Developing\PicturebotGUI\config\config.json"</value>
   </data>
 </root>

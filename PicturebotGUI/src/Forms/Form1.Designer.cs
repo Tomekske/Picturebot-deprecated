@@ -32,7 +32,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenConfigFileTStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openCurrentDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bgwBackup = new System.ComponentModel.BackgroundWorker();
             this.bgwRename = new System.ComponentModel.BackgroundWorker();
@@ -54,15 +55,15 @@
             this.panelEdited = new System.Windows.Forms.Panel();
             this.lbEdited = new System.Windows.Forms.ListBox();
             this.panelLabelEdited = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblEdited = new System.Windows.Forms.Label();
             this.panelPreview = new System.Windows.Forms.Panel();
             this.lbPreview = new System.Windows.Forms.ListBox();
             this.panelLabelPreview = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblPreview = new System.Windows.Forms.Label();
             this.panelInstagram = new System.Windows.Forms.Panel();
             this.lbInstagram = new System.Windows.Forms.ListBox();
             this.panelLabelInstagram = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblInstagram = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pbInstagram = new System.Windows.Forms.PictureBox();
             this.pbSelection = new System.Windows.Forms.PictureBox();
@@ -70,7 +71,7 @@
             this.pbPreview = new System.Windows.Forms.PictureBox();
             this.panelSelection = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lblSelection = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutWorkspace.SuspendLayout();
             this.panelConfig.SuspendLayout();
@@ -110,7 +111,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenConfigFileTStripMenuItem,
-            this.openCurrentDirectoryToolStripMenuItem});
+            this.openWorkspaceToolStripMenuItem,
+            this.addWorkspaceToolStripMenuItem});
             this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -122,18 +124,23 @@
             this.OpenConfigFileTStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.OpenConfigFileTStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.OpenConfigFileTStripMenuItem.Name = "OpenConfigFileTStripMenuItem";
-            this.OpenConfigFileTStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.OpenConfigFileTStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.OpenConfigFileTStripMenuItem.Text = "Open config file";
-            this.OpenConfigFileTStripMenuItem.Click += new System.EventHandler(this.OpenConfigFileTStripMenuItem_Click);
             // 
-            // openCurrentDirectoryToolStripMenuItem
+            // openWorkspaceToolStripMenuItem
             // 
-            this.openCurrentDirectoryToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.openCurrentDirectoryToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.openCurrentDirectoryToolStripMenuItem.Name = "openCurrentDirectoryToolStripMenuItem";
-            this.openCurrentDirectoryToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.openCurrentDirectoryToolStripMenuItem.Text = "Open current directory";
-            this.openCurrentDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openCurrentDirectoryToolStripMenuItem_Click);
+            this.openWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.openWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.openWorkspaceToolStripMenuItem.Name = "openWorkspaceToolStripMenuItem";
+            this.openWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.openWorkspaceToolStripMenuItem.Text = "Open workspace";
+            this.openWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.openWorkspaceToolStripMenuItem_Click);
+            // 
+            // addWorkspaceToolStripMenuItem
+            // 
+            this.addWorkspaceToolStripMenuItem.Name = "addWorkspaceToolStripMenuItem";
+            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addWorkspaceToolStripMenuItem.Text = "Add workspace";
             // 
             // VersionTSMenuItem
             // 
@@ -141,7 +148,6 @@
             this.VersionTSMenuItem.Name = "VersionTSMenuItem";
             this.VersionTSMenuItem.Size = new System.Drawing.Size(57, 21);
             this.VersionTSMenuItem.Text = "Version";
-            this.VersionTSMenuItem.Click += new System.EventHandler(this.VersionTSMenuItem_Click);
             // 
             // bgwBackup
             // 
@@ -151,17 +157,11 @@
             // 
             this.bgwRename.WorkerReportsProgress = true;
             this.bgwRename.WorkerSupportsCancellation = true;
-            this.bgwRename.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwRename_DoWork);
-            this.bgwRename.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwRename_ProgressChanged);
-            this.bgwRename.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwRename_RunWorkerCompleted);
             // 
             // bgwConvert
             // 
             this.bgwConvert.WorkerReportsProgress = true;
             this.bgwConvert.WorkerSupportsCancellation = true;
-            this.bgwConvert.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwConvert_DoWork);
-            this.bgwConvert.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwConvert_ProgressChanged);
-            this.bgwConvert.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwConvert_RunWorkerCompleted);
             // 
             // lbShoot
             // 
@@ -176,7 +176,7 @@
             this.lbShoot.Name = "lbShoot";
             this.lbShoot.Size = new System.Drawing.Size(194, 416);
             this.lbShoot.TabIndex = 3;
-            this.lbShoot.SelectedIndexChanged += new System.EventHandler(this.lbShoot_SelectedIndexChanged);
+            this.lbShoot.Click += new System.EventHandler(this.lbShoot_Click);
             this.lbShoot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbShoot_MouseDown);
             // 
             // comboWorkspace
@@ -197,12 +197,6 @@
             // 
             this.bgwSelection.WorkerReportsProgress = true;
             this.bgwSelection.WorkerSupportsCancellation = true;
-            // 
-            // bgwMassRename
-            // 
-            this.bgwMassRename.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwMassRename_DoWork);
-            this.bgwMassRename.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwMassRename_ProgressChanged);
-            this.bgwMassRename.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwMassRename_RunWorkerCompleted);
             // 
             // tableLayoutWorkspace
             // 
@@ -235,7 +229,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.TabIndex = 16;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // lbSelection
             // 
@@ -253,10 +246,7 @@
             this.lbSelection.Sorted = true;
             this.lbSelection.TabIndex = 1;
             this.lbSelection.SelectedIndexChanged += new System.EventHandler(this.lbSelection_SelectedIndexChanged);
-            this.lbSelection.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbSelection_DragEnter);
-            this.lbSelection.DragOver += new System.Windows.Forms.DragEventHandler(this.lbSelection_DragOver);
-            this.lbSelection.DoubleClick += new System.EventHandler(this.lbSelection_DoubleClick);
-            this.lbSelection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbSelection_KeyDown);
+            this.lbSelection.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbSelection_MouseDown);
             // 
             // tableLayoutShoot
             // 
@@ -317,7 +307,6 @@
             this.pbAddShoot.Size = new System.Drawing.Size(194, 32);
             this.pbAddShoot.TabIndex = 6;
             this.pbAddShoot.TabStop = false;
-            this.pbAddShoot.Click += new System.EventHandler(this.pbAddShoot_Click);
             // 
             // panelEdited
             // 
@@ -344,31 +333,28 @@
             this.lbEdited.Sorted = true;
             this.lbEdited.TabIndex = 2;
             this.lbEdited.SelectedIndexChanged += new System.EventHandler(this.lbEdited_SelectedIndexChanged);
-            this.lbEdited.DoubleClick += new System.EventHandler(this.lbEdited_DoubleClick);
-            this.lbEdited.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbEdited_KeyDown);
-            this.lbEdited.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbEdited_MouseDown);
             // 
             // panelLabelEdited
             // 
             this.panelLabelEdited.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(204)))));
-            this.panelLabelEdited.Controls.Add(this.label4);
+            this.panelLabelEdited.Controls.Add(this.lblEdited);
             this.panelLabelEdited.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLabelEdited.Location = new System.Drawing.Point(0, 0);
             this.panelLabelEdited.Name = "panelLabelEdited";
             this.panelLabelEdited.Size = new System.Drawing.Size(218, 40);
             this.panelLabelEdited.TabIndex = 0;
             // 
-            // label4
+            // lblEdited
             // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 21F);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(0, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 34);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Edited";
+            this.lblEdited.AutoSize = true;
+            this.lblEdited.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblEdited.Font = new System.Drawing.Font("Tahoma", 21F);
+            this.lblEdited.ForeColor = System.Drawing.Color.White;
+            this.lblEdited.Location = new System.Drawing.Point(0, 0);
+            this.lblEdited.Name = "lblEdited";
+            this.lblEdited.Size = new System.Drawing.Size(91, 34);
+            this.lblEdited.TabIndex = 0;
+            this.lblEdited.Text = "Edited";
             // 
             // panelPreview
             // 
@@ -395,29 +381,29 @@
             this.lbPreview.Sorted = true;
             this.lbPreview.TabIndex = 6;
             this.lbPreview.SelectedIndexChanged += new System.EventHandler(this.lbPreview_SelectedIndexChanged);
-            this.lbPreview.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbPreview_KeyDown);
+            this.lbPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbPreview_MouseDown);
             // 
             // panelLabelPreview
             // 
             this.panelLabelPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(204)))));
-            this.panelLabelPreview.Controls.Add(this.label2);
+            this.panelLabelPreview.Controls.Add(this.lblPreview);
             this.panelLabelPreview.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLabelPreview.Location = new System.Drawing.Point(0, 0);
             this.panelLabelPreview.Name = "panelLabelPreview";
             this.panelLabelPreview.Size = new System.Drawing.Size(218, 40);
             this.panelLabelPreview.TabIndex = 0;
             // 
-            // label2
+            // lblPreview
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 21F);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(111, 34);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Preview";
+            this.lblPreview.AutoSize = true;
+            this.lblPreview.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblPreview.Font = new System.Drawing.Font("Tahoma", 21F);
+            this.lblPreview.ForeColor = System.Drawing.Color.White;
+            this.lblPreview.Location = new System.Drawing.Point(0, 0);
+            this.lblPreview.Name = "lblPreview";
+            this.lblPreview.Size = new System.Drawing.Size(111, 34);
+            this.lblPreview.TabIndex = 0;
+            this.lblPreview.Text = "Preview";
             // 
             // panelInstagram
             // 
@@ -443,29 +429,28 @@
             this.lbInstagram.Size = new System.Drawing.Size(220, 208);
             this.lbInstagram.TabIndex = 0;
             this.lbInstagram.SelectedIndexChanged += new System.EventHandler(this.lbInstagram_SelectedIndexChanged);
-            this.lbInstagram.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbInstagram_KeyDown);
             // 
             // panelLabelInstagram
             // 
             this.panelLabelInstagram.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(204)))));
-            this.panelLabelInstagram.Controls.Add(this.label5);
+            this.panelLabelInstagram.Controls.Add(this.lblInstagram);
             this.panelLabelInstagram.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLabelInstagram.Location = new System.Drawing.Point(0, 0);
             this.panelLabelInstagram.Name = "panelLabelInstagram";
             this.panelLabelInstagram.Size = new System.Drawing.Size(220, 40);
             this.panelLabelInstagram.TabIndex = 0;
             // 
-            // label5
+            // lblInstagram
             // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 21F);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(0, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(142, 34);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Instagram";
+            this.lblInstagram.AutoSize = true;
+            this.lblInstagram.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblInstagram.Font = new System.Drawing.Font("Tahoma", 21F);
+            this.lblInstagram.ForeColor = System.Drawing.Color.White;
+            this.lblInstagram.Location = new System.Drawing.Point(0, 0);
+            this.lblInstagram.Name = "lblInstagram";
+            this.lblInstagram.Size = new System.Drawing.Size(142, 34);
+            this.lblInstagram.TabIndex = 0;
+            this.lblInstagram.Text = "Instagram";
             // 
             // tableLayoutPanel1
             // 
@@ -505,7 +490,6 @@
             this.pbInstagram.TabIndex = 2;
             this.pbInstagram.TabStop = false;
             this.pbInstagram.WaitOnLoad = true;
-            this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
             // 
             // pbSelection
             // 
@@ -519,7 +503,6 @@
             this.pbSelection.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbSelection.TabIndex = 0;
             this.pbSelection.TabStop = false;
-            this.pbSelection.Click += new System.EventHandler(this.pbSelection_Click);
             // 
             // pbEdited
             // 
@@ -533,12 +516,11 @@
             this.pbEdited.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbEdited.TabIndex = 1;
             this.pbEdited.TabStop = false;
-            this.pbEdited.Click += new System.EventHandler(this.pbEdited_Click);
             // 
             // pbPreview
             // 
             this.pbPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(43)))), ((int)(((byte)(61)))));
-            this.pbPreview.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pbPreview.BackgroundImage")));
+            this.pbPreview.BackgroundImage = global::PicturebotGUI.Properties.Resources.LogoImage;
             this.pbPreview.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pbPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbPreview.Location = new System.Drawing.Point(3, 257);
@@ -547,7 +529,6 @@
             this.pbPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPreview.TabIndex = 5;
             this.pbPreview.TabStop = false;
-            this.pbPreview.Click += new System.EventHandler(this.pbPreview_Click);
             // 
             // panelSelection
             // 
@@ -562,24 +543,24 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(204)))));
-            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.lblSelection);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(218, 40);
             this.panel1.TabIndex = 1;
             // 
-            // label6
+            // lblSelection
             // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 21F);
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(0, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(126, 34);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Selection";
+            this.lblSelection.AutoSize = true;
+            this.lblSelection.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblSelection.Font = new System.Drawing.Font("Tahoma", 21F);
+            this.lblSelection.ForeColor = System.Drawing.Color.White;
+            this.lblSelection.Location = new System.Drawing.Point(0, 0);
+            this.lblSelection.Name = "lblSelection";
+            this.lblSelection.Size = new System.Drawing.Size(126, 34);
+            this.lblSelection.TabIndex = 0;
+            this.lblSelection.Text = "Selection";
             // 
             // Form1
             // 
@@ -638,7 +619,7 @@
         private System.Windows.Forms.ListBox lbShoot;
         private System.ComponentModel.BackgroundWorker bgwSelection;
         private System.ComponentModel.BackgroundWorker bgwEdited;
-        private System.Windows.Forms.ToolStripMenuItem openCurrentDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openWorkspaceToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboWorkspace;
         private System.ComponentModel.BackgroundWorker bgwMassRename;
         private System.Windows.Forms.TableLayoutPanel tableLayoutWorkspace;
@@ -651,15 +632,15 @@
         private System.Windows.Forms.Panel panelEdited;
         private System.Windows.Forms.ListBox lbEdited;
         private System.Windows.Forms.Panel panelLabelEdited;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblEdited;
         private System.Windows.Forms.Panel panelPreview;
         private System.Windows.Forms.ListBox lbPreview;
         private System.Windows.Forms.Panel panelLabelPreview;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblPreview;
         private System.Windows.Forms.Panel panelInstagram;
         private System.Windows.Forms.ListBox lbInstagram;
         private System.Windows.Forms.Panel panelLabelInstagram;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblInstagram;
         private System.Windows.Forms.PictureBox pbPreview;
         private System.Windows.Forms.PictureBox pbEdited;
         private System.Windows.Forms.PictureBox pbSelection;
@@ -667,9 +648,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panelSelection;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblSelection;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pbAddShoot;
+        private System.Windows.Forms.ToolStripMenuItem addWorkspaceToolStripMenuItem;
     }
 }
 

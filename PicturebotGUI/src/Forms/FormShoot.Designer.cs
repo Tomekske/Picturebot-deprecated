@@ -39,15 +39,15 @@
             this.bgwMove = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutAddShoot = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutAddInformation = new System.Windows.Forms.TableLayoutPanel();
+            this.pbSaveShoot = new System.Windows.Forms.PictureBox();
             this.panelAddPictures = new System.Windows.Forms.Panel();
             this.panelLabelAddPictures = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.pbSaveShoot = new System.Windows.Forms.PictureBox();
             this.tableLayoutAddShoot.SuspendLayout();
             this.tableLayoutAddInformation.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).BeginInit();
             this.panelAddPictures.SuspendLayout();
             this.panelLabelAddPictures.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).BeginInit();
             this.SuspendLayout();
             // 
             // lbRaw
@@ -183,6 +183,18 @@
             this.tableLayoutAddInformation.Size = new System.Drawing.Size(352, 389);
             this.tableLayoutAddInformation.TabIndex = 0;
             // 
+            // pbSaveShoot
+            // 
+            this.pbSaveShoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbSaveShoot.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
+            this.pbSaveShoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbSaveShoot.Location = new System.Drawing.Point(361, 422);
+            this.pbSaveShoot.Name = "pbSaveShoot";
+            this.pbSaveShoot.Size = new System.Drawing.Size(254, 50);
+            this.pbSaveShoot.TabIndex = 2;
+            this.pbSaveShoot.TabStop = false;
+            this.pbSaveShoot.Click += new System.EventHandler(this.pbSaveShoot_Click);
+            // 
             // panelAddPictures
             // 
             this.panelAddPictures.Controls.Add(this.lbRaw);
@@ -214,18 +226,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Add pictures";
             // 
-            // pbSaveShoot
-            // 
-            this.pbSaveShoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbSaveShoot.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
-            this.pbSaveShoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbSaveShoot.Location = new System.Drawing.Point(361, 422);
-            this.pbSaveShoot.Name = "pbSaveShoot";
-            this.pbSaveShoot.Size = new System.Drawing.Size(254, 50);
-            this.pbSaveShoot.TabIndex = 2;
-            this.pbSaveShoot.TabStop = false;
-            this.pbSaveShoot.Click += new System.EventHandler(this.pbSaveShoot_Click);
-            // 
             // FormShoot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,10 +241,10 @@
             this.tableLayoutAddShoot.ResumeLayout(false);
             this.tableLayoutAddInformation.ResumeLayout(false);
             this.tableLayoutAddInformation.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).EndInit();
             this.panelAddPictures.ResumeLayout(false);
             this.panelLabelAddPictures.ResumeLayout(false);
             this.panelLabelAddPictures.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).EndInit();
             this.ResumeLayout(false);
 
         }

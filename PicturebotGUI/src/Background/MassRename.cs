@@ -1,4 +1,5 @@
-﻿using PicturebotGUI.src.POCO;
+﻿using Picturebot.src.POCO;
+using PicturebotGUI.src.POCO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace PicturebotGUI.src.Background
 
         public override void Work()
         {
-            string cwd = Directory.GetCurrentDirectory();
+/*            string cwd = Directory.GetCurrentDirectory();
             string shoot = Shoot.ShootName(cwd);
             string pathPreview = Path.Combine(Config.Workspace, shoot, Config.BaseFlow);
 
@@ -35,7 +36,7 @@ namespace PicturebotGUI.src.Background
             foreach (var file in files)
             {
                 File.Delete(file);
-            }
+            }*/
 
 
             //RenamePreview();

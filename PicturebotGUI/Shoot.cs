@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 
-namespace PicturebotGUI
-{
+namespace PicturebotGUI.Depricated
+{ 
     public static class Shoot
     {
         public static string Absolute(string file)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PicturebotGUI.src.POCO
+namespace Picturebot.src.POCO
 {
     /// <summary>
     /// POCO class for the picturebot configuration file
@@ -19,7 +19,7 @@ namespace PicturebotGUI.src.POCO
         public string Preview { get; set; }
         public string Editing { get; set; }
         public string Instagram { get; set; }
-        public List<string> Workflow { get; set; }
+        public List<string> Workflows { get; set; }
         public int Index { get; set; }
 
         public override string ToString()
@@ -33,7 +33,7 @@ namespace PicturebotGUI.src.POCO
                    $"Edited: {Edited}\r\n" +
                    $"Editing: {Editing}\r\n" +
                    $"Instagram: {Instagram}\r\n" +
-                   $"Hobbies: {string.Join(", ",Workflow.ToArray())}" +
+                   $"Hobbies: {string.Join(", ", Workflows.ToArray())}" +
                    $"Index: {Index}";
         }
     }

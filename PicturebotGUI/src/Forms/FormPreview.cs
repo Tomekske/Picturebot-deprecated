@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 
 namespace PicturebotGUI
@@ -30,7 +31,7 @@ namespace PicturebotGUI
 
             _lst = lst;
             count = lst.Count;
-            index = Convert.ToInt32(Picture.Index(path));
+            //index = Convert.ToInt32(Picture.Index(path));
 
             UpdateMetaData(path);
 
@@ -67,11 +68,11 @@ namespace PicturebotGUI
 
         private void UpdatePicture()
         {
-            string fileName = Picture.FileName(_path);
-            _path = fileName;
+            //string fileName = Picture.FileName(_path);
+            //_path = fileName;
 
             Regex re = new Regex(@"([a-zA-z]+_\d+-\d+-\d+_)\d+.[a-zA-Z]+");
-            Match match = re.Match(fileName);
+            //Match match = re.Match(fileName);
 
             
             if (index > count)
@@ -88,7 +89,7 @@ namespace PicturebotGUI
 
             pbPicture.ImageLocation = _lst[index - 1];
 
-            UpdateMetaData(Picture.Preview(config, _lst[index-1]));
+            //UpdateMetaData(Picture.Preview(config, _lst[index-1]));
         }
 
         private void btnPrevious_Click(object sender, EventArgs e)

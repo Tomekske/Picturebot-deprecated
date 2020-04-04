@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 
-namespace PicturebotGUI
+namespace PicturebotGUI.Depricated
 {
     static public class Flow
     {
-        private static string Base(Config config, string item, string flow)
+        /*private static string Base(Config config, string item, string flow)
         {
             return Path.Combine(config.Workspace, Shoot.ShootName(config, item), flow);
         }
@@ -47,6 +48,6 @@ namespace PicturebotGUI
         public static string InstagramDirectory(Config config, string item)
         {
             return Base(config, item, config.Instagram);
-        }
+        }*/
     }
 }

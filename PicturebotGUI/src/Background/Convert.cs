@@ -1,4 +1,5 @@
-﻿using PicturebotGUI.src.POCO;
+﻿using Picturebot.src.POCO;
+using PicturebotGUI.src.POCO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -9,12 +9,16 @@ namespace PicturebotGUI.src.Enums
     /// <summary>
     /// String enum with context menu strip operations
     /// </summary>
-    public class Strip
+    public static class Strip
     {
         public static string Convert { get { return "Convert"; } }
         public static string Delete { get { return "Delete"; } }
+        public static string RenameShoot { get { return "Rename shoot"; } }
         public static string Rename { get { return "Rename"; } }
         public static string Metadata { get { return "Metadata"; } }
         public static string CopyDescription { get { return "Copy description"; } }
+        public static string Explorer { get { return "Open shoot in explorer"; } }
+        public static string AddSelection { get { return "Add to selection"; } }
+
     }
 }
