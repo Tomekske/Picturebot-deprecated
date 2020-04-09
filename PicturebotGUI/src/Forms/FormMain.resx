@@ -139,15 +139,6 @@
     <value>717, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="pbInstagram.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAN9JREFUSEvt
-        lLEJwkAYhYOVYukC9i7gAkLGcBRLO0dwAXEIg1a2LhBrO0vh/O7yyCmJ8UwisfCDR+69u7yfELjoz+9g
-        jInRGTUlRbFqPdpoi1S1Hm0Y2dqoptijvJsBxHuUyFbiSkDWo/zVgATtZCtxJSDrUV464BNU02wAx0Zo
-        i4aKcmyHRdajvLBBNNXSgR+ggz0La8U5ysMGYGfohpbyPbRBj8zdYaHs/QCWY3RxYcYCrbLlE1c00Wth
-        A3j00dEFYZyQ+x+ZDfiCuqimmwFfv+zsdd3GkPLr+k9HRNEdI+aoANoAt/IAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="pbSelection.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAN9JREFUSEvt

@@ -11,7 +11,7 @@ namespace Picturebot
 {
     public class Shoot
     {
-        public Config Config { get; set; }
+        private Config _config { get; set; }
 
         /// <summary>
         /// Shoot constructor
@@ -19,7 +19,7 @@ namespace Picturebot
         /// </summary>
         public Shoot(Config config)
         {
-            Config = config;
+            _config = config;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Picturebot
         /// <param name="name">shoot name</param>
         public void Add(string name)
         {
-            string shootRoot = Path.Combine(Config.Workspace, name);
+            string shootRoot = Path.Combine(_config.Workspace, name);
 
             if (!Guard.Filesystem.IsPath(shootRoot))
             {
@@ -50,7 +50,7 @@ namespace Picturebot
         /// <param name="path">Path the the shoot</param>
         public void Remove(string path)
         {
-            Guard.Filesystem.PathExist(path);
+            //Guard.Filesystem.PathExist(path);
             Directory.Delete(path, true);
         }
 
@@ -58,14 +58,14 @@ namespace Picturebot
         /// Rename a shoot name and recursively rename all pictures within every flow accordingly to the new shoot name
         /// </summary>
         /// <param name="name">New shoot name</param>
-        public void Rename(string path)
+        public void Rename(string oldShootInfo, string shootName, string shootDate)
         {
-            List<Picture> pictureList = new List<Picture>();
+            string newShoot = $"{shootName} {shootDate}";
+            Flow flow = new Flow(_config);
 
-             
-            // TODO
-            // Rename Pictures in flows
-            // Rename Shoot name
+            flow.Rename(oldShootInfo, false, newShoot);
+
+            Directory.Move(Path.Combine(Path.Combine(_config.Workspace, oldShootInfo)), Path.Combine(_config.Workspace, newShoot));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Picturebot
         private void InitialiseShoot(string root)
         {
             // Loop-over every flow defined in the workspace array object within the config file
-            foreach (var flow in Config.Workflows)
+            foreach (var flow in _config.Workflows)
             {
                 // Create an absolute root path to the flow that is about to get created within the shoot
                 string flowRoot = Path.Combine(root, flow);

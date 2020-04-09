@@ -1,193 +1,272 @@
-﻿using System;
+﻿using Picturebot;
+using Picturebot.src.POCO;
+using PicturebotGUI.src.Background;
+using PicturebotGUI.src.Enums;
+using PicturebotGUI.src.POCO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using PicturebotGUI.src.POCO;
-using PicturebotGUI.src.Command;
-using PicturebotGUI.src.Background;
-using Picturebot;
-using Picturebot.src.POCO;
-using Convert = PicturebotGUI.src.Background.Convert;
-using PicturebotGUI.src.Helper;
 
 namespace PicturebotGUI
 {
     public partial class FormShoot : Form
     {
+        private FormMain formMain = null;
         private FormLoading _formLoading = new FormLoading();
-        private List<Config> _config = new List<Config>();
-        private Form1 mainForm = null;
-        private Dictionary<string, Drag> dictFiles = new Dictionary<string, Drag>();
-        private int _wsIndex = 0;
-        private string _shootname;
+
+        private Config _config;
 
         private Hash _bgwHash;
-        private Convert _bgwConvert;
+        private ConvertRaw _bgwConvert;
         private Backup _bgwBackup;
         private Move _bgwMove;
 
+        private string _shootInfo = string.Empty;
+        private List<Picture> _listPictures = new List<Picture>();
+        private Dictionary<string, Drag> _dictMoveFiles = new Dictionary<string, Drag>();
+
         public FormShoot(Form form)
         {
-            mainForm = form as Form1;
-          
+            // Create a formMain object
+            formMain = form as FormMain;
+              
             InitializeComponent();
 
-            _bgwMove = new Move(bgwMove, _config[_wsIndex], _formLoading, dictFiles, lbRaw);
-            _bgwHash = new Hash(bgwHash, _config[_wsIndex], _formLoading);
-            _bgwBackup = new Backup(bgwBackup, _config[_wsIndex], _formLoading);
-            _bgwConvert = new Convert(bgwConvert, _config[_wsIndex], _formLoading);
+            // Initialize config object
+            _config = formMain.Config[formMain.WsIndex];
         }
 
-        private void btnFinish_Click(object sender, EventArgs e)
-        {
-            string name = txtName.Text;
-            string date = dtShoot.Text;
-            _shootname = $"{name} {date}";
-
-            src.Command.Shoot.NewShoot(_config[_wsIndex].Index, name, date);
-
-            Directory.SetCurrentDirectory(_config[_wsIndex].Workspace);
-
-            _formLoading.Show();
-
-
-            _bgwMove.Start();
-        }
-
-        private void lbRaw_DragDrop(object sender, DragEventArgs e)
-        {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            string name = txtName.Text;
-            string date = dtShoot.Text;
-            string shootname = $"{name} {date}";
-
-            foreach (var file in files)
-            {
-                //string destination = Path.Combine(_config[_wsIndex].Workspace, shootname, _config[_wsIndex].BaseFlow, Picture.FileName(file));
-                //dictFiles.Add(Picture.FileName(file), new Drag(file, destination));
-                //lbRaw.Items.Add(Picture.FileName(file));
-            }
-        }
-
-        private void lbRaw_DragEnter(object sender, DragEventArgs e)
-        {
-            if(e.Data.GetDataPresent(DataFormats.FileDrop, false))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-        }
-
-        //===============================================================================================================
+        #region BackgroundWorker
+        #region Start
+        #region MoveFiles
+        /// <summary>
+        /// Move the pictures to the baseFlow directory
+        /// </summary>
         private void bgwMove_DoWork(object sender, DoWorkEventArgs e)
         {
             _bgwMove.Work();
         }
+        #endregion MoveFiles
 
-        private void bgwMove_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            _bgwMove.Progress(e.UserState.ToString());
-        }
-
-        private void bgwMove_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //this.mainForm.UpdateShootListBox();
-            string currentDir = Path.Combine(_config[_wsIndex].Workspace, _shootname, _config[_wsIndex].BaseFlow);
-            Directory.SetCurrentDirectory(currentDir);
-
-            _bgwMove.Finished("Hashing files!");
-
-            if (Directory.Exists(currentDir))
-            {
-                _bgwHash.Start();
-            }
-
-        }
-
-        //=========================================================================================================================
-
+        #region HashFiles
+        /// <summary>
+        /// Hash the pictures within the base flow
+        /// </summary>
         private void bgwHash_DoWork(object sender, DoWorkEventArgs e)
         {
             _bgwHash.Work();
         }
+        #endregion HashFiles
 
-        private void bgwHash_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-        }
-
-        private void bgwHash_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            _bgwHash.Finished("Finished hashing!");
-            _bgwBackup.Start();
-        }
-
-        //=========================================================================================================================
-
+        #region BackupFiles
+        /// <summary>
+        /// Move the pictures to the backup flow
+        /// </summary>
         private void bgwBackup_DoWork(object sender, DoWorkEventArgs e)
         {
             _bgwBackup.Work();
         }
+        #endregion BackupFiles
 
+        #region ConvertFiles
+        /// <summary>
+        /// Convert RAW pictures within the base flow to a JPG format
+        /// </summary>
+        private void bgwConvert_DoWork(object sender, DoWorkEventArgs e)
+        {
+            _bgwConvert.Work();
+        }
+        #endregion ConvertFiles
+        #endregion Start
+
+        #region Progress
+        #region MoveFiles
+        /// <summary>
+        /// Display progression status of the move operation
+        /// </summary>
+        private void bgwMove_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            _bgwMove.Progress(e.UserState.ToString());
+        }
+        #endregion MoveFiles
+
+        #region HashFiles
+        /// <summary>
+        /// Display progression status of the hash operation
+        /// </summary>
+        private void bgwHash_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+        }
+        #endregion HashFiles
+
+        #region BackupFiles
+        /// <summary>
+        /// Display progression status of the backup operation
+        /// </summary>
         private void bgwBackup_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             _bgwBackup.Progress(e.UserState.ToString());
         }
+        #endregion BackupFiles
 
-        private void bgwBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            _bgwBackup.Finished("BACKUP RDY");
-            _bgwConvert.Start();
-        }
-
-        //=========================================================================================================================
-
-        private void bgwConvert_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _bgwConvert.Work();   
-        }
-
+        #region ConvertFiles
+        /// <summary>
+        /// Display progression status of the convert operation
+        /// </summary>
         private void bgwConvert_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             _bgwConvert.Progress(e.UserState.ToString());
         }
+        #endregion ConvertFiles
+        #endregion Progress
 
+        #region Completed
+        #region MoveFiles
+        /// <summary>
+        /// When all files are moved start the hashing procedure
+        /// </summary>
+        private void bgwMove_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+             string path = Path.Combine(_config.Workspace, _shootInfo, _config.BaseFlow);
+
+            _bgwMove.Finished("Hashing files!");
+
+            if (Directory.Exists(path))
+            {
+               _bgwHash.Start();
+            }
+        }
+        #endregion MoveFiles
+
+        #region HashFiles
+        /// <summary>
+        /// When all files are hashed start the backup procedure
+        /// </summary>
+        private void bgwHash_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _bgwBackup.Start();
+        }
+        #endregion HashFiles
+
+        #region BackupFiles
+        /// <summary>
+        /// When all files are hashed start the conversion procedure
+        /// </summary>
+        private void bgwBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _bgwConvert.Start();
+        }
+        #endregion BackupFiles
+
+        #region ConvertFiles
+        /// <summary>
+        /// When all files are converted start the conversion procedure close the form
+        /// </summary>
         private void bgwConvert_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _bgwConvert.Finished("Finished conversion");
+            formMain.GetWorkspaceShoots();
+            
+            // Close the loading form
             _formLoading.Close();
+            // Close the current form
             this.Close();
         }
+        #endregion ConvertFiles
 
-        //=========================================================================================================================
+        #endregion Completed
+        #endregion BackgroundWorker
 
-
+        #region TextBox
+        /// <summary>
+        /// Enable the raw listBox when text is entered
+        /// </summary>
         private void txtName_TextChanged(object sender, EventArgs e)
         {
             lbRaw.Enabled = true;
         }
+        #endregion TextBox
 
+        #region Buttons
+        /// <summary>
+        /// Add pictures to the newly created shoot
+        /// </summary>
         private void pbSaveShoot_Click(object sender, EventArgs e)
         {
-            string name = txtName.Text;
-            string date = dtShoot.Text;
+            // Make sure pictures are moved to the listBox
+            if(lbRaw.Items.Count == 0)
+            {
+                MessageBox.Show($"Make sure the shoot information is filled in and at least one picture is dragged into the listBox");
+            }
 
-            _shootname = $"{name} {date}";
-            Picturebot.Shoot sht = new Picturebot.Shoot(_config[_wsIndex]);
-            sht.Add(_shootname);
+            else
+            {
+                Shoot shoot = new Shoot(_config);
+                shoot.Add(_shootInfo);
 
-            _formLoading.Show();
-            _bgwMove.Start();
+                _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
+                _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, Workflow.Baseflow);
+                _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
+                _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
+                
+                // Open the loading form
+                _formLoading.Show();
+                // Start the moving procedure
+                _bgwMove.Start();
+            }
         }
+        #endregion Buttons  
 
-        private void FormShoot_Load(object sender, EventArgs e)
+        #region ListBoxs
+        #region DragAndDrop
+        /// <summary>
+        /// Prepare the data when files are dropped within the listBox
+        /// </summary>
+        private void lbRaw_DragDrop(object sender, DragEventArgs e)
         {
+            // Get all the dragged files
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            Array.Sort(files);
+           // var f = from w in files orderby w select w;
 
+            // Format shoot information
+            string name = txtName.Text.Trim();
+            string date = dtShoot.Text;
+            _shootInfo = $"{name} {date}";
+            int index = 0;
+            // Loop over the dragged pictures
+            foreach (var file in files)
+            {
+                // Get the destination path where the pictures are going to be moved to
+                string destination = Path.Combine(_config.Workspace, _shootInfo, _config.BaseFlow, Path.GetFileName(file));
+
+                // Picture object containing all the necessary meta-data 
+                Picture picture = new Picture(destination, _config.Workspace, index);
+                Console.WriteLine($"FILE name: {picture.Filename}");
+
+                _dictMoveFiles.Add(picture.Absolute, new Drag(file, destination));
+                // Append picture to the listBox
+                lbRaw.Items.Add(picture.FilenameExtension);
+                
+                // Append picture to the picture list
+                _listPictures.Add(picture);
+                index++;
+            }
         }
+
+        /// <summary>
+        /// Establish the drop effects when the files are entering the listBox
+        /// </summary>
+        private void lbRaw_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+        }
+        #endregion DragAndDrop
+        #endregion ListBox
+
     }
 }

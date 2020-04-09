@@ -28,7 +28,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="path">Path to the image</param>
         public static void EditingSoftware(string path)
         {
-            Shell.Execute(External.Editing, $"\"{path}\"");
+            Shell.Execute(External.Affinity, $"\"{path}\"");
         }
 
         /// <summary>
@@ -38,6 +38,17 @@ namespace PicturebotGUI.src.Command
         public static void OpenWebsite(string url)
         {
             Process.Start(url);
+        }
+
+        /// <summary>
+        /// Convert a RAW image to an JPG output
+        /// </summary>
+        /// <param name="source">Path to the picture that will get converted</param>
+        /// <param name="output">Picture output path</param>
+        public static void Convert(string source, string output)
+        {
+            // magick convert "<path>" -quality <quality>% -verbose "<outputPath>"
+            Shell.ExecuteNoThread(External.Magick, $"convert \"{source}\" -quality 50 -verbose \"{output}\"");
         }
     }
 }

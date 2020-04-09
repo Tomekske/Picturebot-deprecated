@@ -64,7 +64,6 @@
             this.lbRaw.Location = new System.Drawing.Point(0, 42);
             this.lbRaw.Name = "lbRaw";
             this.lbRaw.Size = new System.Drawing.Size(254, 347);
-            this.lbRaw.Sorted = true;
             this.lbRaw.TabIndex = 1;
             this.lbRaw.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragDrop);
             this.lbRaw.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragEnter);
@@ -237,7 +236,6 @@
             this.Name = "FormShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormShoot";
-            this.Load += new System.EventHandler(this.FormShoot_Load);
             this.tableLayoutAddShoot.ResumeLayout(false);
             this.tableLayoutAddInformation.ResumeLayout(false);
             this.tableLayoutAddInformation.PerformLayout();

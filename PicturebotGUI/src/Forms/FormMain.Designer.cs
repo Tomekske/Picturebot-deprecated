@@ -1,6 +1,6 @@
 ﻿namespace PicturebotGUI
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenConfigFileTStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,13 +65,13 @@
             this.panelLabelInstagram = new System.Windows.Forms.Panel();
             this.lblInstagram = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pbInstagram = new System.Windows.Forms.PictureBox();
             this.pbSelection = new System.Windows.Forms.PictureBox();
             this.pbEdited = new System.Windows.Forms.PictureBox();
             this.pbPreview = new System.Windows.Forms.PictureBox();
             this.panelSelection = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblSelection = new System.Windows.Forms.Label();
+            this.pbInstagram = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutWorkspace.SuspendLayout();
             this.panelConfig.SuspendLayout();
@@ -87,12 +87,12 @@
             this.panelInstagram.SuspendLayout();
             this.panelLabelInstagram.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbInstagram)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbEdited)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.panelSelection.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInstagram)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -124,22 +124,23 @@
             this.OpenConfigFileTStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.OpenConfigFileTStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.OpenConfigFileTStripMenuItem.Name = "OpenConfigFileTStripMenuItem";
-            this.OpenConfigFileTStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.OpenConfigFileTStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OpenConfigFileTStripMenuItem.Text = "Open config file";
+            this.OpenConfigFileTStripMenuItem.Click += new System.EventHandler(this.OpenConfigFileTStripMenuItem_Click);
             // 
             // openWorkspaceToolStripMenuItem
             // 
             this.openWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.openWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.openWorkspaceToolStripMenuItem.Name = "openWorkspaceToolStripMenuItem";
-            this.openWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.openWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openWorkspaceToolStripMenuItem.Text = "Open workspace";
             this.openWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.openWorkspaceToolStripMenuItem_Click);
             // 
             // addWorkspaceToolStripMenuItem
             // 
             this.addWorkspaceToolStripMenuItem.Name = "addWorkspaceToolStripMenuItem";
-            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addWorkspaceToolStripMenuItem.Text = "Add workspace";
             // 
             // VersionTSMenuItem
@@ -307,6 +308,7 @@
             this.pbAddShoot.Size = new System.Drawing.Size(194, 32);
             this.pbAddShoot.TabIndex = 6;
             this.pbAddShoot.TabStop = false;
+            this.pbAddShoot.Click += new System.EventHandler(this.pbAddShoot_Click);
             // 
             // panelEdited
             // 
@@ -333,6 +335,7 @@
             this.lbEdited.Sorted = true;
             this.lbEdited.TabIndex = 2;
             this.lbEdited.SelectedIndexChanged += new System.EventHandler(this.lbEdited_SelectedIndexChanged);
+            this.lbEdited.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbEdited_MouseDown);
             // 
             // panelLabelEdited
             // 
@@ -429,6 +432,7 @@
             this.lbInstagram.Size = new System.Drawing.Size(220, 208);
             this.lbInstagram.TabIndex = 0;
             this.lbInstagram.SelectedIndexChanged += new System.EventHandler(this.lbInstagram_SelectedIndexChanged);
+            this.lbInstagram.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbInstagram_MouseDown);
             // 
             // panelLabelInstagram
             // 
@@ -459,7 +463,6 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Controls.Add(this.pbInstagram, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.pbSelection, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.pbEdited, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.pbPreview, 0, 1);
@@ -467,6 +470,7 @@
             this.tableLayoutPanel1.Controls.Add(this.panelPreview, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panelEdited, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.panelSelection, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pbInstagram, 3, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(200, 85);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -476,20 +480,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(898, 509);
             this.tableLayoutPanel1.TabIndex = 8;
-            // 
-            // pbInstagram
-            // 
-            this.pbInstagram.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(43)))), ((int)(((byte)(61)))));
-            this.pbInstagram.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pbInstagram.BackgroundImage")));
-            this.pbInstagram.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbInstagram.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbInstagram.Location = new System.Drawing.Point(675, 257);
-            this.pbInstagram.Name = "pbInstagram";
-            this.pbInstagram.Size = new System.Drawing.Size(220, 249);
-            this.pbInstagram.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbInstagram.TabIndex = 2;
-            this.pbInstagram.TabStop = false;
-            this.pbInstagram.WaitOnLoad = true;
             // 
             // pbSelection
             // 
@@ -562,7 +552,20 @@
             this.lblSelection.TabIndex = 0;
             this.lblSelection.Text = "Selection";
             // 
-            // Form1
+            // pbInstagram
+            // 
+            this.pbInstagram.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(43)))), ((int)(((byte)(61)))));
+            this.pbInstagram.BackgroundImage = global::PicturebotGUI.Properties.Resources.LogoImage;
+            this.pbInstagram.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbInstagram.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbInstagram.Location = new System.Drawing.Point(675, 257);
+            this.pbInstagram.Name = "pbInstagram";
+            this.pbInstagram.Size = new System.Drawing.Size(220, 249);
+            this.pbInstagram.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbInstagram.TabIndex = 11;
+            this.pbInstagram.TabStop = false;
+            // 
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -573,7 +576,7 @@
             this.Controls.Add(this.tableLayoutWorkspace);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Picturebot";
             this.menuStrip1.ResumeLayout(false);
@@ -596,13 +599,13 @@
             this.panelLabelInstagram.ResumeLayout(false);
             this.panelLabelInstagram.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbInstagram)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSelection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbEdited)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.panelSelection.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInstagram)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -644,7 +647,6 @@
         private System.Windows.Forms.PictureBox pbPreview;
         private System.Windows.Forms.PictureBox pbEdited;
         private System.Windows.Forms.PictureBox pbSelection;
-        private System.Windows.Forms.PictureBox pbInstagram;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panelSelection;
         private System.Windows.Forms.Panel panel1;
@@ -652,6 +654,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pbAddShoot;
         private System.Windows.Forms.ToolStripMenuItem addWorkspaceToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pbInstagram;
     }
 }
 

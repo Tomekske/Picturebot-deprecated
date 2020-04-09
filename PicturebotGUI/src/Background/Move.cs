@@ -1,4 +1,5 @@
-﻿using Picturebot.src.POCO;
+﻿using Picturebot;
+using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 using System;
 using System.Collections.Generic;
@@ -13,28 +14,31 @@ namespace PicturebotGUI.src.Background
 {
     public class Move : BaseBackground
     {
-        public Dictionary<string, Drag> DictFiles { get; set; }
-        public ListBox _listBox { get; set; }
-        public Move(BackgroundWorker backgroundWorker, Config config, FormLoading formLoading, Dictionary<string, Drag> dictFiles, ListBox listbox)
+        public Dictionary<string, Drag> _dictMoveFiles { get; set; }
+        private List<Picture> _listpictures = new List<Picture>();
+        public Move(BackgroundWorker backgroundWorker, Config config, FormLoading formLoading, Dictionary<string, Drag> dictMoveFiles, List<Picture> listpictures)
         {
             BackgroundWorker = backgroundWorker;
             Config = config;
             FormLoading = formLoading;
-            DictFiles = dictFiles;
-            _listBox = listbox;
+            _dictMoveFiles = dictMoveFiles;
+            _listpictures = listpictures;
         }
 
         public override void Work()
         {
             int index = 1;
-            int lenght = _listBox.Items.Count;
+            int lenght = _listpictures.Count;
 
-            foreach (string file in _listBox.Items)
+            foreach (var picture in _listpictures)
             {
                 string text = $"Moved files: {index}/{lenght}";
                 int procent = index++ * 100 / lenght;
                 BackgroundWorker.ReportProgress(procent, text);
-                File.Copy(DictFiles[file].Source, DictFiles[file].Destination);
+                Console.WriteLine($"SRC: {_dictMoveFiles[picture.Absolute].Source}");
+                Console.WriteLine($"DST: {_dictMoveFiles[picture.Absolute].Destination}");
+
+                File.Copy(_dictMoveFiles[picture.Absolute].Source, _dictMoveFiles[picture.Absolute].Destination);
             }
         }
     }

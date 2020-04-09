@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using PicturebotGUI.src.GUIThread;
 
 namespace PicturebotGUI.src.Helper
 {
@@ -31,20 +33,21 @@ namespace PicturebotGUI.src.Helper
             string path = Path.Combine(config.Workspace, shoot, workflow);
             Guard.Filesystem.PathExist(path);
 
+            // Clear associated listBox, listPicture and pictureBox
+            listPictures.Clear();
+            ThreadListBox.Clear(listBox);
+            ThreadPictureBox.Clear(pictureBox);
+
             // Get all the files and store them in an array sorted by last write time
             string[] files = Helper.SortPicturesByLastWriteTime(path);
-
-            // Clear associated listBox, listPicture and pictureBox
-            listBox.Items.Clear();
-            listPictures.Clear();
-            pictureBox.Image = null;
 
             // Loop-over every picture within the picture array
             for (int i = 0; i < files.Length; i++)
             {
                 Picture picture = new Picture(files[i], config.Workspace, i + 1);
                 // Add only the picture name to the associated listBox
-                listBox.Items.Add(picture.Filename);
+                //listBox.Items.Add(picture.Filename);
+                ThreadListBox.AppendItem(listBox, picture.Filename);
                 // Add the picture object to the associated picture list
                 listPictures.Add(picture);
             }

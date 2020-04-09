@@ -1,5 +1,6 @@
 ﻿using Picturebot;
 using Picturebot.src.POCO;
+using PicturebotGUI.src.Command;
 using PicturebotGUI.src.Enums;
 using PicturebotGUI.src.POCO;
 using System;
@@ -12,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace PicturebotGUI.src.Background
 {
-    public class Backup : BaseBackground
+    public class ConvertRaw : BaseBackground
     {
         private string _shootInfo = string.Empty;
-        public Backup(BackgroundWorker backgroundWorker, Config config, FormLoading formLoading, string shootInfo)
+        public ConvertRaw(BackgroundWorker backgroundWorker, Config config, FormLoading formLoading, string shootInfo)
         {
             BackgroundWorker = backgroundWorker;
             Config = config;
@@ -29,26 +30,29 @@ namespace PicturebotGUI.src.Background
 
             try
             {
-                string path = Path.Combine(Config.Workspace, _shootInfo, Workflow.Baseflow);
+                /*                # magick convert "<path>" -quality <quality>% -verbose "<outputPath>"
+                                command = f"magick convert \"{path}\" -quality {quality}% -verbose \"{output}\""*/
+
+               string path = Path.Combine(Config.Workspace, _shootInfo, Workflow.Baseflow);
                 Guard.Filesystem.PathExist(path);
+
 
                 int count = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly).Length;
 
-                string[] files = Directory.GetFiles(path).OrderByDescending(d => new FileInfo(d).LastWriteTime).ToArray(); ;
+                string[] files = Directory.GetFiles(path).OrderByDescending(d => new FileInfo(d).LastWriteTime).Reverse().ToArray();
 
                 foreach (var file in files)
                 {
                     if (!BackgroundWorker.CancellationPending)
                     {
-                        Picture picture = new Picture(file, Config.Workspace);
-                        string dst = Path.Combine(Config.Workspace, _shootInfo, Workflow.Backup, picture.FilenameExtension);
-
                         int procent = index++ * 100 / count;
-                        BackgroundWorker.ReportProgress(procent, $"Backup: {index - 1}/{count}");
+                        BackgroundWorker.ReportProgress(procent, $"Converting: {index - 1}/{count}");
+                        Picture picture = new Picture(file, Config.Workspace, index - 1);
+                        string dst = Path.Combine(Config.Workspace, _shootInfo, Workflow.Preview, $"{picture.Filename}.jpg");
 
-                        string f = $"{index - 1} {file}";
-
-                        File.Copy(picture.Absolute, dst);
+                        Console.WriteLine(picture.Absolute);
+                        Console.WriteLine(dst);
+                        GUI.Convert(picture.Absolute, dst);
                     }
                 }
             }

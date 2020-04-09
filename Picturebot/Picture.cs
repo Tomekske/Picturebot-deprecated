@@ -109,7 +109,7 @@ namespace Picturebot
             Relative = GetRelative(path);
             Workspace = workspace;
             Filename = GetFilename(path);
-            FilenameExtension = $"{GetFilename(path)}.{Extension}";
+            FilenameExtension = $"{GetFilename(path)}{Extension}";
             ModificationDate = GetModificationDate(path);
         }
 
@@ -246,6 +246,7 @@ namespace Picturebot
                     $"Flow: {Flow}\r\n" +
                     $"ShootInfo: {ShootInfo}\r\n" +
                     $"Filename: {Filename}\r\n" +
+                    $"FilenameExtension: {FilenameExtension}\r\n" +
                     $"Date: {Date}\r\n" +
                     $"Name: {Name}\r\n" +
                     $"Extension: {Extension}\r\n" +

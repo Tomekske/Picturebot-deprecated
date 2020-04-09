@@ -18,7 +18,7 @@ namespace PicturebotGUI.src.Helper
         /// <param name="form">Main form of the GUI application</param>
         /// <param name="path">Absolute path to the picture within a certain flow</param>
         /// <param name="confirmation">A confirmation box is shown on when the boolean is set to true</param>
-        public static void DeletePicture(Form1 form, string path, bool confirmation = false)
+        public static void DeletePicture(FormMain form, string path, bool confirmation = false)
         {
             // Making sure the 'important' flows get a confirmation before a picture is getting deleted
             if (confirmation)
@@ -51,7 +51,7 @@ namespace PicturebotGUI.src.Helper
         /// <param name="form">Main form of the GUI application</param>
         /// <param name="path">Absolute path to the picture within a certain flow</param>
         /// <param name="confirmation">A confirmation box is shown on when the boolean is set to true</param>
-        public static void DeletePictureBasePreview(Form1 form, Config config, string path, bool confirmation = false)
+        public static void DeletePictureBasePreview(FormMain form, Config config, string path, bool confirmation = false)
         {
             //string previewPath = Picture.Preview(config, path);
 

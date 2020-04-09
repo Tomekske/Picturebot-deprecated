@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PicturebotGUI.src.POCO
+﻿namespace PicturebotGUI.src.POCO
 {
+    /// <summary>
+    /// POCO class to store the source and destination path of an image
+    /// </summary>
     public class Drag
     {
+        /// <summary>
+        /// The source directory of the image
+        /// </summary>
         public string Source { get; set; }
+        /// <summary>
+        /// The source destination of the image
+        /// </summary>
         public string Destination { get; set; }
 
+        /// <summary>
+        /// Stores the source and destination path of an image
+        /// </summary>
+        /// <param name="source">The source directory of the image</param>
+        /// <param name="desitnation">The source destination of the image</param>
         public Drag(string source, string desitnation)
         {
             Source = source;

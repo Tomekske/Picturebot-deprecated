@@ -26,7 +26,7 @@ namespace PicturebotGUI
         private Canvas _canvas = new Canvas(250 ,250);
         private Config _config;
         private string _filepath;
-        private Form1 _mainForm = null;
+        private FormMain _mainForm = null;
         private Pen _penCrop = new Pen(Color.Red, 1);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace PicturebotGUI
         public FormCrop(Form form, Config config, string filepath)
         {
             InitializeComponent();
-            _mainForm = form as Form1;
+            _mainForm = form as FormMain;
 
             _config = config;
             _filepath = filepath;
