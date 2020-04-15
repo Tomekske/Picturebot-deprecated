@@ -1,4 +1,5 @@
 ﻿using Guard;
+using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Picturebot
     public class Shoot
     {
         private Config _config { get; set; }
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         /// <summary>
         /// Shoot constructor
@@ -31,27 +33,43 @@ namespace Picturebot
         {
             string shootRoot = Path.Combine(_config.Workspace, name);
 
+            // Create a new shoot when it doesn't exists yet
             if (!Guard.Filesystem.IsPath(shootRoot))
             {
-                // Create a new shoot
-                Directory.CreateDirectory(shootRoot);
+                try
+                {
+                    // Create a new shoot
+                    Directory.CreateDirectory(shootRoot);
 
-                //Check whether is successfully created
-                Guard.Filesystem.PathExist(shootRoot);
+                    _log.Info($"Shoot: created \"{shootRoot}\" shoot");
 
-                // Create all the flows within the shoot
-                InitialiseShoot(shootRoot);
+                    // Create all the flows within the shoot
+                    InitialiseShoot(shootRoot);
+                }
+                catch (DirectoryNotFoundException e)
+                {
+                    _log.Info($"Shoot: unable to create a new shoot \"{shootRoot}\"", e);
+                }
             }
         }
 
         /// <summary>
         /// Remove a specified shoot within the workspace directory
         /// </summary>
-        /// <param name="path">Path the the shoot</param>
+        /// <param name="path">Path the shoot</param>
         public void Remove(string path)
         {
-            //Guard.Filesystem.PathExist(path);
-            Directory.Delete(path, true);
+            if(Guard.Filesystem.IsPath(path))
+            {
+                Directory.Delete(path, true);
+
+                _log.Info($"Shoot: deleted \"{path}\"");
+            }
+
+            else
+            {
+                _log.Info($"Shoot: unable to delete \"{path}\"");
+            }
         }
 
         /// <summary>
@@ -65,7 +83,19 @@ namespace Picturebot
 
             flow.Rename(oldShootInfo, false, newShoot);
 
-            Directory.Move(Path.Combine(Path.Combine(_config.Workspace, oldShootInfo)), Path.Combine(_config.Workspace, newShoot));
+            string source = Path.Combine(_config.Workspace, oldShootInfo);
+            string destination = Path.Combine(_config.Workspace, newShoot);
+
+            try
+            {
+                Directory.Move(source, destination); 
+                _log.Info($"InitialiseShoot: moved \"{source}\" to \"{destination}\"");
+
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                _log.Error($"InitialiseShoot: unable to move \"{source}\" to \"{destination}\"", e);
+            }
         }
 
         /// <summary>
@@ -79,7 +109,17 @@ namespace Picturebot
             {
                 // Create an absolute root path to the flow that is about to get created within the shoot
                 string flowRoot = Path.Combine(root, flow);
-                Directory.CreateDirectory(flowRoot);
+
+                try
+                {
+                    Directory.CreateDirectory(flowRoot);
+                    _log.Info($"Shoot: created \"{flowRoot}\" flow");
+                }
+                catch (DirectoryNotFoundException e)
+                {
+                    _log.Error($"Shoot: unable to \"{flowRoot}\" flow", e);
+
+                }
             }
         }
     }

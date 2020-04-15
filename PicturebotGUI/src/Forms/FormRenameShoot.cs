@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Picturebot.src.Enums;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -27,7 +28,7 @@ namespace PicturebotGUI
             string[] tokens = shootInfo.Split(' ');
 
             //Get the shootname <name 12-12-12>
-            Regex regex = new Regex(@"(\w+( +\w+)*\s+)");
+            Regex regex = new Regex(Pattern.Name);
 
             // Step 2: call Match on Regex instance.
             Match match = regex.Match(shootInfo);

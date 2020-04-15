@@ -33,7 +33,7 @@ namespace PicturebotGUI.src.GUIThread
         }
 
         /// <summary>
-        /// Clear the listBox
+        /// Set the pictureBox to it's default value
         /// </summary>
         /// <param name="listBox">The specified listBox</param>
         public static void Clear(PictureBox pictureBox)

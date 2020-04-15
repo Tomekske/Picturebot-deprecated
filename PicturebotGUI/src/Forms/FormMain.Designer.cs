@@ -31,9 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenConfigFileTStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bgwBackup = new System.ComponentModel.BackgroundWorker();
             this.bgwRename = new System.ComponentModel.BackgroundWorker();
@@ -110,38 +109,32 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.OpenConfigFileTStripMenuItem,
             this.openWorkspaceToolStripMenuItem,
-            this.addWorkspaceToolStripMenuItem});
+            this.openLogFileToolStripMenuItem});
             this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // OpenConfigFileTStripMenuItem
-            // 
-            this.OpenConfigFileTStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.OpenConfigFileTStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.OpenConfigFileTStripMenuItem.Name = "OpenConfigFileTStripMenuItem";
-            this.OpenConfigFileTStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.OpenConfigFileTStripMenuItem.Text = "Open config file";
-            this.OpenConfigFileTStripMenuItem.Click += new System.EventHandler(this.OpenConfigFileTStripMenuItem_Click);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(45, 21);
+            this.fileToolStripMenuItem.Text = "Files";
             // 
             // openWorkspaceToolStripMenuItem
             // 
             this.openWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.openWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.openWorkspaceToolStripMenuItem.Name = "openWorkspaceToolStripMenuItem";
-            this.openWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openWorkspaceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.openWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.openWorkspaceToolStripMenuItem.Text = "Open workspace";
             this.openWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.openWorkspaceToolStripMenuItem_Click);
             // 
-            // addWorkspaceToolStripMenuItem
+            // openLogFileToolStripMenuItem
             // 
-            this.addWorkspaceToolStripMenuItem.Name = "addWorkspaceToolStripMenuItem";
-            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addWorkspaceToolStripMenuItem.Text = "Add workspace";
+            this.openLogFileToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.openLogFileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.openLogFileToolStripMenuItem.Text = "Open log file";
+            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
             // VersionTSMenuItem
             // 
@@ -178,6 +171,7 @@
             this.lbShoot.Size = new System.Drawing.Size(194, 416);
             this.lbShoot.TabIndex = 3;
             this.lbShoot.Click += new System.EventHandler(this.lbShoot_Click);
+            this.lbShoot.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbShoot_KeyDown);
             this.lbShoot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbShoot_MouseDown);
             // 
             // comboWorkspace
@@ -247,6 +241,8 @@
             this.lbSelection.Sorted = true;
             this.lbSelection.TabIndex = 1;
             this.lbSelection.SelectedIndexChanged += new System.EventHandler(this.lbSelection_SelectedIndexChanged);
+            this.lbSelection.DoubleClick += new System.EventHandler(this.lbSelection_DoubleClick);
+            this.lbSelection.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbSelection_KeyDown);
             this.lbSelection.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbSelection_MouseDown);
             // 
             // tableLayoutShoot
@@ -335,6 +331,8 @@
             this.lbEdited.Sorted = true;
             this.lbEdited.TabIndex = 2;
             this.lbEdited.SelectedIndexChanged += new System.EventHandler(this.lbEdited_SelectedIndexChanged);
+            this.lbEdited.DoubleClick += new System.EventHandler(this.lbEdited_DoubleClick);
+            this.lbEdited.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbEdited_KeyDown);
             this.lbEdited.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbEdited_MouseDown);
             // 
             // panelLabelEdited
@@ -384,6 +382,7 @@
             this.lbPreview.Sorted = true;
             this.lbPreview.TabIndex = 6;
             this.lbPreview.SelectedIndexChanged += new System.EventHandler(this.lbPreview_SelectedIndexChanged);
+            this.lbPreview.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbPreview_KeyDown);
             this.lbPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbPreview_MouseDown);
             // 
             // panelLabelPreview
@@ -432,6 +431,7 @@
             this.lbInstagram.Size = new System.Drawing.Size(220, 208);
             this.lbInstagram.TabIndex = 0;
             this.lbInstagram.SelectedIndexChanged += new System.EventHandler(this.lbInstagram_SelectedIndexChanged);
+            this.lbInstagram.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbInstagram_KeyDown);
             this.lbInstagram.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbInstagram_MouseDown);
             // 
             // panelLabelInstagram
@@ -493,6 +493,7 @@
             this.pbSelection.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbSelection.TabIndex = 0;
             this.pbSelection.TabStop = false;
+            this.pbSelection.Click += new System.EventHandler(this.pbSelection_Click);
             // 
             // pbEdited
             // 
@@ -506,6 +507,7 @@
             this.pbEdited.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbEdited.TabIndex = 1;
             this.pbEdited.TabStop = false;
+            this.pbEdited.Click += new System.EventHandler(this.pbEdited_Click);
             // 
             // pbPreview
             // 
@@ -519,6 +521,7 @@
             this.pbPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPreview.TabIndex = 5;
             this.pbPreview.TabStop = false;
+            this.pbPreview.Click += new System.EventHandler(this.pbPreview_Click);
             // 
             // panelSelection
             // 
@@ -564,6 +567,7 @@
             this.pbInstagram.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbInstagram.TabIndex = 11;
             this.pbInstagram.TabStop = false;
+            this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
             // 
             // FormMain
             // 
@@ -578,7 +582,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Picturebot";
+            this.Text = "Picturebot 1.0";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tableLayoutWorkspace.ResumeLayout(false);
@@ -614,7 +618,6 @@
         #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenConfigFileTStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem VersionTSMenuItem;
         private System.ComponentModel.BackgroundWorker bgwBackup;
         private System.ComponentModel.BackgroundWorker bgwRename;
@@ -653,8 +656,8 @@
         private System.Windows.Forms.Label lblSelection;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pbAddShoot;
-        private System.Windows.Forms.ToolStripMenuItem addWorkspaceToolStripMenuItem;
         private System.Windows.Forms.PictureBox pbInstagram;
+        private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
     }
 }
 

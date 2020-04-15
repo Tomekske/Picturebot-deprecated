@@ -27,5 +27,9 @@ namespace PicturebotGUI.src.Enums
         /// Picture with a PNG extension
         /// </summary>
         public static string PNG { get { return ".png"; } }
+        /// <summary>
+        /// An Affinity file extension 
+        /// </summary>
+        public static string AFPHOTO { get { return ".afphoto"; } }
     }
 }

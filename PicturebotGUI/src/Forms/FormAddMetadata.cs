@@ -12,6 +12,9 @@ namespace PicturebotGUI
 {
     public partial class FormAddMetadata : Form
     {
+        /// <summary>
+        /// Property to get the description from a textbox
+        /// </summary>
         public string Description { get; set; }
         public FormAddMetadata()
         {

@@ -13,7 +13,7 @@ namespace PicturebotGUI
 {
     public partial class FormShoot : Form
     {
-        private FormMain formMain = null;
+        private FormMain _formMain = null;
         private FormLoading _formLoading = new FormLoading();
 
         private Config _config;
@@ -30,12 +30,12 @@ namespace PicturebotGUI
         public FormShoot(Form form)
         {
             // Create a formMain object
-            formMain = form as FormMain;
+            _formMain = form as FormMain;
               
             InitializeComponent();
 
             // Initialize config object
-            _config = formMain.Config[formMain.WsIndex];
+            _config = _formMain.Config[_formMain.WsIndex];
         }
 
         #region BackgroundWorker
@@ -166,7 +166,7 @@ namespace PicturebotGUI
         /// </summary>
         private void bgwConvert_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            formMain.GetWorkspaceShoots();
+            _formMain.GetWorkspaceShoots();
             
             // Close the loading form
             _formLoading.Close();
@@ -267,6 +267,5 @@ namespace PicturebotGUI
         }
         #endregion DragAndDrop
         #endregion ListBox
-
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PicturebotGUI
+namespace PicturebotGUI.src.PicturebotGUI
 {
     public static class Shell
     {

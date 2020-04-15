@@ -16,39 +16,39 @@ namespace Picturebot.src.POCO
         /// </summary>
         public string Workspace { get; set; }
         /// <summary>
-        /// 
+        /// Property contains the user defined name for the base flow
         /// </summary>
         public string BaseFlow { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the base flow
+        /// Property contains the user defined name for the backup flow
         /// </summary>
         public string Backup { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the backup flow
+        /// Property contains the user defined name for the selection flow
         /// </summary>
         public string Selection { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the selection flow
+        /// Property contains the user defined name for the edited flow
         /// </summary>
         public string Edited { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the edited flow
+        /// Property contains the user defined name for the preview flow
         /// </summary>
         public string Preview { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the preview flow
+        /// Property contains the user defined name for the editing flow
         /// </summary>
         public string Editing { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the editing flow
+        /// Property contains the user defined name for the instagram flow
         /// </summary>
         public string Instagram { get; set; }
         /// <summary>
-        /// Property contains the user defined name for the instagram flow
+        /// Property contains an array of flows
         /// </summary>
         public List<string> Workflows { get; set; }
         /// <summary>
-        /// Property contains an array of flows
+        /// Property contains the index number of the selected workspace
         /// </summary>
         public int Index { get; set; }
 

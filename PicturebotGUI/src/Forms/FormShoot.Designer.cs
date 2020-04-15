@@ -235,7 +235,7 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "FormShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormShoot";
+            this.Text = "Add a new shoot";
             this.tableLayoutAddShoot.ResumeLayout(false);
             this.tableLayoutAddInformation.ResumeLayout(false);
             this.tableLayoutAddInformation.PerformLayout();

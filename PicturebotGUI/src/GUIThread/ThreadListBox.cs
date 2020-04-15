@@ -50,5 +50,22 @@ namespace PicturebotGUI.src.GUIThread
                 listBox.Items.Clear();
             }
         }
+
+        public static int SelectedIndex(ListBox listBox)
+        {
+            if (listBox.InvokeRequired)
+            {
+                listBox.Invoke((MethodInvoker)delegate ()
+                {
+                    SelectedIndex(listBox);
+                });
+
+                return 0;
+            }
+            else
+            {
+                return listBox.SelectedIndex;
+            }
+        }
     }
 }

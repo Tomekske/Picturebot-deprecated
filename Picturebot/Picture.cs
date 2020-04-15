@@ -15,57 +15,46 @@ namespace Picturebot
         /// Get the extension name from a file path
         /// </summary>
         public string Extension { get; set; }
-
         /// <summary>
         /// Get shoot information from a file path
         /// </summary>
         public string ShootInfo { get; set; }
-
         /// <summary>
         /// Get the date when the shoot was taken from a file path
         /// </summary>
         public string Date { get; set; }
-
         /// <summary>
         /// Get the shoot name from a file path
         /// </summary>
         public string Name { get; set; }
-        
         /// <summary>
         /// Get the absolute file path
         /// </summary>
         public string Absolute { get; set; }
-
         /// <summary>
         /// Get the relative file path
         /// </summary>
         public string Relative { get; set; }
-
         /// <summary>
         /// Get the flow name from a file path
         /// </summary>
         public string Flow { get; set; }
-
         /// <summary>
         /// Get the workspace name from a file path
         /// </summary>
         public string Workspace { get; set; }
-
         /// <summary>
         /// Get the index of the picture within a list
         /// </summary>
         public int Index { get; set; }
-
         /// <summary>
         /// Get the file name without extension
         /// </summary>
         public string Filename { get; set; }
-
         /// <summary>
         /// Get the file name with extension
         /// </summary>
         public string FilenameExtension { get; set; }
-
         public DateTime ModificationDate { get; set; }
 
         /// <summary>
@@ -234,11 +223,19 @@ namespace Picturebot
             return Path.GetFileNameWithoutExtension(path);
         }
 
+        /// <summary>
+        /// Get the modification date of a file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>The last modification time of the specified file</returns>
         private DateTime GetModificationDate(string path)
         {
             return File.GetLastWriteTime(path);
         }
 
+        /// <summary>
+        /// Override the ToString() method
+        /// </summary>
         public override string ToString()
         {
             return  $"Index: {Index}\r\n" +

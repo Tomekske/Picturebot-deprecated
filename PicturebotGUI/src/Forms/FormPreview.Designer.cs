@@ -30,15 +30,15 @@
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pbArrowLeft = new System.Windows.Forms.PictureBox();
-            this.pbArrowRight = new System.Windows.Forms.PictureBox();
+            this.pbPreviousPicture = new System.Windows.Forms.PictureBox();
+            this.pbNextPicture = new System.Windows.Forms.PictureBox();
             this.lblIndex = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.pbPicture = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbArrowLeft)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbArrowRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreviousPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbNextPicture)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPicture)).BeginInit();
             this.SuspendLayout();
@@ -64,8 +64,8 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.pbArrowLeft, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pbArrowRight, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pbPreviousPicture, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pbNextPicture, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(204, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -74,29 +74,29 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(76, 46);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // pbArrowLeft
+            // pbPreviousPicture
             // 
-            this.pbArrowLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.pbArrowLeft.BackgroundImage = global::PicturebotGUI.Properties.Resources.ArrowLeft;
-            this.pbArrowLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbArrowLeft.Location = new System.Drawing.Point(3, 3);
-            this.pbArrowLeft.Name = "pbArrowLeft";
-            this.pbArrowLeft.Size = new System.Drawing.Size(32, 40);
-            this.pbArrowLeft.TabIndex = 0;
-            this.pbArrowLeft.TabStop = false;
-            this.pbArrowLeft.Click += new System.EventHandler(this.pbArrowLeft_Click);
+            this.pbPreviousPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.pbPreviousPicture.BackgroundImage = global::PicturebotGUI.Properties.Resources.ArrowLeft;
+            this.pbPreviousPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbPreviousPicture.Location = new System.Drawing.Point(3, 3);
+            this.pbPreviousPicture.Name = "pbPreviousPicture";
+            this.pbPreviousPicture.Size = new System.Drawing.Size(32, 40);
+            this.pbPreviousPicture.TabIndex = 0;
+            this.pbPreviousPicture.TabStop = false;
+            this.pbPreviousPicture.Click += new System.EventHandler(this.pbPreviousPicture_Click);
             // 
-            // pbArrowRight
+            // pbNextPicture
             // 
-            this.pbArrowRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.pbArrowRight.BackgroundImage = global::PicturebotGUI.Properties.Resources.ArrowRight;
-            this.pbArrowRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbArrowRight.Location = new System.Drawing.Point(41, 3);
-            this.pbArrowRight.Name = "pbArrowRight";
-            this.pbArrowRight.Size = new System.Drawing.Size(32, 40);
-            this.pbArrowRight.TabIndex = 1;
-            this.pbArrowRight.TabStop = false;
-            this.pbArrowRight.Click += new System.EventHandler(this.pbArrowRight_Click);
+            this.pbNextPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.pbNextPicture.BackgroundImage = global::PicturebotGUI.Properties.Resources.ArrowRight;
+            this.pbNextPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbNextPicture.Location = new System.Drawing.Point(41, 3);
+            this.pbNextPicture.Name = "pbNextPicture";
+            this.pbNextPicture.Size = new System.Drawing.Size(32, 40);
+            this.pbNextPicture.TabIndex = 1;
+            this.pbNextPicture.TabStop = false;
+            this.pbNextPicture.Click += new System.EventHandler(this.pbNextPicture_Click);
             // 
             // lblIndex
             // 
@@ -151,8 +151,8 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbArrowLeft)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbArrowRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreviousPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbNextPicture)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbPicture)).EndInit();
             this.ResumeLayout(false);
@@ -164,8 +164,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.PictureBox pbPicture;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.PictureBox pbArrowLeft;
-        private System.Windows.Forms.PictureBox pbArrowRight;
+        private System.Windows.Forms.PictureBox pbPreviousPicture;
+        private System.Windows.Forms.PictureBox pbNextPicture;
         private System.Windows.Forms.Label lblIndex;
     }
 }

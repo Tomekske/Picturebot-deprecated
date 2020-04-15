@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Picturebot;
 using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 
@@ -16,113 +17,94 @@ namespace PicturebotGUI
 {
     public partial class FormPreview : Form
     {
-        private int count = 0;
-        private int index = 0;
-        private string _path = string.Empty;
-        private Config config;
-        private List<string> _lst = new List<string>();
+        private int _amountOfPictures = 0;
+        private int _index = 0;
 
-        public FormPreview(Config _config, string path, List<string> lst)
+        private List<Picture> _listPictures = new List<Picture>();
+
+        public FormPreview(List<Picture> listPictures)
         {
             InitializeComponent();
-            _path = path;
-            config = _config;
-            pbPicture.ImageLocation = path;
 
-            _lst = lst;
-            count = lst.Count;
-            //index = Convert.ToInt32(Picture.Index(path));
+            pbPicture.ImageLocation = listPictures[_index].Absolute;
 
-            UpdateMetaData(path);
+            _listPictures = listPictures;
+            _amountOfPictures = listPictures.Count;
 
-            Console.WriteLine($"X: {pbPicture.Size.Width}\r\ny: {pbPicture.Size.Height}");
-
-            int width = pbPicture.Size.Width;
-            int height = pbPicture.Size.Height;
-
-            //pbPicture.Size = width * 4;
-
-            Console.WriteLine($"X: {pbPicture.Size.Width}\r\ny: {pbPicture.Size.Height}");
-
+            UpdateMetaData(listPictures[_index].Absolute);
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        #region PictureBox
+        #region Click
+        /// <summary>
+        /// Display the next picture
+        /// </summary>
+        private void pbNextPicture_Click(object sender, EventArgs e)
         {
-            this.Close();           
-        }
-
-        private void btnNext_Click(object sender, EventArgs e)
-        {
-            index += 1;
+            _index += 1;
 
             UpdatePicture();
         }
 
-        private void UpdateMetaData(string path)
+        /// <summary>
+        /// Display the previous picture
+        /// </summary>
+        private void pbPreviousPicture_Click(object sender, EventArgs e)
         {
-            string msg = $"{index}/{count}";
-            this.Text = pbPicture.ImageLocation;
-            lblIndex.Text = msg;
-        }
-
-        private void UpdatePicture()
-        {
-            //string fileName = Picture.FileName(_path);
-            //_path = fileName;
-
-            Regex re = new Regex(@"([a-zA-z]+_\d+-\d+-\d+_)\d+.[a-zA-Z]+");
-            //Match match = re.Match(fileName);
-
-            
-            if (index > count)
-            {
-                index = 1;
-            }
-
-            else if (index < 1)
-            {
-                index = count;
-            }
-
-            Console.WriteLine($"index: {index}");
-
-            pbPicture.ImageLocation = _lst[index - 1];
-
-            //UpdateMetaData(Picture.Preview(config, _lst[index-1]));
-        }
-
-        private void btnPrevious_Click(object sender, EventArgs e)
-        {
-            index -= 1;
+            _index -= 1;
             UpdatePicture();
         }
+        #endregion Click
+        #endregion PictureBox
 
+
+        #region KeyDown
+        /// <summary>
+        /// Use keyboard key to display the next and the previous pictures
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormPreview_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
-                case Keys.A: index -= 1; UpdatePicture(); break;
-                case Keys.D: index += 1; UpdatePicture(); break;
+                case Keys.A: _index -= 1; UpdatePicture(); break;
+                case Keys.D: _index += 1; UpdatePicture(); break;
                 case Keys.Escape: this.Close(); break;
             }
         }
+        #endregion KeyDown
 
-        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        /// <summary>
+        /// Update the meta-data in the form such as the label counter and the file name within the window title
+        /// </summary>
+        /// <param name="path"></param>
+        private void UpdateMetaData(string path)
         {
+            string msg = $"{_index + 1}/{_amountOfPictures}";
 
+            this.Text = pbPicture.ImageLocation;
+            lblIndex.Text = msg;
         }
 
-        private void pbArrowLeft_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Creating a circular list to slide through the image within the list
+        /// </summary>
+        private void UpdatePicture()
         {
-            index += 1; 
-            UpdatePicture();
-        }
+            if (_index > _amountOfPictures - 1)
+            {
+                _index = 0;
+            }
 
-        private void pbArrowRight_Click(object sender, EventArgs e)
-        {
-            index -= 1;
-            UpdatePicture();
+            else if (_index < 0)
+            {
+                _index = _amountOfPictures - 1;
+            }
+
+            pbPicture.ImageLocation = _listPictures[_index].Absolute;
+
+            UpdateMetaData(_listPictures[_index].Absolute);
         }
     }
 }

@@ -122,7 +122,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormRenameShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormRenameShoot";
+            this.Text = "Rename shoot";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSave)).EndInit();

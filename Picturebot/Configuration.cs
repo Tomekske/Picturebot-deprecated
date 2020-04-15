@@ -1,13 +1,8 @@
 ﻿using Picturebot.src.POCO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Picturebot.Properties;
-using System.IO;
-using System.Reflection;
 
 namespace Picturebot
 {
@@ -26,17 +21,6 @@ namespace Picturebot
             string utf = Encoding.UTF8.GetString(Resources.config);
             
             return JsonConvert.DeserializeObject<List<Config>>(utf);
-        }
-
-        /// <summary>
-        /// Public method to obtain the config resource string
-        /// </summary>
-        /// <returns>Config resource string</returns>
-        public static string GetConfigResource()
-        {
-            var x = Resources.config;
-            return string.Empty;
-            //return Encoding.UTF8.GetString(Resources.config);
         }
     }
 }

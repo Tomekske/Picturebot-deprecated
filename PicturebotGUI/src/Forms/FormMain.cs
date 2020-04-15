@@ -1,34 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
 using System.IO;
-using Microsoft.VisualBasic;
-using System.Threading;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Picturebot;
 using Picturebot.src.POCO;
 using PicturebotGUI.src.Helper;
 using PicturebotGUI.src.Enums;
 using PicturebotGUI.src.GUIThread;
-using Picturebot.Properties;
+using System.Diagnostics;
+using PicturebotGUI.src.Logger;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace PicturebotGUI
 {
     public partial class FormMain : Form
     {
+        /// <summary>
+        /// Property to access the config object from within every form class
+        /// </summary>
         public List<Config> Config { get; set; }
+        /// <summary>
+        /// Property to access the workspace index from within every form class
+        /// </summary>
         public int WsIndex { get; set; }
-
-        public Workspace Ws { get; set; }
+        /// <summary>
+        /// Property to access the Shoot object from within every form class
+        /// </summary>
         public Shoot Sht { get; set; }
+        /// <summary>
+        /// Property to access the flow object from within every form class
+        /// </summary>
         public Flow Flw { get; set; }
 
         private List<Picture> _listPreviewPictures = new List<Picture>();
@@ -39,6 +44,9 @@ namespace PicturebotGUI
         private string _shoot = string.Empty;
 
         private bool isFileSaving = false;
+        private bool isShootDeleting = false;
+
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         public FormMain()
         {
@@ -46,7 +54,6 @@ namespace PicturebotGUI
             ReadConfigFile();
             GetWorkspaceShoots();
 
-            Ws = new Workspace(Config);
             Sht = new Shoot(Config[WsIndex]);
             Flw = new Flow(Config[WsIndex]);
 
@@ -54,8 +61,10 @@ namespace PicturebotGUI
             FileSystemWatcher watcher = new FileSystemWatcher(Config[WsIndex].Workspace);
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
+
+            // Create even handlers
             watcher.Created += Watcher_Created;
-            //watcher.Renamed += Watcher_Renamed;
+            watcher.Deleted += Watcher_Deleted;
         }
 
         #region ListBox
@@ -64,7 +73,7 @@ namespace PicturebotGUI
         /// </summary>
         public void GetWorkspaceShoots()
         {
-            lbShoot.Items.Clear();
+            ThreadListBox.Clear(lbShoot);
 
             // Get a list of all subdirectories  
             var dirs = from dir in
@@ -74,7 +83,8 @@ namespace PicturebotGUI
             // Get the shoot names within the workspace directories and append them to the shoot listBox
             foreach (var dir in dirs)
             {
-                lbShoot.Items.Add(dir.Substring(dir.LastIndexOf("\\") + 1));
+                ThreadListBox.AppendItem(lbShoot, dir.Substring(dir.LastIndexOf("\\") + 1));
+                _log.Debug($"ListBox lbShoot: \"{dir.Substring(dir.LastIndexOf("\\") + 1)}\" appended");
             }
         }
 
@@ -87,36 +97,9 @@ namespace PicturebotGUI
             if (lbShoot.Text != string.Empty)
             {
                 _shoot = lbShoot.SelectedItem.ToString();
-                ClearAndUpdateFlow();
+                ClearAndUpdateFlow(_shoot);
                 isFileSaving = false;
             }
-        }
-
-        /// <summary>
-        /// Get pictures from the work flow and add them to the associated listBox and display the amount of pictures within the listBoxes
-        /// </summary>
-        public void ClearAndUpdateFlow()
-        {
-            int counter = 0;
-
-            // Get pictures from the work flow and add them to the associated listBox 
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbPreview, pbPreview, _listPreviewPictures, _shoot, Workflow.Preview);
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbSelection, pbSelection, _listSelectionPictures, _shoot, Workflow.Selection);
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbEdited, pbEdited, _listEditedPictures, _shoot, Workflow.Edited);
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbInstagram, pbInstagram, _listInstagramPictures, _shoot, Workflow.Instagram);
-
-            // Display the amount of pictures within the associated flow labels
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)).Length;
-            ThreadLabel.SetText(lblPreview, $"{Config[WsIndex].Preview} ({counter})");
-
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)).Length;
-            ThreadLabel.SetText(lblSelection, $"{Config[WsIndex].Selection} ({counter})");
-
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)).Length;
-            ThreadLabel.SetText(lblEdited, $"{Config[WsIndex].Edited} ({counter})");
-
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)).Length;
-            ThreadLabel.SetText(lblInstagram, $"{Config[WsIndex].Instagram} ({counter})");
         }
 
         /// <summary>
@@ -134,12 +117,13 @@ namespace PicturebotGUI
                 {
                     // Display the picture in the pictureBox
                     pbPreview.ImageLocation = path;
+
+                    _log.Info($"PictureBox pbPreview: \"{path}\" displayed");
                 }
 
                 else
                 {
-                    Console.WriteLine("File to picture doesn't exist");
-                    //log file
+                    _log.Error($"PictureBox pbPreview: unable to display \"{path}\"");
                 }
             }
         }
@@ -153,19 +137,20 @@ namespace PicturebotGUI
             {
                 // Get the absolute path to the picture
                 Picture picture = _listSelectionPictures[lbSelection.SelectedIndex];
-                string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Preview, $"{picture.Filename}.jpg");
+                string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Preview, $"{picture.Filename}{Extension.JPG}");
 
                 // Check whether the path to the picture exists
                 if (Guard.Filesystem.IsPath(path))
                 {
                     // Display the picture in the pictureBox
                     pbSelection.ImageLocation = path;
+
+                    _log.Info($"PictureBox pbSelection: \"{path}\" displayed");
                 }
 
                 else
                 {
-                    Console.WriteLine("File to picture doesn't exist");
-                    //log file
+                    _log.Error($"PictureBox pbSelection: unable to display \"{path}\"");
                 }
             }
         }
@@ -185,12 +170,13 @@ namespace PicturebotGUI
                 {
                     // Display the picture in the pictureBox
                     pbEdited.ImageLocation = path;
+                    
+                    _log.Info($"PictureBox pbEdited: \"{path}\" displayed");
                 }
 
                 else
                 {
-                    Console.WriteLine("File to picture doesn't exist");
-                    //log file
+                    _log.Error($"PictureBox pbEdited: unable to display \"{path}\"");
                 }
             }
         }
@@ -209,19 +195,19 @@ namespace PicturebotGUI
                 {
                     // Display the picture in the pictureBox
                     pbInstagram.ImageLocation = path;
+
+                    _log.Info($"PictureBox pbInstagram: \"{path}\" displayed");
                 }
 
                 else
                 {
-                    Console.WriteLine("File to picture doesn't exist");
-                    //log file
+                    _log.Error($"PictureBox pbInstagram: unable to display \"{path}\"");
                 }
             }
         }
         #endregion LeftClick
 
         #region RightClick
-        #region ShootListBox
         /// <summary>
         /// Right click on the shoot listBox
         /// </summary>
@@ -232,10 +218,13 @@ namespace PicturebotGUI
                 int countFileSelectionFlow = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection), "*").Count();
                 // Add menu items to the context menu strip
                 ContextMenuStrip menu = new ContextMenuStrip();
-                menu.Items.Add(Strip.Explorer);
+
+                var menuExplorer = new ToolStripMenuItem(Strip.Explorer);
+                menuExplorer.ShortcutKeyDisplayString = "O";
+                menu.Items.Add(menuExplorer);
 
                 // A shoot can only be renamed when the selection folder contains files
-                if(countFileSelectionFlow == 0)
+                if (countFileSelectionFlow == 0)
                 {
                     menu.Items.Add(Strip.Convert);
                     menu.Items.Add(Strip.RenameBaseflow);
@@ -245,7 +234,10 @@ namespace PicturebotGUI
                     menu.Items.Add(Strip.RenameShoot);
                 }
 
-                menu.Items.Add(Strip.Delete);
+                var menuItemDelete = new ToolStripMenuItem(Strip.Delete);
+                menuItemDelete.ShortcutKeyDisplayString = "Del";
+                menu.Items.Add(menuItemDelete);
+
                 menu.Tag = lbShoot.SelectedItem.ToString();
 
                 // The context menu is shown on the current coordinates of the mouse 
@@ -254,9 +246,7 @@ namespace PicturebotGUI
                 menu.ItemClicked += Menu_ShootItemRightClicked;
             }
         }
-        #endregion ShootListBox
 
-        #region PreviewListBox
         /// <summary>
         /// Right click on the preview listBox
         /// </summary>
@@ -266,8 +256,14 @@ namespace PicturebotGUI
             {
                 // Add menu items to the context menu strip
                 ContextMenuStrip menu = new ContextMenuStrip();
-                menu.Items.Add(Strip.AddSelection);
-                menu.Items.Add(Strip.Delete);
+
+                var menuItemSelection = new ToolStripMenuItem(Strip.AddSelection);
+                menuItemSelection.ShortcutKeyDisplayString = "S";
+                menu.Items.Add(menuItemSelection);
+
+                var menuItemDelete = new ToolStripMenuItem(Strip.Delete);
+                menuItemDelete.ShortcutKeyDisplayString = "Del";
+                menu.Items.Add(menuItemDelete);
 
                 menu.Tag = _listPreviewPictures[lbPreview.SelectedIndex];
                 // The context menu is shown on the current coordinates of the mouse 
@@ -277,9 +273,6 @@ namespace PicturebotGUI
             }
         }
 
-        #endregion PreviewListBox
-
-        #region SelectionListBox
         /// <summary>
         /// Right click on the selection listBox
         /// </summary>
@@ -301,9 +294,6 @@ namespace PicturebotGUI
             }
         }
 
-        #endregion SelectionListBox
-
-        #region EditedListBox
         /// <summary>
         /// Right click on the edited listBox
         /// </summary>
@@ -324,9 +314,7 @@ namespace PicturebotGUI
                 menu.ItemClicked += Menu_EditedItemRightClicked;
             }
         }
-        #endregion EditedListBox
 
-        #region InstagramListBox
         /// <summary>
         /// Right click on the Instagram listBox
         /// </summary>
@@ -345,9 +333,161 @@ namespace PicturebotGUI
                 menu.ItemClicked += Menu_InstagramItemRightClicked;
             }
         }
-
-        #endregion InstagramListBox
         #endregion RightClick
+
+        #region DoubleClick
+        /// <summary>
+        /// Double click to edit a RAW picture
+        /// </summary>
+        private void lbSelection_DoubleClick(object sender, EventArgs e)
+        {
+            if(lbSelection.Text != string.Empty)
+            {
+                Picture picture = new Picture(_listSelectionPictures[lbSelection.SelectedIndex].Absolute);
+
+                if(Guard.Filesystem.IsPath(picture.Absolute))
+                {
+                    src.Command.General.Program(External.Affinity, picture.Absolute);
+                }
+
+                else
+                {
+                    _log.Error($"ListBox _lstSelection: unable to open \"{picture.Absolute}\" file");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Double click to edit an edited picture
+        /// </summary>
+        private void lbEdited_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbEdited.Text != string.Empty)
+            {
+                // Get the path to the affinity file within the editing flow
+                string path = Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Editing, $"{lbEdited.Text}{Extension.AFPHOTO}");
+
+                // Only open the affinity file when it's exists within the editing flow
+                if (File.Exists(path))
+                {
+                    src.Command.General.Program(External.Affinity, path);
+                }
+
+                else
+                {
+                    MessageBox.Show($"{lbEdited.Text} doesn't have a editing file");
+                    _log.Info($"{lbEdited.Text} doesn't have a editing file");
+                }
+            }
+        }
+        #endregion DoubleClick
+
+        #region KeyEnter
+        /// <summary>
+        /// Hotkeys for to control the shoot listbBox menu items
+        /// </summary>
+        private void lbShoot_KeyDown(object sender, KeyEventArgs e)
+        {
+            string path = Path.Combine(Config[WsIndex].Workspace, _shoot);
+
+            if (e.KeyCode == Keys.O)
+            {
+                src.Command.General.Explorer(Config[WsIndex], _shoot);
+            }
+
+            else if (e.KeyCode == Keys.Delete)
+            {
+                src.Command.General.DeleteShoot(path, Sht);
+            }
+        }
+
+        /// <summary>
+        /// Hotkeys for to control the preview listbBox menu items
+        /// </summary>
+        private void lbPreview_KeyDown(object sender, KeyEventArgs e)
+        {
+            Picture picture = new Picture(_listPreviewPictures[lbPreview.SelectedIndex].Absolute);
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
+            }
+
+            else if (e.KeyCode == Keys.O)
+            {
+                src.Command.General.Explorer(Config[WsIndex], _shoot);
+            }
+
+            else if (e.KeyCode == Keys.S)
+            {
+                src.Command.General.Selection(Config[WsIndex], picture);
+            }
+        }
+
+        /// <summary>
+        /// Hotkeys for to control the selection listbBox menu items
+        /// </summary>
+        private void lbSelection_KeyDown(object sender, KeyEventArgs e)
+        {
+            Picture picture = new Picture(_listSelectionPictures[lbSelection.SelectedIndex].Absolute);
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
+            }
+
+            else if (e.KeyCode == Keys.O)
+            {
+                src.Command.General.Explorer(Config[WsIndex], _shoot);
+            }
+
+            else if (e.KeyCode == Keys.L)
+            {
+                src.Command.General.Program(External.Luminar, picture.Absolute);
+            }
+        }
+
+        /// <summary>
+        /// Hotkeys for to control the edited listbBox menu items
+        /// </summary>
+        private void lbEdited_KeyDown(object sender, KeyEventArgs e)
+        {
+            Picture picture = new Picture(_listEditedPictures[lbEdited.SelectedIndex].Absolute);
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, Extension.JPG);
+            }
+
+            else if (e.KeyCode == Keys.O)
+            {
+                src.Command.General.Explorer(Config[WsIndex], _shoot);
+            }
+
+            else if (e.KeyCode == Keys.L)
+            {
+                src.Command.General.Program(External.Luminar, picture.Absolute);
+            }
+        }
+
+        /// <summary>
+        /// Hotkeys for to control the instagram listbBox menu items
+        /// </summary>
+        private void lbInstagram_KeyDown(object sender, KeyEventArgs e)
+        {
+            Picture picture = new Picture(_listInstagramPictures[lbInstagram.SelectedIndex].Absolute);
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, Extension.JPG);
+            }
+
+            else if (e.KeyCode == Keys.O)
+            {
+                src.Command.General.Explorer(Config[WsIndex], _shoot);
+            }
+        }
+        #endregion KeyEnter
         #endregion ListBox
 
         #region ConfigFile
@@ -362,11 +502,14 @@ namespace PicturebotGUI
             // Read the configuration file
             Config = Picturebot.Configuration.Read();
 
+            _log.Info("Config file: successfully populated the config object");
+
             //Loop over every workspace within the configuration file
             foreach (var c in Config)
             {
                 // Append every workspace to the combobox, this way the user can switch between workspaces
                 comboWorkspace.Items.Add(c.Workspace);
+                _log.Info($"ComboBox comboWorkspace: \"{c.Workspace}\" added");
             }
 
             // The default workspace is always the zero-th index
@@ -402,6 +545,36 @@ namespace PicturebotGUI
         {
             src.Command.GUI.Explorer(Config[WsIndex].Workspace);
         }
+
+        /// <summary>
+        /// Open the log file
+        /// </summary>
+        private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Get the relative path to the log file
+            string relativePath = Path.Combine("..", "..", "Logging", "logger.log");
+            if (Guard.Filesystem.IsPath(relativePath))
+            {
+                // Get the absolute path to the logging file
+                string absolutePath = Path.GetFullPath(relativePath);
+
+                if (Guard.Filesystem.IsPath(relativePath))
+                {
+                    Process.Start(absolutePath);
+                    _log.Info($"Log file: \"{absolutePath}\" found");
+                }
+                else
+                {
+                    _log.Error($"Log file: \"{absolutePath}\" absolute path not found");
+                }
+            }
+
+            else
+            {
+                Console.WriteLine();
+                _log.Error($"Log file: \"{relativePath}\" relative path not found");
+            }
+        }
         #endregion ToolStrip
 
         #region PictureBoxes
@@ -413,29 +586,58 @@ namespace PicturebotGUI
         private void ClearPictureBoxesAndListBoxesAndLabels()
         {
             // Set pictureBox to the default settings
-            pbPreview.Image = null;
-            pbSelection.Image = null;
-            pbEdited.Image = null;
-            pbInstagram.Image = null;
+            ThreadPictureBox.Clear(pbPreview);
+            ThreadPictureBox.Clear(pbSelection);
+            ThreadPictureBox.Clear(pbEdited);
+            ThreadPictureBox.Clear(pbInstagram);
 
             // Set listBox to the default settings
-            lbEdited.Items.Clear();
-            lbInstagram.Items.Clear();
-            lbPreview.Items.Clear();
-            lbSelection.Items.Clear();
+            ThreadListBox.Clear(lbPreview);
+            ThreadListBox.Clear(lbSelection);
+            ThreadListBox.Clear(lbEdited);
+            ThreadListBox.Clear(lbInstagram);
 
             // Set labels to the default settings
-            lblPreview.Text = Config[WsIndex].Preview;
-            lblSelection.Text = Config[WsIndex].Selection;
-            lblEdited.Text = Config[WsIndex].Edited;
-            lblInstagram.Text = Config[WsIndex].Instagram;
+            ThreadLabel.SetText(lblPreview, Config[WsIndex].Preview);
+            ThreadLabel.SetText(lblSelection, Config[WsIndex].Selection);
+            ThreadLabel.SetText(lblEdited, Config[WsIndex].Edited);
+            ThreadLabel.SetText(lblInstagram, Config[WsIndex].Instagram);
+        }
+
+        /// <summary>
+        /// Get pictures from the work flow and add them to the associated listBox and display the amount of pictures within the listBoxes
+        /// </summary>
+        public void ClearAndUpdateFlow(string path)
+        {
+            int counter = 0;
+
+            // Get pictures from the work flow and add them to the associated listBox 
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbPreview, pbPreview, _listPreviewPictures, _shoot, Workflow.Preview);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbSelection, pbSelection, _listSelectionPictures, _shoot, Workflow.Selection);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbEdited, pbEdited, _listEditedPictures, _shoot, Workflow.Edited);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbInstagram, pbInstagram, _listInstagramPictures, _shoot, Workflow.Instagram);
+
+            // Display the amount of pictures within the associated flow labels
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)).Length;
+            ThreadLabel.SetText(lblPreview, $"{Config[WsIndex].Preview} ({counter})");
+
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)).Length;
+            ThreadLabel.SetText(lblSelection, $"{Config[WsIndex].Selection} ({counter})");
+
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)).Length;
+            ThreadLabel.SetText(lblEdited, $"{Config[WsIndex].Edited} ({counter})");
+
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)).Length;
+            ThreadLabel.SetText(lblInstagram, $"{Config[WsIndex].Instagram} ({counter})");
+
+            _log.Info($"Cleared and updated flows: \"{path}\"");
+
         }
         #endregion ClearPictureBoxes
 
         #endregion PictureBoxes
 
         #region MenuStrip
-        #region ShootListBox
         /// <summary>
         /// Shoot listBox's menu strip
         /// </summary>
@@ -445,27 +647,20 @@ namespace PicturebotGUI
             string shoot = (sender as ContextMenuStrip).Tag.ToString();
 
             string path = Path.Combine(Config[WsIndex].Workspace, shoot);
-            //Guard.Filesystem.PathExist(path);
 
             Flow flow = new Flow(Config[WsIndex]);
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
-                var result = MessageBox.Show($"Are you sure to delete \"{path}\" ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
-
-                if (result == DialogResult.Yes)
-                {
-                    Sht.Remove(path);
-                    GetWorkspaceShoots();
-                    ClearPictureBoxesAndListBoxesAndLabels();
-                }
+                isShootDeleting = true;
+                src.Command.General.DeleteShoot(path, Sht);
             }
 
             else if (e.ClickedItem.Text == Strip.RenameBaseflow)
             {
                 flow.Rename(path, true);
 
-                ClearAndUpdateFlow();
+                ClearAndUpdateFlow(path);
             }
 
             else if(e.ClickedItem.Text == Strip.RenameShoot)
@@ -474,23 +669,17 @@ namespace PicturebotGUI
                 formRenameShoot.ShowDialog();
                 Sht.Rename(_shoot, formRenameShoot.ShootName, formRenameShoot.ShootDate);
                 _shoot = $"{formRenameShoot.ShootName} {formRenameShoot.ShootDate}";
-                ClearAndUpdateFlow();
-                GetWorkspaceShoots();
-            }
 
-            else if (e.ClickedItem.Text == Strip.Convert)
-            {
-                // TODO
+                ClearAndUpdateFlow(_shoot);
+                GetWorkspaceShoots();
             }
 
             else if (e.ClickedItem.Text == Strip.Explorer)
             {
-                src.Command.GUI.Explorer(Path.Combine(Config[WsIndex].Workspace, _shoot));
+                src.Command.General.Explorer(Config[WsIndex], _shoot);
             }
         }
-        #endregion ShootListBox
 
-        #region PreviewListBox
         /// <summary>
         /// Preview listBox's menu strip
         /// </summary>
@@ -503,48 +692,16 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
-                var result = MessageBox.Show($"Are you sure to delete \"{picture.Absolute}\" ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
-
-                // Create the path to the base flow, because every preview picture comes with a raw format which needs to get deleted as well
-                string pathToBaseFlow = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Baseflow, $"{picture.Filename}{Extension.NEF}");
-                Guard.Filesystem.PathExist(pathToBaseFlow);
-
-                if (result == DialogResult.Yes)
-                {
-                    // Delete the picture within the base flow and the preview flow
-                    Flw.Remove(picture.Absolute);
-                    Flw.Remove(pathToBaseFlow);
-
-                    // Update the preview listBox
-                    ClearAndUpdateFlow();
-                    // Set the preview pictureBox to it's default value
-                    pbPreview.Image = null;
-                }
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
             }
 
             else if (e.ClickedItem.Text == Strip.AddSelection)
             {
-                // Get
-                string pathToSelection = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Baseflow, $"{picture.Filename}{Extension.NEF}");
-                Guard.Filesystem.PathExist(pathToSelection);
-
-                string pathToSelectionFlow = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Selection, $"{picture.Filename}{Extension.NEF}");
-
-                // Copy the picture to the selection flow only when isn't listed yet in the selection flow
-                if (!Guard.Filesystem.IsPath(pathToSelectionFlow))
-                {
-                    File.Copy(pathToSelection, pathToSelectionFlow);
-                    Guard.Filesystem.PathExist(pathToSelectionFlow);
-
-                    // Updated selection listBox
-                    //ClearAndUpdateFlow();
-                }
+                //isShootDeleting = true;
+                src.Command.General.Selection(Config[WsIndex], picture);
             }
         }
 
-        #endregion PreviewListBox
-
-        #region SelectionListBox
         /// <summary>
         /// Selection listBox's menu strip
         /// </summary>
@@ -558,27 +715,20 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
-                Flw.Remove(path);
-
-                // Update the preview listBox
-                ClearAndUpdateFlow();
-                // Set the preview pictureBox to it's default value
-                pbPreview.Image = null;
+                src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
             {
-                Shell.Execute(External.Affinity, $"\"{path}\"");
+                src.Command.General.Program(External.Affinity, path);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
             {
-                Shell.Execute(External.Luminar, $"\"{path}\"");
+                src.Command.General.Program(External.Luminar, path);
             }
         }
-        #endregion SelectionListBox 
 
-        #region EditedListBox
         /// <summary>
         /// Edited listBox's menu strip
         /// </summary>
@@ -592,40 +742,30 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
-                var result = MessageBox.Show($"Are you sure to delete \"{path}\" ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
-
-                if (result == DialogResult.Yes)
-                {
-                    Flw.Remove(path);
-
-                    // Update the preview listBox
-                    ClearAndUpdateFlow();
-                }
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, picture.Extension);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
             {
-                Shell.Execute(External.Luminar, $"\"{path}\"");
+                src.Command.General.Program(External.Luminar, path);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
             {
-                string pathToAffinity = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Editing, $"{picture.Filename}.afphoto");
+                string pathToAffinity = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Editing, $"{picture.Filename}{Extension.AFPHOTO}");
 
-                // If there is an Affinity file, open the file. Else open the picture within the edited flow
-                if (Guard.Filesystem.IsPath(pathToAffinity))
+                if (File.Exists(pathToAffinity))
                 {
-                    Shell.Execute(External.Affinity, $"\"{pathToAffinity}\"");
+                    src.Command.General.Program(External.Affinity, pathToAffinity);
                 }
+
                 else
                 {
-                    Shell.Execute(External.Affinity, $"\"{path}\"");
+                    MessageBox.Show($"{lbEdited.Text} doesn't have a editing file.");
                 }
             }
         }
-        #endregion EditedListBox
 
-        #region InstagramListBox
         /// <summary>
         /// Instagram listBox's menu strip
         /// </summary>
@@ -639,18 +779,9 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
-                var result = MessageBox.Show($"Are you sure to delete \"{path}\" ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
-
-                if (result == DialogResult.Yes)
-                {
-                    Flw.Remove(path);
-
-                    // Update the preview listBox
-                    ClearAndUpdateFlow();
-                }
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, picture.Extension);
             }
         }
-        #endregion InstagramListBox
         #endregion MenuStrip
 
         #region Watcher
@@ -661,7 +792,7 @@ namespace PicturebotGUI
         {
             if (!e.FullPath.Contains("jpg_exiftool_tmp") && !e.FullPath.Contains(Workflow.Baseflow) && !e.FullPath.Contains(Workflow.Backup) && !e.FullPath.Contains(Workflow.Preview) && e.FullPath == Path.Combine(Config[WsIndex].Workspace, _shoot) && !isFileSaving)
             {
-                ClearAndUpdateFlow();
+                ClearAndUpdateFlow(e.FullPath);
             }
         }
 
@@ -672,10 +803,52 @@ namespace PicturebotGUI
         {
             if(!e.FullPath.Contains("jpg_exiftool_tmp") && !e.FullPath.Contains(Workflow.Baseflow) && !e.FullPath.Contains(Workflow.Backup) && !e.FullPath.Contains(Workflow.Preview) && !Directory.Exists(e.FullPath))
             {
-                ClearAndUpdateFlow();
+                ClearAndUpdateFlow(e.FullPath);
                 isFileSaving = true;
             }
+        }
 
+        /// <summary>
+        /// Update the ListBoxe's when a file within the directory is deleted
+        /// </summary>
+        private void Watcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            string pathShoot = Path.Combine(Config[WsIndex].Workspace, _shoot);
+
+            // Check whether the shoot directory is getting deleted
+            if (isShootDeleting)
+            {
+                if (e.FullPath == pathShoot)
+                {
+                    GetWorkspaceShoots();
+                    ClearPictureBoxesAndListBoxesAndLabels();
+                    isShootDeleting = false;
+                }
+            }
+
+            else
+            {
+                // Check whether a picture within the preview flow is deleted
+                if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
+                {
+                    ClearAndUpdateFlow(e.FullPath);
+                }
+
+                else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)))
+                {
+                    ClearAndUpdateFlow(e.FullPath);
+                }
+
+                else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
+                {
+                    ClearAndUpdateFlow(e.FullPath);
+                }
+
+                else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)))
+                {
+                    ClearAndUpdateFlow(e.FullPath);
+                }
+            }
         }
         #endregion Watcher
 
@@ -690,9 +863,79 @@ namespace PicturebotGUI
         }
         #endregion Buttons
 
-        private void OpenConfigFileTStripMenuItem_Click(object sender, EventArgs e)
+        #region PictureBoxes
+        /// <summary>
+        /// Open a slide show containing the pictures within the preview list
+        /// </summary>
+        private void pbPreview_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(Configuration.GetConfigResource());
+            try
+            {
+                FormPreview f = new FormPreview(_listPreviewPictures);
+                f.Show();
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine($"Unable to find: {pbPreview.ImageLocation}");
+            }
         }
+
+        /// <summary>
+        /// Open a slide show containing the pictures within the selection list
+        /// </summary>
+        private void pbSelection_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Create a temporary list where the path is converted to a preview flow because the pictures within a selection flow contain a RAW file format
+                List<Picture> list = new List<Picture>();
+
+                for (int i = 0; i < _listSelectionPictures.Count; i++)
+                {
+                    string path = Path.Combine(Config[WsIndex].Workspace, _listSelectionPictures[i].ShootInfo, Workflow.Preview, $"{_listSelectionPictures[i].Filename}.jpg");
+                    list.Add(new Picture(path));
+                }
+
+                FormPreview f = new FormPreview(list);
+                f.Show();
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine($"Unable to find: {pbPreview.ImageLocation}");
+            }
+        }
+
+        /// <summary>
+        /// Open a slide show containing the pictures within the edited list
+        /// </summary>
+        private void pbEdited_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPreview f = new FormPreview(_listEditedPictures);
+                f.Show();
+            }
+            catch (Exception ee)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Open a slide show containing the pictures within the instagram list
+        /// </summary>
+        private void pbInstagram_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPreview f = new FormPreview(_listInstagramPictures);
+                f.Show();
+            }
+            catch (Exception ee)
+            {
+
+            }
+        }
+        #endregion PictureBoxes
     }
 }
