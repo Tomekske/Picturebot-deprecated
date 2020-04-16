@@ -1,10 +1,7 @@
 ﻿using PicturebotGUI.src.Enums;
-using System;
-using System.Collections.Generic;
+using PicturebotGUI.src.Logger;
+using PicturebotGUI.src.PicturebotGUI;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PicturebotGUI.src.Command
 {
@@ -19,7 +16,18 @@ namespace PicturebotGUI.src.Command
         /// <param name="path">Path to the image</param>
         public static void Explorer(string path)
         {
-            Shell.Execute(External.Explorer, path);
+            log4net.ILog log = LogHelper.GetLogger();
+
+            if (Guard.Filesystem.IsPath(path))
+            {
+                Shell.Execute(External.Explorer, path);
+                log.Info($"{External.Explorer}: \"{path}\" opened");
+            }
+
+            else
+            {
+                log.Error($"{External.Explorer}: unable to open \"{path}\"");
+            }
         }
 
         /// <summary>
@@ -28,7 +36,17 @@ namespace PicturebotGUI.src.Command
         /// <param name="path">Path to the image</param>
         public static void EditingSoftware(string path)
         {
-            Shell.Execute(External.Editing, $"\"{path}\"");
+            log4net.ILog log = LogHelper.GetLogger();
+
+            if (Guard.Filesystem.IsPath(path))
+            {
+                Shell.Execute(External.Affinity, $"\"{path}\"");
+                log.Info($"{External.Affinity}: \"{path}\" opened");
+            }
+            else
+            {
+                log.Error($"{External.Affinity}: Unable to open the \"{path}\" file");
+            }
         }
 
         /// <summary>
@@ -38,6 +56,30 @@ namespace PicturebotGUI.src.Command
         public static void OpenWebsite(string url)
         {
             Process.Start(url);
+        }
+
+        /// <summary>
+        /// Convert a RAW image to an JPG output
+        /// </summary>
+        /// <param name="source">Path to the picture that will get converted</param>
+        /// <param name="output">Picture output path</param>
+        public static void Convert(string source, string output)
+        {
+            log4net.ILog log = LogHelper.GetLogger();
+
+            // magick convert "<path>" -quality <quality>% -verbose "<outputPath>"
+            string command = $"convert \"{source}\" -quality 50 -verbose \"{output}\"";
+
+            if (Guard.Filesystem.IsPath(source))
+            {
+                Shell.ExecuteNoThread(External.Magick, command);
+                log.Info($"{External.Magick}: \"{command}\"");
+            }
+
+            else
+            {
+                log.Error($"{External.Magick}: unable to convert \"{command}\"");
+            }
         }
     }
 }
