@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Picturebot;
+using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using PicturebotGUI.src.POCO;
 
@@ -21,6 +22,8 @@ namespace PicturebotGUI
         private int _index = 0;
 
         private List<Picture> _listPictures = new List<Picture>();
+
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         public FormPreview(List<Picture> listPictures)
         {
@@ -102,7 +105,15 @@ namespace PicturebotGUI
                 _index = _amountOfPictures - 1;
             }
 
-            pbPicture.ImageLocation = _listPictures[_index].Absolute;
+            if(Guard.Filesystem.IsPath(_listPictures[_index].Absolute))
+            {
+                pbPicture.ImageLocation = _listPictures[_index].Absolute;
+                _log.Info($"PictureBox pbPicture: displayed \"{_listPictures[_index].Absolute}\"");
+            }
+            else
+            {
+                _log.Error($"PictureBox pbPicture: unable to display \"{_listPictures[_index].Absolute}\"");
+            }
 
             UpdateMetaData(_listPictures[_index].Absolute);
         }

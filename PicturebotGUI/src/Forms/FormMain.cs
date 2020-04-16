@@ -226,7 +226,6 @@ namespace PicturebotGUI
                 // A shoot can only be renamed when the selection folder contains files
                 if (countFileSelectionFlow == 0)
                 {
-                    menu.Items.Add(Strip.Convert);
                     menu.Items.Add(Strip.RenameBaseflow);
                 }
                 else
@@ -571,7 +570,6 @@ namespace PicturebotGUI
 
             else
             {
-                Console.WriteLine();
                 _log.Error($"Log file: \"{relativePath}\" relative path not found");
             }
         }
@@ -697,7 +695,6 @@ namespace PicturebotGUI
 
             else if (e.ClickedItem.Text == Strip.AddSelection)
             {
-                //isShootDeleting = true;
                 src.Command.General.Selection(Config[WsIndex], picture);
             }
         }
@@ -872,11 +869,13 @@ namespace PicturebotGUI
             try
             {
                 FormPreview f = new FormPreview(_listPreviewPictures);
+                _log.Info($"PictureBox pbPreview: opened \"{pbPreview.ImageLocation}\"");
+
                 f.Show();
             }
-            catch (Exception ee)
+            catch (Exception ex)
             {
-                Console.WriteLine($"Unable to find: {pbPreview.ImageLocation}");
+                _log.Error($"PictureBox pbPreview: unable to open \"{pbPreview.ImageLocation}\"", ex);
             }
         }
 
@@ -899,9 +898,9 @@ namespace PicturebotGUI
                 FormPreview f = new FormPreview(list);
                 f.Show();
             }
-            catch (Exception ee)
+            catch (Exception ex)
             {
-                Console.WriteLine($"Unable to find: {pbPreview.ImageLocation}");
+                _log.Error($"PictureBox pbSelection: unable to open \"{pbSelection.ImageLocation}\"", ex);
             }
         }
 
@@ -913,11 +912,13 @@ namespace PicturebotGUI
             try
             {
                 FormPreview f = new FormPreview(_listEditedPictures);
+                _log.Info($"PictureBox pbEdited: opened \"{pbEdited.ImageLocation}\"");
+
                 f.Show();
             }
-            catch (Exception ee)
+            catch (Exception ex)
             {
-
+                _log.Error($"PictureBox pbEdited: unable to open \"{pbEdited.ImageLocation}\"", ex);
             }
         }
 
@@ -929,11 +930,13 @@ namespace PicturebotGUI
             try
             {
                 FormPreview f = new FormPreview(_listInstagramPictures);
+                _log.Info($"PictureBox pbInstagram: opened \"{pbInstagram.ImageLocation}\"");
+
                 f.Show();
             }
-            catch (Exception ee)
+            catch (Exception ex)
             {
-
+                _log.Error($"PictureBox pbInstagram: unable to open \"{pbInstagram.ImageLocation}\"", ex);
             }
         }
         #endregion PictureBoxes

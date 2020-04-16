@@ -235,6 +235,7 @@ namespace PicturebotGUI
             string date = dtShoot.Text;
             _shootInfo = $"{name} {date}";
             int index = 0;
+
             // Loop over the dragged pictures
             foreach (var file in files)
             {
@@ -243,7 +244,6 @@ namespace PicturebotGUI
 
                 // Picture object containing all the necessary meta-data 
                 Picture picture = new Picture(destination, _config.Workspace, index);
-                Console.WriteLine($"FILE name: {picture.Filename}");
 
                 _dictMoveFiles.Add(picture.Absolute, new Drag(file, destination));
                 // Append picture to the listBox

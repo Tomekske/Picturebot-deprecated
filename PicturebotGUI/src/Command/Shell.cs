@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Picturebot.src.Logger;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace PicturebotGUI.src.PicturebotGUI
     {
         public static void Execute(string program, string arguments)
         {
+            log4net.ILog _log = LogHelper.GetLogger();
+
             try
             {
                 var process = new Process
@@ -35,14 +38,16 @@ namespace PicturebotGUI.src.PicturebotGUI
                 Thread th = new Thread(ths);
                 th.Start();
             }
-            catch (Exception ee)
+            catch (Exception e)
             {
-                Console.WriteLine(ee.Message);
+                _log.Error($"Unable to execute: \"{program} {arguments}\"", e);
             }
         }
 
         public static void ExecuteNoThread(string program, string arguments)
         {
+            log4net.ILog _log = LogHelper.GetLogger();
+
             try
             {
                 var process = new Process
@@ -61,14 +66,16 @@ namespace PicturebotGUI.src.PicturebotGUI
                 process.Start();
                 process.WaitForExit();
             }
-            catch (Exception ee)
+            catch (Exception e)
             {
-                Console.WriteLine(ee.Message);
+                _log.Error($"Unable to execute: \"{program} {arguments}\"", e);
             }
         }
 
         public static string ExectutePipeOuput(string program, string arguments)
         {
+            log4net.ILog _log = LogHelper.GetLogger();
+
             try
             {
                 var process = new Process
@@ -93,9 +100,9 @@ namespace PicturebotGUI.src.PicturebotGUI
                 process.WaitForExit();
             }
 
-            catch (Exception ee)
+            catch (Exception e)
             {
-                Console.WriteLine(ee.Message);
+                _log.Error($"Unable to execute: \"{program} {arguments}\"", e);
             }
 
             return string.Empty;

@@ -6,15 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Picturebot.src.Logger;
 
 namespace Picturebot
 {
     public class Flow
     {
-        /// <summary>
-        /// Config object
-        /// </summary>
         private Config _config { get; set; }
+
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
+
 
         /// <summary>
         /// The Flow constructor
@@ -32,8 +33,15 @@ namespace Picturebot
         /// <param name="path">Path to the picture</param>
         public void Remove(string path)
         {
-            Guard.Filesystem.PathExist(path);
-            File.Delete(path);
+            if(Guard.Filesystem.IsPath(path))
+            {
+                File.Delete(path);
+                _log.Info($"Flow: deleted \"{path}\"");
+            }
+            else 
+            {
+                _log.Error($"Flow: couldn't delete \"{path}\"");
+            }
         }
 
         /// <summary>
@@ -52,7 +60,8 @@ namespace Picturebot
 
             // Construct the new filename
             string newFilename = splittedLength > 2 ? $"{picture.Name.Replace(' ', '_')}_{picture.Date}_{paddedIndex}{picture.Extension}" : $"{picture.Name}_{picture.Date}_{paddedIndex}{picture.Extension}";
-
+            
+            // Path to the new file name
             return Path.Combine(picture.Workspace, picture.ShootInfo, picture.Flow, newFilename);
         }
 
@@ -87,9 +96,15 @@ namespace Picturebot
                         {
                             Picture p = new Picture(pictures[i], _config.Workspace, i + 1);
 
-                            Guard.Filesystem.PathExist(p.Absolute);
-                            // TODO: Add logger
-                            File.Move(p.Absolute, RenamePicture(p));
+                            try
+                            {
+                                File.Move(p.Absolute, RenamePicture(p));
+                                _log.Info($"Flow: renamed \"{p.Absolute}\" into \"{RenamePicture(p)}\"");
+                            }
+                            catch (IOException e)
+                            {
+                                _log.Error($"Flow: unable to rename \"{p.Absolute}\" into \"{RenamePicture(p)}\"");
+                            }
                         }
                     }
                 }
@@ -110,7 +125,16 @@ namespace Picturebot
                             string order = tokens[tokens.Length - 1];
 
                             string full = Path.Combine(_config.Workspace, shootInfo, flow, $"{newName}_{order}");
-                            File.Move(file, full);
+
+                            try
+                            {
+                                File.Move(file, full);
+                                _log.Info($"Flow: renamed \"{file}\" into \"{full}\"");
+                            }
+                            catch (IOException e)
+                            {
+                                _log.Error($"Flow: unable to rename \"{file}\" into \"{full}\"");
+                            }
                         }
                     }   
                 }
@@ -134,7 +158,16 @@ namespace Picturebot
             {
                 Picture picture = new Picture(pictures[i], _config.Workspace, i + 1);
                 string dest = Path.Combine(_config.Workspace, shootInfo, flow, HashRenamePicture(picture));
-                //File.Move(picture.Absolute, dest);
+
+                try
+                {
+                    File.Move(picture.Absolute, dest);
+                    _log.Info($"Flow: renamed \"{picture.Absolute}\" into \"{dest}\"");
+                }
+                catch (IOException e)
+                {
+                    _log.Error($"Flow: unable to rename \"{picture.Absolute}\" into \"{dest}\"");
+                }
             }
         }
 

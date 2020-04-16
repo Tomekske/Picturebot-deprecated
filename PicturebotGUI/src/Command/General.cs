@@ -1,4 +1,5 @@
 ﻿using Picturebot;
+using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using PicturebotGUI.src.Enums;
 using PicturebotGUI.src.PicturebotGUI;
@@ -97,6 +98,8 @@ namespace PicturebotGUI.src.Command
         /// <param name="picture">The picture object</param>
         public static void Selection(Config config, Picture picture)
         {
+            log4net.ILog _log = LogHelper.GetLogger();
+
             // Get the path to the base flow
             string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow, $"{picture.Filename}{Extension.NEF}");
             Guard.Filesystem.PathExist(pathToBaseFlow);
@@ -107,8 +110,20 @@ namespace PicturebotGUI.src.Command
             // Copy the picture to the selection flow only when isn't listed yet in the selection flow
             if (!Guard.Filesystem.IsPath(pathToSelectionFlow))
             {
-                File.Copy(pathToBaseFlow, pathToSelectionFlow);
-                Guard.Filesystem.PathExist(pathToSelectionFlow);
+                try
+                {
+                    File.Copy(pathToBaseFlow, pathToSelectionFlow);
+                    _log.Info($"ListBox lbPreview: copied \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"");
+                }
+                catch (DirectoryNotFoundException e)
+                {
+                    _log.Error($"ListBox lbPreview: copied \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"", e);
+                }
+            }
+            else
+            {
+                _log.Info($"ListBox lbPreview: \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow)}\" already exists in \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Selection)}\"");
+
             }
         }
 

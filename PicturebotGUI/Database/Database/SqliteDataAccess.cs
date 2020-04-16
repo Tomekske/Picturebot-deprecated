@@ -18,10 +18,6 @@ namespace PicturebotGUI.src.Database
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var meta = cnn.Query<Metadata>($"select * from Metadata where Path = '{path}'", new DynamicParameters());
-
-                Console.WriteLine("TADA");
-
-                Console.WriteLine(meta.First());
                 
                 return meta.First();
             }
