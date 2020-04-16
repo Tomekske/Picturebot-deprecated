@@ -551,7 +551,8 @@ namespace PicturebotGUI
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the relative path to the log file
-            string relativePath = Path.Combine("..", "..", "Logging", "logger.log");
+            string relativePath = "logger.log";
+
             if (Guard.Filesystem.IsPath(relativePath))
             {
                 // Get the absolute path to the logging file
