@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +59,7 @@
     </Compile>
     <Compile Include="Shoot.cs" />
     <Compile Include="src\Enums\Pattern.cs" />
+    <Compile Include="src\Helper\Helper.cs" />
     <Compile Include="src\Logger\LogHelper.cs" />
     <Compile Include="src\POCO\Config.cs" />
   </ItemGroup>

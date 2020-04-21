@@ -43,14 +43,13 @@ namespace PicturebotGUI.src.Background
             {
                 // Get the path to the base flow
                 string path = Path.Combine(Config.Workspace, _shootInfo, Workflow.Baseflow);
-                Guard.Filesystem.PathExist(path);
 
                 int count = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly).Length;
 
                 // Order the files by last write time
                 string[] files = Directory.GetFiles(path).OrderByDescending(d => new FileInfo(d).LastWriteTime).Reverse().ToArray();
 
-                // Order the files by last write time
+                // Loop over the files
                 foreach (var file in files)
                 {
                     if (!BackgroundWorker.CancellationPending)

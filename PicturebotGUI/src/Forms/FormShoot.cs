@@ -1,4 +1,5 @@
 ﻿using Picturebot;
+using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using PicturebotGUI.src.Background;
 using PicturebotGUI.src.Enums;
@@ -26,6 +27,7 @@ namespace PicturebotGUI
         private string _shootInfo = string.Empty;
         private List<Picture> _listPictures = new List<Picture>();
         private Dictionary<string, Drag> _dictMoveFiles = new Dictionary<string, Drag>();
+        private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         public FormShoot(Form form)
         {
@@ -202,18 +204,21 @@ namespace PicturebotGUI
 
             else
             {
+                _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
                 Shoot shoot = new Shoot(_config);
-                shoot.Add(_shootInfo);
 
-                _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
-                _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, Workflow.Baseflow);
-                _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
-                _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
-                
-                // Open the loading form
-                _formLoading.Show();
-                // Start the moving procedure
-                _bgwMove.Start();
+                if(shoot.Add(_shootInfo))
+                {
+                    _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
+                    _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, Workflow.Baseflow);
+                    _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
+                    _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
+
+                    // Open the loading form
+                    _formLoading.Show();
+                    // Start the moving procedure
+                    _bgwMove.Start();
+                }
             }
         }
         #endregion Buttons  
@@ -228,30 +233,38 @@ namespace PicturebotGUI
             // Get all the dragged files
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             Array.Sort(files);
-           // var f = from w in files orderby w select w;
 
             // Format shoot information
-            string name = txtName.Text.Trim();
-            string date = dtShoot.Text;
-            _shootInfo = $"{name} {date}";
+            _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
             int index = 0;
 
-            // Loop over the dragged pictures
-            foreach (var file in files)
+            string pathToShoot = Path.Combine(_config.Workspace, _shootInfo);
+
+            // Start the processing chain only when the new shoot name doesn't exists
+            if (!Guard.Filesystem.IsPath(pathToShoot))
             {
-                // Get the destination path where the pictures are going to be moved to
-                string destination = Path.Combine(_config.Workspace, _shootInfo, _config.BaseFlow, Path.GetFileName(file));
+                // Loop over the dragged pictures
+                foreach (var file in files)
+                {
+                    // Get the destination path where the pictures are going to be moved to
+                    string destination = Path.Combine(pathToShoot, _config.BaseFlow, Path.GetFileName(file));
 
-                // Picture object containing all the necessary meta-data 
-                Picture picture = new Picture(destination, _config.Workspace, index);
+                    // Picture object containing all the necessary meta-data 
+                    Picture picture = new Picture(destination, _config.Workspace, index);
 
-                _dictMoveFiles.Add(picture.Absolute, new Drag(file, destination));
-                // Append picture to the listBox
-                lbRaw.Items.Add(picture.FilenameExtension);
-                
-                // Append picture to the picture list
-                _listPictures.Add(picture);
-                index++;
+                    _dictMoveFiles.Add(picture.Absolute, new Drag(file, destination));
+                    // Append picture to the listBox
+                    lbRaw.Items.Add(picture.FilenameExtension);
+
+                    // Append picture to the picture list
+                    _listPictures.Add(picture);
+                    index++;
+                }
+            }
+            else
+            {
+                _log.Info($"Shoot: already \"{pathToShoot}\" exists");
+                MessageBox.Show($"Shoot: already \"{pathToShoot}\" exists");   
             }
         }
 

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Picturebot.src.Logger;
+using Picturebot.src.Helper;
+using System.Windows.Forms;
 
 namespace Picturebot
 {
@@ -41,6 +43,7 @@ namespace Picturebot
             else 
             {
                 _log.Error($"Flow: couldn't delete \"{path}\"");
+                MessageBox.Show($"Flow: couldn't delete \"{path}\"");
             }
         }
 
@@ -70,7 +73,10 @@ namespace Picturebot
         /// Example: shoot name: Test 10-03-2020, picture: Test_10-03-2020_<index>
         /// </summary>
         /// <param name="shootInfo">Name of the shoot that will be used to rename a picture</param>
-        public void Rename(string shootInfo, bool baseflow, string newShootInfo = "")
+        /// <param name="isBaseflow">Check if flow is the baseFlow directory</param>
+        /// <param name="isHash">Check if pictures need to be hashed</param>
+        /// <param name="newShootInfo">The new shootInfo that will be used to rename a picture</param>
+        public void Rename(string shootInfo, bool isBaseflow, bool isHash, string newShootInfo = "")
         {
             // Loop-over every flow configured in the configuration file
             foreach (var flow in _config.Workflows)
@@ -79,14 +85,19 @@ namespace Picturebot
                 string path = Path.Combine(_config.Workspace, shootInfo, flow);
 
                 // Get all pictures within the flow and sort them by last write time(last modification time)
-                var pictures = Directory.GetFiles(path, "*").OrderByDescending(d => new FileInfo(d).LastWriteTime).Reverse().ToArray();
-
+                var pictures = Helper.GetFilesOrderByDescendingLastWriteTime(path);
                 // Get the amount of pictures within the flow directory
                 int amountOfPictures = pictures.Length;
-                HashRename(shootInfo, flow);
-                pictures = Directory.GetFiles(path, "*").OrderByDescending(d => new FileInfo(d).LastWriteTime).Reverse().ToArray();
 
-                if (baseflow)
+                // Check if files need to be hashed before renaming
+                if (isHash)
+                {
+                    HashRename(shootInfo, flow);
+                    pictures = Helper.GetFilesOrderByDescendingLastWriteTime(path);
+                }
+
+                //  Only rename the files within the baseFlow
+                if (isBaseflow)
                 {
                     // Only rename every picture within a flow when the directory contains pictures and when the flow isn't the backup flow
                     if ((flow != _config.Backup) && ((flow == _config.BaseFlow) || (flow == _config.Preview)) && (amountOfPictures != 0))
@@ -103,7 +114,8 @@ namespace Picturebot
                             }
                             catch (IOException e)
                             {
-                                _log.Error($"Flow: unable to rename \"{p.Absolute}\" into \"{RenamePicture(p)}\"");
+                                _log.Error($"Flow: unable to rename \"{p.Absolute}\" into \"{RenamePicture(p)}\"", e);
+                                MessageBox.Show(e.Message);
                             }
                         }
                     }
@@ -133,10 +145,11 @@ namespace Picturebot
                             }
                             catch (IOException e)
                             {
-                                _log.Error($"Flow: unable to rename \"{file}\" into \"{full}\"");
+                                _log.Error($"Flow: unable to rename \"{file}\" into \"{full}\"", e);
+                                MessageBox.Show(e.Message);
                             }
                         }
-                    }   
+                    }
                 }
             }
         }
@@ -150,7 +163,7 @@ namespace Picturebot
         {
             string path = Path.Combine(_config.Workspace, shootInfo, flow);
 
-            var pictures = Directory.GetFiles(path, "*").OrderByDescending(d => new FileInfo(d).LastWriteTime).Reverse().ToArray();
+            var pictures = Helper.GetFilesOrderByDescendingLastWriteTime(path);
             // Get the amount of pictures within the flow directory
             int amountOfPictures = pictures.Length;
 
@@ -167,6 +180,7 @@ namespace Picturebot
                 catch (IOException e)
                 {
                     _log.Error($"Flow: unable to rename \"{picture.Absolute}\" into \"{dest}\"");
+                    MessageBox.Show(e.Message);
                 }
             }
         }

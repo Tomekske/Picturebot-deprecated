@@ -1,4 +1,5 @@
 ﻿using Guard;
+using Picturebot.src.Helper;
 using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using System;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Picturebot
 {
@@ -28,8 +30,9 @@ namespace Picturebot
         /// Add a new shoot within the workspace directory
         /// Example: "<location> <dd-MM-YYYY>" -> "London 20-02-2020"
         /// </summary>
-        /// <param name="name">shoot name</param>
-        public void Add(string name)
+        /// <param name="name">shoot name</param> 
+        /// <returns>True when a shoot doesn't exists yet</returns>
+        public bool Add(string name)
         {
             string shootRoot = Path.Combine(_config.Workspace, name);
 
@@ -45,12 +48,18 @@ namespace Picturebot
 
                     // Create all the flows within the shoot
                     InitialiseShoot(shootRoot);
+                    return true;
                 }
                 catch (DirectoryNotFoundException e)
                 {
                     _log.Info($"Shoot: unable to create a new shoot \"{shootRoot}\"", e);
+                    return false;
                 }
             }
+
+            _log.Info($"Shoot: already \"{shootRoot}\" exists");
+            MessageBox.Show($"Shoot: already \"{shootRoot}\" exists");
+            return false;      
         }
 
         /// <summary>
@@ -69,6 +78,7 @@ namespace Picturebot
             else
             {
                 _log.Info($"Shoot: unable to delete \"{path}\"");
+                MessageBox.Show($"Shoot: unable to delete \"{path}\"");
             }
         }
 
@@ -76,25 +86,35 @@ namespace Picturebot
         /// Rename a shoot name and recursively rename all pictures within every flow accordingly to the new shoot name
         /// </summary>
         /// <param name="name">New shoot name</param>
-        public void Rename(string oldShootInfo, string shootName, string shootDate)
+        public void Rename(string oldShootInfo, string shootName, string shootDate, bool isHash, int amountOfFiles)
         {
             string newShoot = $"{shootName} {shootDate}";
             Flow flow = new Flow(_config);
 
-            flow.Rename(oldShootInfo, false, newShoot);
+            // Only rename files recursively when other flows contain pictures as well 
+            if (amountOfFiles != 0)
+            {
+                flow.Rename(oldShootInfo, false, isHash, newShoot);
+            }
 
             string source = Path.Combine(_config.Workspace, oldShootInfo);
             string destination = Path.Combine(_config.Workspace, newShoot);
 
             try
             {
-                Directory.Move(source, destination); 
+                Directory.Move(source, destination);
                 _log.Info($"InitialiseShoot: moved \"{source}\" to \"{destination}\"");
 
             }
             catch (DirectoryNotFoundException e)
             {
                 _log.Error($"InitialiseShoot: unable to move \"{source}\" to \"{destination}\"", e);
+                MessageBox.Show(e.Message);
+            }
+            catch (IOException e)
+            {
+                _log.Error($"Shoot rename: access to \"{source}\" or \"{destination}\" is denied", e);
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -118,7 +138,7 @@ namespace Picturebot
                 catch (DirectoryNotFoundException e)
                 {
                     _log.Error($"Shoot: unable to \"{flowRoot}\" flow", e);
-
+                    MessageBox.Show(e.Message);
                 }
             }
         }

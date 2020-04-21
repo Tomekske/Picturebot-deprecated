@@ -25,9 +25,16 @@ namespace PicturebotGUI
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
-        public FormPreview(List<Picture> listPictures)
+        /// <summary>
+        /// Preview form constructor
+        /// </summary>
+        /// <param name="listPictures">Picture list containing all the pictures within a specified flow</param>
+        /// <param name="index">Current selected index</param>
+        public FormPreview(List<Picture> listPictures, int index)
         {
             InitializeComponent();
+
+            _index = index;
 
             pbPicture.ImageLocation = listPictures[_index].Absolute;
 
