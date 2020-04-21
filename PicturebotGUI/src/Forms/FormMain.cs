@@ -420,7 +420,7 @@ namespace PicturebotGUI
 
             else if (e.KeyCode == Keys.F2)
             {
-                _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, lbShoot, _shoot);
+                _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
 
                 GetWorkspaceShoots();
                 lbShoot.SelectedItem = _shoot;
@@ -724,7 +724,7 @@ namespace PicturebotGUI
 
             else if(e.ClickedItem.Text == Strip.RenameShoot)
             {
-                _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, lbShoot, _shoot);
+                _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
                 GetWorkspaceShoots();
                 lbShoot.SelectedItem = _shoot;
                 ClearAndUpdateFlows(_shoot);
