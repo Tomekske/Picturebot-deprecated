@@ -1,15 +1,11 @@
 ﻿using Picturebot;
 using Picturebot.src.POCO;
-using PicturebotGUI.src.Enums;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
+using Picturebot.src.Helper;
 using PicturebotGUI.src.GUIThread;
+using PicturebotGUI.src.Enums;
 
 namespace PicturebotGUI.src.Helper
 {
@@ -31,15 +27,24 @@ namespace PicturebotGUI.src.Helper
         {
             // Get the path to the work flow
             string path = Path.Combine(config.Workspace, shoot, workflow);
-            Guard.Filesystem.PathExist(path);
 
             // Clear associated listBox, listPicture and pictureBox
             listPictures.Clear();
             ThreadListBox.Clear(listBox);
             ThreadPictureBox.Clear(pictureBox);
 
-            // Get all the files and store them in an array sorted by last write time
-            string[] files = Helper.SortPicturesByLastWriteTime(path);
+            string[] files = { };
+
+            // Only sort the pictures within the preview workflow
+            if (workflow == Workflow.Edited || workflow == Workflow.Instagram || workflow == Workflow.Selection)
+            {
+                // Get all the files and store them in an array sorted by last write time
+                files = Picturebot.src.Helper.Helper.GetFiles(path);
+            }
+            else
+            {
+                files = Picturebot.src.Helper.Helper.GetFilesOrderByDescendingLastWriteTime(path);
+            }
 
             // Loop-over every picture within the picture array
             for (int i = 0; i < files.Length; i++)

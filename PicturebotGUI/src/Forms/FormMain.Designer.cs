@@ -49,7 +49,7 @@
             this.tableLayoutShoot = new System.Windows.Forms.TableLayoutPanel();
             this.panelShoots = new System.Windows.Forms.Panel();
             this.panelLabelShoots = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblShoots = new System.Windows.Forms.Label();
             this.pbAddShoot = new System.Windows.Forms.PictureBox();
             this.panelEdited = new System.Windows.Forms.Panel();
             this.lbEdited = new System.Windows.Forms.ListBox();
@@ -274,7 +274,7 @@
             // panelLabelShoots
             // 
             this.panelLabelShoots.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(204)))));
-            this.panelLabelShoots.Controls.Add(this.label1);
+            this.panelLabelShoots.Controls.Add(this.lblShoots);
             this.panelLabelShoots.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLabelShoots.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panelLabelShoots.Location = new System.Drawing.Point(0, 0);
@@ -282,17 +282,17 @@
             this.panelLabelShoots.Size = new System.Drawing.Size(194, 40);
             this.panelLabelShoots.TabIndex = 4;
             // 
-            // label1
+            // lblShoots
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 21F);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 34);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Shoots";
+            this.lblShoots.AutoSize = true;
+            this.lblShoots.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblShoots.Font = new System.Drawing.Font("Tahoma", 21F);
+            this.lblShoots.ForeColor = System.Drawing.Color.White;
+            this.lblShoots.Location = new System.Drawing.Point(0, 0);
+            this.lblShoots.Name = "lblShoots";
+            this.lblShoots.Size = new System.Drawing.Size(99, 34);
+            this.lblShoots.TabIndex = 0;
+            this.lblShoots.Text = "Shoots";
             // 
             // pbAddShoot
             // 
@@ -582,7 +582,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Picturebot 1.0";
+            this.Text = "Picturebot ";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tableLayoutWorkspace.ResumeLayout(false);
@@ -632,7 +632,7 @@
         private System.Windows.Forms.Panel panelConfig;
         private System.Windows.Forms.TableLayoutPanel tableLayoutShoot;
         private System.Windows.Forms.Panel panelLabelShoots;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblShoots;
         private System.Windows.Forms.Panel panelShoots;
         private System.Windows.Forms.ListBox lbSelection;
         private System.Windows.Forms.Panel panelEdited;

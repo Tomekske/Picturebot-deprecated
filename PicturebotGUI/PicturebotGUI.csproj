@@ -142,7 +142,6 @@
     <Compile Include="src\GUIThread\ThreadListBox.cs" />
     <Compile Include="src\GUIThread\ThreadPictureBox.cs" />
     <Compile Include="src\Helper\Clear.cs" />
-    <Compile Include="src\Helper\Helper.cs" />
     <Compile Include="src\Enums\Extension.cs" />
     <Compile Include="src\Forms\FormMain.cs">
       <SubType>Form</SubType>
@@ -203,7 +202,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Logging\logger.log" />
     <None Include="packages.config" />
     <Content Include="Database\picturebot.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
