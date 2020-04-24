@@ -163,5 +163,30 @@ namespace PicturebotGUI.src.Command
 
             return newShootInfo;
         }
+
+        /// <summary>
+        /// Open the associated work flow when uploading a picture to the cloud
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="shootInfo">Shoot information name</param>
+        /// <param name="picture">Selected picture name</param>
+        /// <param name="flow">The associated work flow name</param>
+        /// <param name="url">The URL to the associated album in the cloud</param>
+        public static void Upload(Config config, string shootInfo, string picture, string flow, string url)
+        {
+            log4net.ILog log = LogHelper.GetLogger();
+
+            string pathToFlow = Path.Combine(config.Workspace, shootInfo, flow);
+            string path = Path.Combine(pathToFlow, $"{picture}{Extension.JPG}");
+
+            if(Guard.Filesystem.IsPath(pathToFlow) && Guard.Filesystem.IsPath(path))
+            {
+                GUI.Explorer(pathToFlow);
+                GUI.OpenWebsite(url);
+
+                log.Info($"Upload: Opening flow \"{pathToFlow}\" succeeded");
+                log.Info($"Upload: Opening website \"{url}\" succeeded");
+            }
+        }
     }
 }

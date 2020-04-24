@@ -13,6 +13,8 @@ using PicturebotGUI.src.GUIThread;
 using System.Diagnostics;
 using PicturebotGUI.src.Logger;
 using Picturebot.src.Helper;
+using System.Configuration;
+using System.Collections.Specialized;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -48,7 +50,7 @@ namespace PicturebotGUI
         private bool isShootDeleting = false;
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
-        private string _version = "1.0.2";
+        private string _version = "1.0.3";
 
         public FormMain()
         {
@@ -315,6 +317,10 @@ namespace PicturebotGUI
                 menuItemLuminar.ShortcutKeyDisplayString = "L";
                 menu.Items.Add(menuItemLuminar);
 
+                var menuItemUpload = new ToolStripMenuItem(Strip.Upload);
+                menuItemUpload.ShortcutKeyDisplayString = "U";
+                menu.Items.Add(menuItemUpload);
+
                 var menuItemDelete = new ToolStripMenuItem(Strip.Delete);
                 menuItemDelete.ShortcutKeyDisplayString = "Del";
                 menu.Items.Add(menuItemDelete);
@@ -336,6 +342,10 @@ namespace PicturebotGUI
             {
                 // Add menu items to the context menu strip
                 ContextMenuStrip menu = new ContextMenuStrip();
+
+                var menuItemUpload = new ToolStripMenuItem(Strip.Upload);
+                menuItemUpload.ShortcutKeyDisplayString = "U";
+                menu.Items.Add(menuItemUpload);
 
                 var menuItemDelete = new ToolStripMenuItem(Strip.Delete);
                 menuItemDelete.ShortcutKeyDisplayString = "Del";
@@ -499,6 +509,11 @@ namespace PicturebotGUI
                 e.SuppressKeyPress = true;
                 src.Command.General.Program(External.Luminar, picture.Absolute);
             }
+
+            else if(e.KeyCode == Keys.U)
+            {
+                src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
+            }
         }
 
         /// <summary>
@@ -517,6 +532,11 @@ namespace PicturebotGUI
             {
                 e.SuppressKeyPress = true;
                 src.Command.General.Explorer(Config[WsIndex], _shoot);
+            }
+
+            else if(e.KeyCode == Keys.U)
+            {
+                src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
             }
         }
         #endregion KeyEnter
@@ -620,6 +640,15 @@ namespace PicturebotGUI
                 _log.Error($"Log file: \"{relativePath}\" relative path not found");
                 MessageBox.Show($"Log file: \"{relativePath}\" relative path not found");
             }
+        }
+
+        /// <summary>
+        /// Configure the upload settings to the cloud
+        /// </summary>
+        private void uploadSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSettingsUpload form = new FormSettingsUpload();
+            form.ShowDialog();
         }
         #endregion ToolStrip
 
@@ -813,6 +842,11 @@ namespace PicturebotGUI
                     MessageBox.Show($"{lbEdited.Text} doesn't have a editing file.");
                 }
             }
+
+            else if(e.ClickedItem.Text == Strip.Upload)
+            {
+                src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
+            }
         }
 
         /// <summary>
@@ -826,6 +860,11 @@ namespace PicturebotGUI
             if (e.ClickedItem.Text == Strip.Delete)
             {
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, picture.Extension);
+            }
+
+            else if (e.ClickedItem.Text == Strip.Upload)
+            {
+                src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
             }
         }
         #endregion MenuStrip
@@ -870,7 +909,6 @@ namespace PicturebotGUI
                 ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
                 isFileSaving = true;
             }
-
         }
 
         /// <summary>

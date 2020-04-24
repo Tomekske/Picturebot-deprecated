@@ -52,7 +52,7 @@ namespace PicturebotGUI.src.Command
         /// <summary>
         /// Static method to open a specified URL in the user's default browser
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="url">URL to the website</param>
         public static void OpenWebsite(string url)
         {
             Process.Start(url);

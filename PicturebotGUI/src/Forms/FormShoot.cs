@@ -29,6 +29,8 @@ namespace PicturebotGUI
         private Dictionary<string, Drag> _dictMoveFiles = new Dictionary<string, Drag>();
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
+        public object GUiThread { get; private set; }
+
         public FormShoot(Form form)
         {
             // Create a formMain object
@@ -266,6 +268,8 @@ namespace PicturebotGUI
                 _log.Info($"Shoot: already \"{pathToShoot}\" exists");
                 MessageBox.Show($"Shoot: already \"{pathToShoot}\" exists");   
             }
+
+            src.GUIThread.ThreadLabel.SetText(lblAddPictures, $"RAW pictures ({lbRaw.Items.Count})");
         }
 
         /// <summary>

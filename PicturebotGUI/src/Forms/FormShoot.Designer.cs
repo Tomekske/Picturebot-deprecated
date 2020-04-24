@@ -42,7 +42,7 @@
             this.pbSaveShoot = new System.Windows.Forms.PictureBox();
             this.panelAddPictures = new System.Windows.Forms.Panel();
             this.panelLabelAddPictures = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblAddPictures = new System.Windows.Forms.Label();
             this.tableLayoutAddShoot.SuspendLayout();
             this.tableLayoutAddInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).BeginInit();
@@ -63,7 +63,7 @@
             this.lbRaw.ItemHeight = 17;
             this.lbRaw.Location = new System.Drawing.Point(0, 42);
             this.lbRaw.Name = "lbRaw";
-            this.lbRaw.Size = new System.Drawing.Size(254, 347);
+            this.lbRaw.Size = new System.Drawing.Size(310, 347);
             this.lbRaw.TabIndex = 1;
             this.lbRaw.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragDrop);
             this.lbRaw.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragEnter);
@@ -74,7 +74,7 @@
             this.dtShoot.Dock = System.Windows.Forms.DockStyle.Left;
             this.dtShoot.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.dtShoot.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtShoot.Location = new System.Drawing.Point(81, 37);
+            this.dtShoot.Location = new System.Drawing.Point(69, 37);
             this.dtShoot.Name = "dtShoot";
             this.dtShoot.Size = new System.Drawing.Size(169, 25);
             this.dtShoot.TabIndex = 4;
@@ -85,7 +85,7 @@
             this.txtName.Dock = System.Windows.Forms.DockStyle.Left;
             this.txtName.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.txtName.ForeColor = System.Drawing.Color.White;
-            this.txtName.Location = new System.Drawing.Point(81, 3);
+            this.txtName.Location = new System.Drawing.Point(69, 3);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(169, 25);
             this.txtName.TabIndex = 2;
@@ -99,7 +99,7 @@
             this.lblDate.ForeColor = System.Drawing.Color.White;
             this.lblDate.Location = new System.Drawing.Point(3, 42);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(72, 17);
+            this.lblDate.Size = new System.Drawing.Size(60, 17);
             this.lblDate.TabIndex = 1;
             this.lblDate.Text = "Date";
             // 
@@ -111,7 +111,7 @@
             this.lblName.ForeColor = System.Drawing.Color.White;
             this.lblName.Location = new System.Drawing.Point(3, 8);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(72, 17);
+            this.lblName.Size = new System.Drawing.Size(60, 17);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "Name";
             // 
@@ -149,8 +149,8 @@
             // tableLayoutAddShoot
             // 
             this.tableLayoutAddShoot.ColumnCount = 2;
-            this.tableLayoutAddShoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.09061F));
-            this.tableLayoutAddShoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 41.90939F));
+            this.tableLayoutAddShoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.02913F));
+            this.tableLayoutAddShoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.97087F));
             this.tableLayoutAddShoot.Controls.Add(this.tableLayoutAddInformation, 0, 0);
             this.tableLayoutAddShoot.Controls.Add(this.pbSaveShoot, 1, 1);
             this.tableLayoutAddShoot.Controls.Add(this.panelAddPictures, 1, 0);
@@ -179,7 +179,7 @@
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 320F));
-            this.tableLayoutAddInformation.Size = new System.Drawing.Size(352, 389);
+            this.tableLayoutAddInformation.Size = new System.Drawing.Size(296, 389);
             this.tableLayoutAddInformation.TabIndex = 0;
             // 
             // pbSaveShoot
@@ -187,9 +187,9 @@
             this.pbSaveShoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSaveShoot.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
             this.pbSaveShoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbSaveShoot.Location = new System.Drawing.Point(361, 422);
+            this.pbSaveShoot.Location = new System.Drawing.Point(305, 422);
             this.pbSaveShoot.Name = "pbSaveShoot";
-            this.pbSaveShoot.Size = new System.Drawing.Size(254, 50);
+            this.pbSaveShoot.Size = new System.Drawing.Size(310, 50);
             this.pbSaveShoot.TabIndex = 2;
             this.pbSaveShoot.TabStop = false;
             this.pbSaveShoot.Click += new System.EventHandler(this.pbSaveShoot_Click);
@@ -199,31 +199,31 @@
             this.panelAddPictures.Controls.Add(this.lbRaw);
             this.panelAddPictures.Controls.Add(this.panelLabelAddPictures);
             this.panelAddPictures.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelAddPictures.Location = new System.Drawing.Point(361, 3);
+            this.panelAddPictures.Location = new System.Drawing.Point(305, 3);
             this.panelAddPictures.Name = "panelAddPictures";
-            this.panelAddPictures.Size = new System.Drawing.Size(254, 389);
+            this.panelAddPictures.Size = new System.Drawing.Size(310, 389);
             this.panelAddPictures.TabIndex = 3;
             // 
             // panelLabelAddPictures
             // 
             this.panelLabelAddPictures.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(204)))));
-            this.panelLabelAddPictures.Controls.Add(this.label1);
+            this.panelLabelAddPictures.Controls.Add(this.lblAddPictures);
             this.panelLabelAddPictures.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLabelAddPictures.Location = new System.Drawing.Point(0, 0);
             this.panelLabelAddPictures.Name = "panelLabelAddPictures";
-            this.panelLabelAddPictures.Size = new System.Drawing.Size(254, 42);
+            this.panelLabelAddPictures.Size = new System.Drawing.Size(310, 42);
             this.panelLabelAddPictures.TabIndex = 0;
             // 
-            // label1
+            // lblAddPictures
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 21F);
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 34);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Add pictures";
+            this.lblAddPictures.AutoSize = true;
+            this.lblAddPictures.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblAddPictures.Font = new System.Drawing.Font("Tahoma", 21F);
+            this.lblAddPictures.Location = new System.Drawing.Point(0, 0);
+            this.lblAddPictures.Name = "lblAddPictures";
+            this.lblAddPictures.Size = new System.Drawing.Size(180, 34);
+            this.lblAddPictures.TabIndex = 0;
+            this.lblAddPictures.Text = "RAW pictures";
             // 
             // FormShoot
             // 
@@ -262,6 +262,6 @@
         private System.Windows.Forms.PictureBox pbSaveShoot;
         private System.Windows.Forms.Panel panelAddPictures;
         private System.Windows.Forms.Panel panelLabelAddPictures;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblAddPictures;
     }
 }
