@@ -20,5 +20,6 @@ namespace PicturebotGUI.src.Enums
         public static string Explorer { get { return "Open shoot in explorer"; } }
         public static string AddSelection { get { return "Add to selection"; } }
         public static string Edit { get { return "Edit with"; } }
+        public static string Upload { get { return "Upload"; } }
     }
 }

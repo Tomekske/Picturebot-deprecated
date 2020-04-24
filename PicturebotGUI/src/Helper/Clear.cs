@@ -35,16 +35,8 @@ namespace PicturebotGUI.src.Helper
 
             string[] files = { };
 
-            // Only sort the pictures within the preview workflow
-            if (workflow == Workflow.Edited || workflow == Workflow.Instagram || workflow == Workflow.Selection)
-            {
-                // Get all the files and store them in an array sorted by last write time
-                files = Picturebot.src.Helper.Helper.GetFiles(path);
-            }
-            else
-            {
-                files = Picturebot.src.Helper.Helper.GetFilesOrderByDescendingLastWriteTime(path);
-            }
+            // Get files within a work flow
+            files = Picturebot.src.Helper.Helper.GetFiles(path);
 
             // Loop-over every picture within the picture array
             for (int i = 0; i < files.Length; i++)
