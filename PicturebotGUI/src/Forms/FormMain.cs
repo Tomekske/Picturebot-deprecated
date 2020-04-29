@@ -15,6 +15,9 @@ using PicturebotGUI.src.Logger;
 using Picturebot.src.Helper;
 using System.Configuration;
 using System.Collections.Specialized;
+using System.Xml;
+using System.Xml.Linq;
+using System.Text;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -50,7 +53,6 @@ namespace PicturebotGUI
         private bool isShootDeleting = false;
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
-        private string _version = "1.0.3";
 
         public FormMain()
         {
@@ -59,7 +61,34 @@ namespace PicturebotGUI
             GetWorkspaceShoots();
 
             // Set the current version name within the main form
-            this.Text += _version;
+            this.Text += Properties.Settings.Default.Version;
+
+            // Set the menustrip checks depending on the value within the config file
+            if (Properties.Settings.Default.LoggingLevelFileAppender == LoggingLevel.Debug)
+            {
+                debugToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"debugToolStripMenuItem\"");
+            }
+            else if (Properties.Settings.Default.LoggingLevelFileAppender == LoggingLevel.Error)
+            {
+                errorToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
+            }
+
+            #if DEBUG
+                if (Properties.Settings.Default.LoggingLevelConsoleAppender == LoggingLevel.Debug)
+                {
+                    debugConsoleToolStripMenuItem.Checked = true;
+                    _log.Debug("Toolstrip menu: Checked item \"debugToolStripMenuItem\"");
+                }
+                else if (Properties.Settings.Default.LoggingLevelConsoleAppender == LoggingLevel.Error)
+                {
+                    errorConsoleToolStripMenuItem.Checked = true;
+                    _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
+                }
+            #else
+                loggingConsoleToolStripMenuItem.Visible = false;
+            #endif
         }
 
         #region ListBox
@@ -865,6 +894,78 @@ namespace PicturebotGUI
             else if (e.ClickedItem.Text == Strip.Upload)
             {
                 src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
+            }
+        }
+
+        /// <summary>
+        /// Select the debug logging level of the file appender
+        /// </summary>
+        private void debugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            errorToolStripMenuItem.Checked = false;
+
+            if(!debugToolStripMenuItem.Checked)
+            {
+                debugToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"debugToolStripMenuItem\"");
+                Properties.Settings.Default.LoggingLevelFileAppender = LoggingLevel.Debug;
+                _log.Info("Toolstrip menu: Saved \"debugToolStripMenuItem\" in config file");
+                Properties.Settings.Default.Save();
+                src.Helper.XmlConfig.UpdateAttributesXML(Appender.File, LoggingLevel.Debug);
+            }
+        }
+
+        /// <summary>
+        /// Select the error logging level of the file appender
+        /// </summary>
+        private void errorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            debugToolStripMenuItem.Checked = false;
+
+            if (!errorToolStripMenuItem.Checked)
+            {
+                errorToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
+                Properties.Settings.Default.LoggingLevelFileAppender = LoggingLevel.Error;
+                _log.Info("Toolstrip menu: Saved \"errorToolStripMenuItem\" in config file");
+                Properties.Settings.Default.Save();
+                src.Helper.XmlConfig.UpdateAttributesXML(Appender.File, LoggingLevel.Error);
+            }
+        }
+
+        /// <summary>
+        /// Select the debug logging level of the console appender
+        /// </summary>
+        private void debugConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            errorConsoleToolStripMenuItem.Checked = false;
+
+            if (!debugConsoleToolStripMenuItem.Checked)
+            {
+                debugConsoleToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"debugConsoleToolStripMenuItem\"");
+                Properties.Settings.Default.LoggingLevelConsoleAppender = LoggingLevel.Debug;
+                _log.Info("Toolstrip menu: Saved \"debugConsoleToolStripMenuItem\" in config file");
+                Properties.Settings.Default.Save();
+                src.Helper.XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Debug);
+            }
+        }
+
+        /// <summary>
+        /// Select the error logging level of the console appender
+        /// </summary>
+        private void errorConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            debugConsoleToolStripMenuItem.Checked = false;
+
+            if (!errorConsoleToolStripMenuItem.Checked)
+            {
+                errorConsoleToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"errorConsoleToolStripMenuItem\"");
+                Properties.Settings.Default.LoggingLevelConsoleAppender = LoggingLevel.Error;
+                _log.Info("Toolstrip menu: Saved \"errorConsoleToolStripMenuItem\" in config file");
+                Properties.Settings.Default.Save();
+                src.Helper.XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Error);
             }
         }
         #endregion MenuStrip

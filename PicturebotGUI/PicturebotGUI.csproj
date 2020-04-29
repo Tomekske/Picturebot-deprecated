@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CircularProgressBar, Version=2.7.0.7, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
       <HintPath>..\packages\CircularProgressBar.2.7.0.7\lib\net40\CircularProgressBar.dll</HintPath>
@@ -118,6 +121,8 @@
     <Compile Include="src\Background\Move.cs" />
     <Compile Include="src\Command\General.cs" />
     <Compile Include="Database\Database\SqliteDataAccess.cs" />
+    <Compile Include="src\Enums\Appender.cs" />
+    <Compile Include="src\Enums\LoggingLevel.cs" />
     <Compile Include="src\Enums\Workflow.cs" />
     <Compile Include="src\Forms\FormAddMetadata.cs">
       <SubType>Form</SubType>
@@ -173,6 +178,7 @@
     <Compile Include="src\Forms\FormShoot.Designer.cs">
       <DependentUpon>FormShoot.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Helper\XmlConfig.cs" />
     <Compile Include="src\Logger\LogHelper.cs" />
     <Compile Include="src\POCO\Canvas.cs" />
     <Compile Include="Program.cs" />
@@ -182,6 +188,8 @@
     <Compile Include="src\POCO\Drag.cs" />
     <Compile Include="src\Enums\Strip.cs" />
     <Compile Include="src\POCO\Metadata.cs" />
+    <Content Include="Icon.ico" />
+    <Content Include="Resources\Icon.ico" />
     <EmbeddedResource Include="src\Forms\FormAddMetadata.resx">
       <DependentUpon>FormAddMetadata.cs</DependentUpon>
     </EmbeddedResource>

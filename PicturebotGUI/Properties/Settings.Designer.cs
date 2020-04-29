@@ -46,5 +46,41 @@ namespace PicturebotGUI.Properties {
                 this["UploadInstagram"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.4")]
+        public string Version {
+            get {
+                return ((string)(this["Version"]));
+            }
+            set {
+                this["Version"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ERROR")]
+        public string LoggingLevelFileAppender {
+            get {
+                return ((string)(this["LoggingLevelFileAppender"]));
+            }
+            set {
+                this["LoggingLevelFileAppender"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ERROR")]
+        public string LoggingLevelConsoleAppender {
+            get {
+                return ((string)(this["LoggingLevelConsoleAppender"]));
+            }
+            set {
+                this["LoggingLevelConsoleAppender"] = value;
+            }
+        }
     }
 }

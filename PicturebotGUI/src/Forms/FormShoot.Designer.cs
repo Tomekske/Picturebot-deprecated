@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShoot));
             this.lbRaw = new System.Windows.Forms.ListBox();
             this.dtShoot = new System.Windows.Forms.DateTimePicker();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -63,7 +64,7 @@
             this.lbRaw.ItemHeight = 17;
             this.lbRaw.Location = new System.Drawing.Point(0, 42);
             this.lbRaw.Name = "lbRaw";
-            this.lbRaw.Size = new System.Drawing.Size(310, 347);
+            this.lbRaw.Size = new System.Drawing.Size(309, 347);
             this.lbRaw.TabIndex = 1;
             this.lbRaw.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragDrop);
             this.lbRaw.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragEnter);
@@ -179,7 +180,7 @@
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 320F));
-            this.tableLayoutAddInformation.Size = new System.Drawing.Size(296, 389);
+            this.tableLayoutAddInformation.Size = new System.Drawing.Size(297, 389);
             this.tableLayoutAddInformation.TabIndex = 0;
             // 
             // pbSaveShoot
@@ -187,9 +188,9 @@
             this.pbSaveShoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSaveShoot.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
             this.pbSaveShoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbSaveShoot.Location = new System.Drawing.Point(305, 422);
+            this.pbSaveShoot.Location = new System.Drawing.Point(306, 422);
             this.pbSaveShoot.Name = "pbSaveShoot";
-            this.pbSaveShoot.Size = new System.Drawing.Size(310, 50);
+            this.pbSaveShoot.Size = new System.Drawing.Size(309, 50);
             this.pbSaveShoot.TabIndex = 2;
             this.pbSaveShoot.TabStop = false;
             this.pbSaveShoot.Click += new System.EventHandler(this.pbSaveShoot_Click);
@@ -199,9 +200,9 @@
             this.panelAddPictures.Controls.Add(this.lbRaw);
             this.panelAddPictures.Controls.Add(this.panelLabelAddPictures);
             this.panelAddPictures.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelAddPictures.Location = new System.Drawing.Point(305, 3);
+            this.panelAddPictures.Location = new System.Drawing.Point(306, 3);
             this.panelAddPictures.Name = "panelAddPictures";
-            this.panelAddPictures.Size = new System.Drawing.Size(310, 389);
+            this.panelAddPictures.Size = new System.Drawing.Size(309, 389);
             this.panelAddPictures.TabIndex = 3;
             // 
             // panelLabelAddPictures
@@ -211,7 +212,7 @@
             this.panelLabelAddPictures.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLabelAddPictures.Location = new System.Drawing.Point(0, 0);
             this.panelLabelAddPictures.Name = "panelLabelAddPictures";
-            this.panelLabelAddPictures.Size = new System.Drawing.Size(310, 42);
+            this.panelLabelAddPictures.Size = new System.Drawing.Size(309, 42);
             this.panelLabelAddPictures.TabIndex = 0;
             // 
             // lblAddPictures
@@ -233,6 +234,7 @@
             this.ClientSize = new System.Drawing.Size(618, 500);
             this.Controls.Add(this.tableLayoutAddShoot);
             this.ForeColor = System.Drawing.Color.White;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add a new shoot";
