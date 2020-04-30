@@ -38,6 +38,9 @@
             this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loggingConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bgwBackup = new System.ComponentModel.BackgroundWorker();
             this.bgwRename = new System.ComponentModel.BackgroundWorker();
             this.bgwConvert = new System.ComponentModel.BackgroundWorker();
@@ -75,9 +78,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblSelection = new System.Windows.Forms.Label();
             this.pbInstagram = new System.Windows.Forms.PictureBox();
-            this.loggingConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.debugConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.errorConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutWorkspace.SuspendLayout();
             this.panelConfig.SuspendLayout();
@@ -160,7 +160,7 @@
             this.uploadSettingsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.uploadSettingsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.uploadSettingsToolStripMenuItem.Name = "uploadSettingsToolStripMenuItem";
-            this.uploadSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uploadSettingsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.uploadSettingsToolStripMenuItem.Text = "Upload settings";
             this.uploadSettingsToolStripMenuItem.Click += new System.EventHandler(this.uploadSettingsToolStripMenuItem_Click);
             // 
@@ -173,15 +173,15 @@
             this.loggingToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.loggingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loggingToolStripMenuItem.Text = "Logging";
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.loggingToolStripMenuItem.Text = "Logging level";
             // 
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.debugToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.debugToolStripMenuItem.Text = "Debug";
             this.debugToolStripMenuItem.Click += new System.EventHandler(this.debugToolStripMenuItem_Click);
             // 
@@ -190,9 +190,39 @@
             this.errorToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.errorToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.errorToolStripMenuItem.Text = "Error";
             this.errorToolStripMenuItem.Click += new System.EventHandler(this.errorToolStripMenuItem_Click);
+            // 
+            // loggingConsoleToolStripMenuItem
+            // 
+            this.loggingConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.loggingConsoleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.debugConsoleToolStripMenuItem,
+            this.errorConsoleToolStripMenuItem});
+            this.loggingConsoleToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.loggingConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.loggingConsoleToolStripMenuItem.Name = "loggingConsoleToolStripMenuItem";
+            this.loggingConsoleToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.loggingConsoleToolStripMenuItem.Text = "Logging console";
+            // 
+            // debugConsoleToolStripMenuItem
+            // 
+            this.debugConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.debugConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.debugConsoleToolStripMenuItem.Name = "debugConsoleToolStripMenuItem";
+            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.debugConsoleToolStripMenuItem.Text = "Debug";
+            this.debugConsoleToolStripMenuItem.Click += new System.EventHandler(this.debugConsoleToolStripMenuItem_Click);
+            // 
+            // errorConsoleToolStripMenuItem
+            // 
+            this.errorConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.errorConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.errorConsoleToolStripMenuItem.Name = "errorConsoleToolStripMenuItem";
+            this.errorConsoleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.errorConsoleToolStripMenuItem.Text = "Error";
+            this.errorConsoleToolStripMenuItem.Click += new System.EventHandler(this.errorConsoleToolStripMenuItem_Click);
             // 
             // bgwBackup
             // 
@@ -221,7 +251,7 @@
             this.lbShoot.Name = "lbShoot";
             this.lbShoot.Size = new System.Drawing.Size(236, 612);
             this.lbShoot.TabIndex = 3;
-            this.lbShoot.Click += new System.EventHandler(this.lbShoot_Click);
+            this.lbShoot.SelectedIndexChanged += new System.EventHandler(this.lbShoot_SelectedIndexChanged);
             this.lbShoot.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbShoot_KeyDown);
             this.lbShoot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbShoot_MouseDown);
             // 
@@ -619,36 +649,6 @@
             this.pbInstagram.TabIndex = 11;
             this.pbInstagram.TabStop = false;
             this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
-            // 
-            // loggingConsoleToolStripMenuItem
-            // 
-            this.loggingConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.loggingConsoleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugConsoleToolStripMenuItem,
-            this.errorConsoleToolStripMenuItem});
-            this.loggingConsoleToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.loggingConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.loggingConsoleToolStripMenuItem.Name = "loggingConsoleToolStripMenuItem";
-            this.loggingConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loggingConsoleToolStripMenuItem.Text = "Logging console";
-            // 
-            // debugConsoleToolStripMenuItem
-            // 
-            this.debugConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.debugConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.debugConsoleToolStripMenuItem.Name = "debugConsoleToolStripMenuItem";
-            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.debugConsoleToolStripMenuItem.Text = "Debug";
-            this.debugConsoleToolStripMenuItem.Click += new System.EventHandler(this.debugConsoleToolStripMenuItem_Click);
-            // 
-            // errorConsoleToolStripMenuItem
-            // 
-            this.errorConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.errorConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.errorConsoleToolStripMenuItem.Name = "errorConsoleToolStripMenuItem";
-            this.errorConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.errorConsoleToolStripMenuItem.Text = "Error";
-            this.errorConsoleToolStripMenuItem.Click += new System.EventHandler(this.errorConsoleToolStripMenuItem_Click);
             // 
             // FormMain
             // 

@@ -178,6 +178,7 @@
     <Compile Include="src\Forms\FormShoot.Designer.cs">
       <DependentUpon>FormShoot.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Helper\Methods.cs" />
     <Compile Include="src\Helper\XmlConfig.cs" />
     <Compile Include="src\Logger\LogHelper.cs" />
     <Compile Include="src\POCO\Canvas.cs" />

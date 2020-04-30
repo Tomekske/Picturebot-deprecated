@@ -119,7 +119,7 @@ namespace PicturebotGUI
         /// <summary>
         /// Click on a shoot within the workspace to list all the pictures within every flow
         /// </summary>
-        private void lbShoot_Click(object sender, EventArgs e)
+        private void lbShoot_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lbShoot.Text != string.Empty)
             {
@@ -439,133 +439,155 @@ namespace PicturebotGUI
 
         #region KeyEnter
         /// <summary>
-        /// Hotkeys for to control the shoot listbBox menu items
+        /// Hotkeys to control the shoot listbBox menu items
         /// </summary>
         private void lbShoot_KeyDown(object sender, KeyEventArgs e)
         {
             string path = Path.Combine(Config[WsIndex].Workspace, _shoot);
 
-            if (e.KeyCode == Keys.O)
+            // Make sure it's not possible to perform keyboard actions when the listBox is empty
+            if (lbShoot.Items.Count != 0)
             {
-                lbShoot.SelectedItem = _shoot;
-                src.Command.General.Explorer(Config[WsIndex], _shoot);
-                e.SuppressKeyPress = true;
-            }
+                if (e.KeyCode == Keys.O)
+                {
+                    lbShoot.SelectedItem = _shoot;
+                    src.Command.General.Explorer(Config[WsIndex], _shoot);
+                    e.SuppressKeyPress = true;
+                }
 
-            else if (e.KeyCode == Keys.Delete)
-            {
-                src.Command.General.DeleteShoot(path, Sht);
-            }
+                else if (e.KeyCode == Keys.Delete)
+                {
 
-            else if (e.KeyCode == Keys.F2)
-            {
-                _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
+                    isShootDeleting = true;
+                    src.Command.General.DeleteShoot(path, Sht);
+                }
 
-                GetWorkspaceShoots();
-                lbShoot.SelectedItem = _shoot;
-                ClearAndUpdateFlows(_shoot);
+                else if (e.KeyCode == Keys.F2)
+                {
+                    _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
+
+                    GetWorkspaceShoots();
+                    lbShoot.SelectedItem = _shoot;
+                    ClearAndUpdateFlows(_shoot);
+                }
             }
         }
 
         /// <summary>
-        /// Hotkeys for to control the preview listbBox menu items
+        /// Hotkeys to control the preview listbBox menu items
         /// </summary>
         private void lbPreview_KeyDown(object sender, KeyEventArgs e)
         {
-            Picture picture = new Picture(_listPreviewPictures[lbPreview.SelectedIndex].Absolute);
-
-            if (e.KeyCode == Keys.Delete)
+            // Make sure it's not possible to perform keyboard actions when the listBox is empty
+            if (lbPreview.Items.Count != 0)
             {
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
-            }
+                Picture picture = new Picture(_listPreviewPictures[lbPreview.SelectedIndex].Absolute);
 
-            else if (e.KeyCode == Keys.O)
-            {
-                e.SuppressKeyPress = true;
-                src.Command.General.Explorer(Config[WsIndex], _shoot);
-            }
+                if (e.KeyCode == Keys.Delete)
+                {
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
+                }
 
-            else if (e.KeyCode == Keys.S)
-            {
-                e.SuppressKeyPress = true;
-                src.Command.General.Selection(Config[WsIndex], picture);
+                else if (e.KeyCode == Keys.O)
+                {
+                    e.SuppressKeyPress = true;
+                    src.Command.General.Explorer(Config[WsIndex], _shoot);
+                }
+
+                else if (e.KeyCode == Keys.S)
+                {
+                    e.SuppressKeyPress = true;
+                    src.Command.General.Selection(Config[WsIndex], picture);
+                }
             }
         }
 
         /// <summary>
-        /// Hotkeys for to control the selection listbBox menu items
+        /// Hotkeys to control the selection listbBox menu items
         /// </summary>
         private void lbSelection_KeyDown(object sender, KeyEventArgs e)
         {
-            Picture picture = new Picture(_listSelectionPictures[lbSelection.SelectedIndex].Absolute);
-
-            if (e.KeyCode == Keys.Delete)
+            // Make sure it's not possible to perform keyboard actions when the listBox is empty
+            if (lbSelection.Items.Count != 0)
             {
-                src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
-            }
+                Picture picture = new Picture(_listSelectionPictures[lbSelection.SelectedIndex].Absolute);
 
-            else if (e.KeyCode == Keys.O)
-            {
-                src.Command.General.Explorer(Config[WsIndex], _shoot);
-            }
+                if (e.KeyCode == Keys.Delete)
+                {
+                    src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
+                }
 
-            else if (e.KeyCode == Keys.L)
-            {
-                src.Command.General.Program(External.Luminar, picture.Absolute);
+                else if (e.KeyCode == Keys.O)
+                {
+                    src.Command.General.Explorer(Config[WsIndex], _shoot);
+                }
+
+                else if (e.KeyCode == Keys.L)
+                {
+                    src.Command.General.Program(External.Luminar, picture.Absolute);
+                }
             }
         }
 
         /// <summary>
-        /// Hotkeys for to control the edited listbBox menu items
+        /// Hotkeys to control the edited listbBox menu items
         /// </summary>
         private void lbEdited_KeyDown(object sender, KeyEventArgs e)
         {
-            Picture picture = new Picture(_listEditedPictures[lbEdited.SelectedIndex].Absolute);
-
-            if (e.KeyCode == Keys.Delete)
+            // Make sure it's not possible to perform keyboard actions when the listBox is empty
+            if (lbEdited.Items.Count != 0)
             {
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, Extension.JPG);
-            }
+                Picture picture = new Picture(_listEditedPictures[lbEdited.SelectedIndex].Absolute);
 
-            else if (e.KeyCode == Keys.O)
-            {
-                e.SuppressKeyPress = true;
-                src.Command.General.Explorer(Config[WsIndex], _shoot);
-            }
+                if (e.KeyCode == Keys.Delete)
+                {
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, Extension.JPG);
+                }
 
-            else if (e.KeyCode == Keys.L)
-            {
-                e.SuppressKeyPress = true;
-                src.Command.General.Program(External.Luminar, picture.Absolute);
-            }
+                else if (e.KeyCode == Keys.O)
+                {
+                    e.SuppressKeyPress = true;
+                    src.Command.General.Explorer(Config[WsIndex], _shoot);
+                }
 
-            else if(e.KeyCode == Keys.U)
-            {
-                src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
+                else if (e.KeyCode == Keys.L)
+                {
+                    e.SuppressKeyPress = true;
+                    src.Command.General.Program(External.Luminar, picture.Absolute);
+                }
+
+                else if (e.KeyCode == Keys.U)
+                {
+                    src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
+                }
             }
         }
 
         /// <summary>
-        /// Hotkeys for to control the instagram listbBox menu items
+        /// Hotkeys to control the instagram listbBox menu items
         /// </summary>
         private void lbInstagram_KeyDown(object sender, KeyEventArgs e)
         {
-            Picture picture = new Picture(_listInstagramPictures[lbInstagram.SelectedIndex].Absolute);
-
-            if (e.KeyCode == Keys.Delete)
+            // Make sure it's not possible to perform keyboard actions when the listBox is empty
+            if (lbInstagram.Items.Count != 0)
             {
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, Extension.JPG);
-            }
+                Picture picture = new Picture(_listInstagramPictures[lbInstagram.SelectedIndex].Absolute);
 
-            else if (e.KeyCode == Keys.O)
-            {
-                e.SuppressKeyPress = true;
-                src.Command.General.Explorer(Config[WsIndex], _shoot);
-            }
+                if (e.KeyCode == Keys.Delete)
+                {
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, Extension.JPG);
+                }
 
-            else if(e.KeyCode == Keys.U)
-            {
-                src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
+                else if (e.KeyCode == Keys.O)
+                {
+                    e.SuppressKeyPress = true;
+                    src.Command.General.Explorer(Config[WsIndex], _shoot);
+                }
+
+                else if (e.KeyCode == Keys.U)
+                {
+                    src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
+                }
             }
         }
         #endregion KeyEnter
@@ -737,6 +759,16 @@ namespace PicturebotGUI
             _log.Info($"Cleared and updated flows: \"{path}\"");
         }
 
+        /// <summary>
+        /// Update the associated work flow
+        /// </summary>
+        /// <param name="listBox">The associated listBox</param>
+        /// <param name="pictureBox">The associated pictureBox</param>
+        /// <param name="label">The associated label</param>
+        /// <param name="list">The associated list containing the pictures</param>
+        /// <param name="workflow">The associated listBox</param>
+        /// <param name="title">The associated flow name of the label</param>
+        /// <param name="path">The flow that has been updated</param>
         public void ClearAndUpdateFlow(ListBox listBox, PictureBox pictureBox, Label label, List<Picture> list, string workflow, string title, string path)
         {
             int counter = 0;
@@ -751,7 +783,6 @@ namespace PicturebotGUI
             _log.Info($"Cleared and updated flow: \"{path}\"");
         }
         #endregion ClearPictureBoxes
-
         #endregion PictureBoxes
 
         #region MenuStrip
@@ -804,6 +835,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isShootDeleting = false;
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
             }
 
@@ -824,6 +856,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isShootDeleting = false;
                 src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
             }
 
@@ -849,6 +882,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isShootDeleting = false;
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, picture.Extension);
             }
 
@@ -888,6 +922,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isShootDeleting = false;
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, picture.Extension);
             }
 
@@ -1024,8 +1059,13 @@ namespace PicturebotGUI
             {
                 if (e.FullPath == pathShoot)
                 {
+                    int indexBefore = ThreadListBox.SelectedIndex(lbShoot);
+
                     GetWorkspaceShoots();
                     ClearPictureBoxesAndListBoxesAndLabels();
+                    int countItems = lbShoot.Items.Count;
+                    ThreadListBox.SetSelectedIndex(lbShoot, Methods.CalcListBoxIndex(indexBefore, countItems));
+
                     isShootDeleting = false;
                 }
             }
@@ -1035,22 +1075,37 @@ namespace PicturebotGUI
                 // Check whether a picture within the preview flow is deleted
                 if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
                 {
+                    int indexBefore = ThreadListBox.SelectedIndex(lbPreview);
                     ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
+                    int countItems = lbPreview.Items.Count;
+                    ThreadListBox.SetSelectedIndex(lbPreview, Methods.CalcListBoxIndex(indexBefore, countItems));
                 }
 
                 else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)))
                 {
+                    int indexBefore = ThreadListBox.SelectedIndex(lbSelection);
                     ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Workflow.Selection, Config[WsIndex].Selection, e.FullPath);
+                    int countItems = lbSelection.Items.Count;
+
+                    ThreadListBox.SetSelectedIndex(lbSelection, Methods.CalcListBoxIndex(indexBefore, countItems));
                 }
 
                 else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
                 {
+                    int indexBefore = ThreadListBox.SelectedIndex(lbEdited);
                     ClearAndUpdateFlow(lbEdited, pbEdited, lblSelection, _listEditedPictures, Workflow.Edited, Config[WsIndex].Edited, e.FullPath);
+                    int countItems = lbEdited.Items.Count;
+
+                    ThreadListBox.SetSelectedIndex(lbEdited, Methods.CalcListBoxIndex(indexBefore, countItems));
                 }
 
                 else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)))
                 {
+                    int indexBefore = ThreadListBox.SelectedIndex(lbInstagram);
                     ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
+                    int countItems = lbInstagram.Items.Count;
+
+                    ThreadListBox.SetSelectedIndex(lbInstagram, Methods.CalcListBoxIndex(indexBefore, countItems));
                 }
             }
         }
@@ -1083,7 +1138,6 @@ namespace PicturebotGUI
             catch (Exception ex)
             {
                 _log.Error($"PictureBox pbPreview: unable to open \"{pbPreview.ImageLocation}\"", ex);
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -1109,7 +1163,6 @@ namespace PicturebotGUI
             catch (Exception ex)
             {
                 _log.Error($"PictureBox pbSelection: unable to open \"{pbSelection.ImageLocation}\"", ex);
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -1128,7 +1181,6 @@ namespace PicturebotGUI
             catch (Exception ex)
             {
                 _log.Error($"PictureBox pbEdited: unable to open \"{pbEdited.ImageLocation}\"", ex);
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -1147,7 +1199,6 @@ namespace PicturebotGUI
             catch (Exception ex)
             {
                 _log.Error($"PictureBox pbInstagram: unable to open \"{pbInstagram.ImageLocation}\"", ex);
-                MessageBox.Show(ex.Message);
             }
         }
         #endregion PictureBoxes
