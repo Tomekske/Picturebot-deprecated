@@ -98,7 +98,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="picture">The picture object</param>
         public static void Selection(Config config, Picture picture)
         {
-            log4net.ILog _log = LogHelper.GetLogger();
+            log4net.ILog log = LogHelper.GetLogger();
 
             // Get the path to the base flow
             string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow, $"{picture.Filename}{Extension.NEF}");
@@ -112,22 +112,22 @@ namespace PicturebotGUI.src.Command
                 try
                 {
                     File.Copy(pathToBaseFlow, pathToSelectionFlow);
-                    _log.Info($"ListBox lbPreview: copied \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"");
+                    log.Info($"ListBox lbPreview: copied \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"");
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    _log.Error($"ListBox lbPreview: unable to copy \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"", e);
+                    log.Error($"ListBox lbPreview: unable to copy \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"", e);
                     MessageBox.Show(e.Message);
                 }
                 catch (FileNotFoundException e)
                 {
-                    _log.Error($"ListBox lbPreview: Picture \"{pathToBaseFlow}\" or \"{pathToSelectionFlow}\" not found", e);
+                    log.Error($"ListBox lbPreview: Picture \"{pathToBaseFlow}\" or \"{pathToSelectionFlow}\" not found", e);
                     MessageBox.Show(e.Message);
                 }
             }
             else
             {
-                _log.Info($"ListBox lbPreview: \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow)}\" already exists in \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Selection)}\"");
+                log.Info($"ListBox lbPreview: \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow)}\" already exists in \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Selection)}\"");
             }
         }
 

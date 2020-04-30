@@ -51,20 +51,46 @@ namespace PicturebotGUI.src.GUIThread
             }
         }
 
+        /// <summary>
+        /// Obtain the selected index of the listBox
+        /// </summary>
+        /// <param name="listBox">The specified listBox</param>
+        /// <returns>The selected index</returns>
         public static int SelectedIndex(ListBox listBox)
+        {         
+            if (listBox.InvokeRequired)
+            {
+                int index = 0;
+                listBox.Invoke((MethodInvoker)delegate ()
+                {
+                    index = SelectedIndex(listBox);
+                });
+
+                return index;
+            }
+            else
+            {
+                return listBox.SelectedIndex;
+            }
+        }
+
+        /// <summary>
+        /// Set the selected index within the listBox
+        /// </summary>
+        /// <param name="listBox">The specified listBox</param>
+        /// <param name="index">The index that needs to be set</param>
+        public static void SetSelectedIndex(ListBox listBox, int index)
         {
             if (listBox.InvokeRequired)
             {
                 listBox.Invoke((MethodInvoker)delegate ()
                 {
-                    SelectedIndex(listBox);
+                    SetSelectedIndex(listBox, index);
                 });
-
-                return 0;
             }
             else
             {
-                return listBox.SelectedIndex;
+                listBox.SelectedIndex = index;
             }
         }
     }

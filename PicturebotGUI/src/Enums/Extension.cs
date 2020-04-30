@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PicturebotGUI.src.Enums
 {
     /// <summary>
-    /// String enum with most common picture extensions
+    /// String enum with common picture extensions
     /// </summary>
     public static class Extension
     {
