@@ -119,6 +119,8 @@
             this.ClientSize = new System.Drawing.Size(662, 124);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(678, 163);
+            this.MinimumSize = new System.Drawing.Size(678, 163);
             this.Name = "FormSettingsUpload";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rename shoot";

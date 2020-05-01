@@ -235,6 +235,8 @@
             this.Controls.Add(this.tableLayoutAddShoot);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(634, 539);
+            this.MinimumSize = new System.Drawing.Size(634, 539);
             this.Name = "FormShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add a new shoot";
