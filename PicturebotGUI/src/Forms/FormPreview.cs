@@ -20,6 +20,7 @@ namespace PicturebotGUI
     {
         private int _amountOfPictures = 0;
         private int _index = 0;
+        private string _metadata = string.Empty;
 
         private List<Picture> _listPictures = new List<Picture>();
 
@@ -42,6 +43,7 @@ namespace PicturebotGUI
             _amountOfPictures = listPictures.Count;
 
             UpdateMetaData(listPictures[_index].Absolute);
+            //1880, 1040
         }
 
         #region PictureBox
@@ -72,14 +74,14 @@ namespace PicturebotGUI
         /// <summary>
         /// Use keyboard key to display the next and the previous pictures
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void FormPreview_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.A: _index -= 1; UpdatePicture(); break;
+                case Keys.Left: _index -= 1; UpdatePicture(); break;
                 case Keys.D: _index += 1; UpdatePicture(); break;
+                case Keys.Right: _index += 1; UpdatePicture(); break;
                 case Keys.Escape: this.Close(); break;
             }
         }
@@ -91,10 +93,13 @@ namespace PicturebotGUI
         /// <param name="path"></param>
         private void UpdateMetaData(string path)
         {
-            string msg = $"{_index + 1}/{_amountOfPictures}";
+            string counter = $"{_index + 1}/{_amountOfPictures}";
 
             this.Text = pbPicture.ImageLocation;
-            lblIndex.Text = msg;
+            _metadata = $"\"{pbPicture.ImageLocation}\" [{counter}]";
+            //pbPicture.Image = image;
+
+            //lblIndex.Text = msg;
         }
 
         /// <summary>
@@ -123,6 +128,17 @@ namespace PicturebotGUI
             }
 
             UpdateMetaData(_listPictures[_index].Absolute);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void pbPicture_Paint(object sender, PaintEventArgs e)
+        {
+            using (Font myFont = new Font("Segoe UI", 10))
+            {
+                e.Graphics.DrawString(_metadata, myFont, Brushes.White, new Point(2, 2));
+            }
         }
     }
 }

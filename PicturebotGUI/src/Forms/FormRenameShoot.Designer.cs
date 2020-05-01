@@ -122,6 +122,8 @@
             this.ClientSize = new System.Drawing.Size(276, 124);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(292, 163);
+            this.MinimumSize = new System.Drawing.Size(292, 163);
             this.Name = "FormRenameShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rename shoot";

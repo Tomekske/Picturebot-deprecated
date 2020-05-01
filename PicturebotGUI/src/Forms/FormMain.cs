@@ -499,6 +499,21 @@ namespace PicturebotGUI
                     e.SuppressKeyPress = true;
                     src.Command.General.Selection(Config[WsIndex], picture);
                 }
+
+                else if(e.KeyCode == Keys.Enter)
+                {
+                    try
+                    {
+                        FormPreview f = new FormPreview(_listPreviewPictures, lbPreview.SelectedIndex);
+                        _log.Info($"PictureBox pbPreview: opened \"{pbPreview.ImageLocation}\"");
+
+                        f.Show();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error($"PictureBox pbPreview: unable to open \"{pbPreview.ImageLocation}\"", ex);
+                    }
+                }
             }
         }
 
@@ -525,6 +540,28 @@ namespace PicturebotGUI
                 else if (e.KeyCode == Keys.L)
                 {
                     src.Command.General.Program(External.Luminar, picture.Absolute);
+                }
+
+                else if(e.KeyCode == Keys.Enter)
+                {
+                    try
+                    {
+                        // Create a temporary list where the path is converted to a preview flow because the pictures within a selection flow contain a RAW file format
+                        List<Picture> list = new List<Picture>();
+
+                        for (int i = 0; i < _listSelectionPictures.Count; i++)
+                        {
+                            string path = Path.Combine(Config[WsIndex].Workspace, _listSelectionPictures[i].ShootInfo, Workflow.Preview, $"{_listSelectionPictures[i].Filename}.jpg");
+                            list.Add(new Picture(path));
+                        }
+
+                        FormPreview f = new FormPreview(list, lbSelection.SelectedIndex);
+                        f.Show();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error($"PictureBox pbSelection: unable to open \"{pbSelection.ImageLocation}\"", ex);
+                    }
                 }
             }
         }
@@ -560,6 +597,21 @@ namespace PicturebotGUI
                 {
                     src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
                 }
+
+                else if(e.KeyCode == Keys.Enter)
+                {
+                    try
+                    {
+                        FormPreview f = new FormPreview(_listEditedPictures, lbEdited.SelectedIndex);
+                        _log.Info($"PictureBox pbEdited: opened \"{pbEdited.ImageLocation}\"");
+
+                        f.Show();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error($"PictureBox pbEdited: unable to open \"{pbEdited.ImageLocation}\"", ex);
+                    }
+                }
             }
         }
 
@@ -587,6 +639,21 @@ namespace PicturebotGUI
                 else if (e.KeyCode == Keys.U)
                 {
                     src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
+                }
+
+                else if(e.KeyCode == Keys.Enter)
+                {
+                    try
+                    {
+                        FormPreview f = new FormPreview(_listInstagramPictures, lbInstagram.SelectedIndex);
+                        _log.Info($"PictureBox pbInstagram: opened \"{pbInstagram.ImageLocation}\"");
+
+                        f.Show();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error($"PictureBox pbInstagram: unable to open \"{pbInstagram.ImageLocation}\"", ex);
+                    }
                 }
             }
         }
@@ -1022,6 +1089,8 @@ namespace PicturebotGUI
         /// </summary>
         private void Watcher_Created(object sender, FileSystemEventArgs e)
         {
+            _log.Debug("Watcher_Created: Trying to find a bug I can't seem to find");
+
             if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
             {
                 ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview,_listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
