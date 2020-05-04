@@ -1093,6 +1093,15 @@ namespace PicturebotGUI
                 src.Helper.XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Error);
             }
         }
+
+        /// <summary>
+        /// Add a new workspace to the configuration file
+        /// </summary>
+        private void addWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormWorkspace form = new FormWorkspace();
+            form.ShowDialog();
+        }
         #endregion MenuStrip
 
         #region Watcher

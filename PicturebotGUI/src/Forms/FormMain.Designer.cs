@@ -33,6 +33,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,7 +53,6 @@
             this.bgwMassRename = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutWorkspace = new System.Windows.Forms.TableLayoutPanel();
             this.panelConfig = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbSelection = new System.Windows.Forms.ListBox();
             this.tableLayoutShoot = new System.Windows.Forms.TableLayoutPanel();
             this.panelShoots = new System.Windows.Forms.Panel();
@@ -81,7 +82,6 @@
             this.menuStrip1.SuspendLayout();
             this.tableLayoutWorkspace.SuspendLayout();
             this.panelConfig.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutShoot.SuspendLayout();
             this.panelShoots.SuspendLayout();
             this.panelLabelShoots.SuspendLayout();
@@ -106,6 +106,7 @@
             this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.workspaceToolStripMenuItem,
             this.VersionTSMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -142,6 +143,24 @@
             this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.openLogFileToolStripMenuItem.Text = "Open log file";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
+            // 
+            // workspaceToolStripMenuItem
+            // 
+            this.workspaceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addWorkspaceToolStripMenuItem});
+            this.workspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.workspaceToolStripMenuItem.Name = "workspaceToolStripMenuItem";
+            this.workspaceToolStripMenuItem.Size = new System.Drawing.Size(77, 21);
+            this.workspaceToolStripMenuItem.Text = "Workspace";
+            // 
+            // addWorkspaceToolStripMenuItem
+            // 
+            this.addWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.addWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.addWorkspaceToolStripMenuItem.Name = "addWorkspaceToolStripMenuItem";
+            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.addWorkspaceToolStripMenuItem.Text = "Add workspace";
+            this.addWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.addWorkspaceToolStripMenuItem_Click);
             // 
             // VersionTSMenuItem
             // 
@@ -289,22 +308,12 @@
             // 
             // panelConfig
             // 
-            this.panelConfig.Controls.Add(this.pictureBox1);
             this.panelConfig.Controls.Add(this.comboWorkspace);
             this.panelConfig.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelConfig.Location = new System.Drawing.Point(3, 3);
             this.panelConfig.Name = "panelConfig";
             this.panelConfig.Size = new System.Drawing.Size(1450, 54);
             this.panelConfig.TabIndex = 0;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::PicturebotGUI.Properties.Resources.Gear;
-            this.pictureBox1.Location = new System.Drawing.Point(854, 27);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
             // 
             // lbSelection
             // 
@@ -671,7 +680,6 @@
             this.menuStrip1.PerformLayout();
             this.tableLayoutWorkspace.ResumeLayout(false);
             this.panelConfig.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutShoot.ResumeLayout(false);
             this.panelShoots.ResumeLayout(false);
             this.panelLabelShoots.ResumeLayout(false);
@@ -738,7 +746,6 @@
         private System.Windows.Forms.Panel panelSelection;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblSelection;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pbAddShoot;
         private System.Windows.Forms.PictureBox pbInstagram;
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
@@ -749,6 +756,8 @@
         private System.Windows.Forms.ToolStripMenuItem loggingConsoleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem debugConsoleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem errorConsoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addWorkspaceToolStripMenuItem;
     }
 }
 
