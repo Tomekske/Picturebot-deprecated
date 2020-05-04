@@ -18,6 +18,7 @@ using System.Collections.Specialized;
 using System.Xml;
 using System.Xml.Linq;
 using System.Text;
+using System.Runtime.Caching;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -52,7 +53,15 @@ namespace PicturebotGUI
         private bool isFileSaving = false;
         private bool isShootDeleting = false;
 
+        private bool isWatcherCreated = false;
+        private bool isWatcherRenamed = false;
+        private bool isWatcherDeleted = false;
+
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
+
+        private MemoryCache _memCache;
+        private CacheItemPolicy _cacheItemPolicy;
+        private const int CacheTimeMilliseconds = 1000;
 
         public FormMain()
         {
@@ -315,7 +324,7 @@ namespace PicturebotGUI
                 ContextMenuStrip menu = new ContextMenuStrip();
                 menu.Items.Add($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}");
 
-                var menuItemLuminar = new ToolStripMenuItem(Strip.AddSelection);
+                var menuItemLuminar = new ToolStripMenuItem($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}");
                 menuItemLuminar.ShortcutKeyDisplayString = "L";
                 menu.Items.Add(menuItemLuminar);
 
@@ -342,7 +351,7 @@ namespace PicturebotGUI
                 ContextMenuStrip menu = new ContextMenuStrip();
                 menu.Items.Add($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}");
 
-                var menuItemLuminar = new ToolStripMenuItem(Strip.AddSelection);
+                var menuItemLuminar = new ToolStripMenuItem($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}");
                 menuItemLuminar.ShortcutKeyDisplayString = "L";
                 menu.Items.Add(menuItemLuminar);
 
@@ -425,6 +434,7 @@ namespace PicturebotGUI
                 // Only open the affinity file when it's exists within the editing flow
                 if (File.Exists(path))
                 {
+                    isWatcherCreated = true;
                     src.Command.General.Program(External.Affinity, path);
                 }
 
@@ -457,7 +467,7 @@ namespace PicturebotGUI
 
                 else if (e.KeyCode == Keys.Delete)
                 {
-
+                    isWatcherDeleted = true;
                     isShootDeleting = true;
                     src.Command.General.DeleteShoot(path, Sht);
                 }
@@ -485,6 +495,7 @@ namespace PicturebotGUI
 
                 if (e.KeyCode == Keys.Delete)
                 {
+                    isWatcherDeleted = true;
                     src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
                 }
 
@@ -497,6 +508,7 @@ namespace PicturebotGUI
                 else if (e.KeyCode == Keys.S)
                 {
                     e.SuppressKeyPress = true;
+                    isWatcherCreated = true;
                     src.Command.General.Selection(Config[WsIndex], picture);
                 }
 
@@ -529,6 +541,7 @@ namespace PicturebotGUI
 
                 if (e.KeyCode == Keys.Delete)
                 {
+                    isWatcherDeleted = true;
                     src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
                 }
 
@@ -539,6 +552,7 @@ namespace PicturebotGUI
 
                 else if (e.KeyCode == Keys.L)
                 {
+                    isWatcherCreated = true;
                     src.Command.General.Program(External.Luminar, picture.Absolute);
                 }
 
@@ -578,6 +592,7 @@ namespace PicturebotGUI
 
                 if (e.KeyCode == Keys.Delete)
                 {
+                    isWatcherDeleted = true;
                     src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, Extension.JPG);
                 }
 
@@ -590,6 +605,7 @@ namespace PicturebotGUI
                 else if (e.KeyCode == Keys.L)
                 {
                     e.SuppressKeyPress = true;
+                    isWatcherCreated = true;
                     src.Command.General.Program(External.Luminar, picture.Absolute);
                 }
 
@@ -627,6 +643,7 @@ namespace PicturebotGUI
 
                 if (e.KeyCode == Keys.Delete)
                 {
+                    isWatcherDeleted = true;
                     src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, Extension.JPG);
                 }
 
@@ -709,10 +726,12 @@ namespace PicturebotGUI
             FileSystemWatcher watcher = new FileSystemWatcher(Config[WsIndex].Workspace);
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
+            //watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
 
             // Create even handlers
             watcher.Created += Watcher_Created;
             watcher.Deleted += Watcher_Deleted;
+
 
             GetWorkspaceShoots();
             ClearPictureBoxesAndListBoxesAndLabels();
@@ -847,7 +866,7 @@ namespace PicturebotGUI
             counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, workflow)).Length;
             ThreadLabel.SetText(label, $"{title} ({counter})");
 
-            _log.Info($"Cleared and updated flow: \"{path}\"");
+            _log.Info($"Cleared and updated flow: \"{workflow}\" - \"{path}\"");
         }
         #endregion ClearPictureBoxes
         #endregion PictureBoxes
@@ -867,6 +886,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isWatcherDeleted = true;
                 isShootDeleting = true;
                 src.Command.General.DeleteShoot(path, Sht);
             }
@@ -908,6 +928,7 @@ namespace PicturebotGUI
 
             else if (e.ClickedItem.Text == Strip.AddSelection)
             {
+                isWatcherCreated = true;
                 src.Command.General.Selection(Config[WsIndex], picture);
             }
         }
@@ -934,6 +955,7 @@ namespace PicturebotGUI
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
             {
+                isWatcherCreated = true;
                 src.Command.General.Program(External.Luminar, path);
             }
         }
@@ -955,6 +977,7 @@ namespace PicturebotGUI
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
             {
+                isWatcherCreated = true;
                 src.Command.General.Program(External.Luminar, path);
             }
 
@@ -1078,6 +1101,8 @@ namespace PicturebotGUI
         /// </summary>
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
+            _log.Debug($"Watcher renamed: \"{e.FullPath}\"");
+
             if (!e.FullPath.Contains("jpg_exiftool_tmp") && !e.FullPath.Contains(Workflow.Baseflow) && !e.FullPath.Contains(Workflow.Backup) && !e.FullPath.Contains(Workflow.Preview) && e.FullPath == Path.Combine(Config[WsIndex].Workspace, _shoot) && !isFileSaving)
             {
                 ClearAndUpdateFlows(e.FullPath);
@@ -1089,30 +1114,33 @@ namespace PicturebotGUI
         /// </summary>
         private void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-            _log.Debug("Watcher_Created: Trying to find a bug I can't seem to find");
 
-            if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
+            _log.Debug($"Watcher Created: \"{e.FullPath}\"");
+
+            if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)) && isWatcherCreated)
             {
-                ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview,_listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
+                ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
                 isFileSaving = true;
+                isWatcherCreated = false;
             }
 
-            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)))
+            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)) && isWatcherCreated)
             {
                 ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Workflow.Selection, Config[WsIndex].Selection, e.FullPath);
                 isFileSaving = true;
+                isWatcherCreated = false;
             }
 
             else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
             {
                 ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Workflow.Edited, Config[WsIndex].Edited, e.FullPath);
-                isFileSaving = true;
             }
 
-            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)))
+            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)) && isWatcherCreated)
             {
                 ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
                 isFileSaving = true;
+                isWatcherCreated = false;
             }
         }
 
@@ -1121,60 +1149,70 @@ namespace PicturebotGUI
         /// </summary>
         private void Watcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            string pathShoot = Path.Combine(Config[WsIndex].Workspace, _shoot);
-
-            // Check whether the shoot directory is getting deleted
-            if (isShootDeleting)
+            if (isWatcherDeleted)
             {
-                if (e.FullPath == pathShoot)
+                // Check whether the shoot directory is getting deleted
+                if (isShootDeleting)
                 {
-                    int indexBefore = ThreadListBox.SelectedIndex(lbShoot);
+                    string pathShoot = Path.Combine(Config[WsIndex].Workspace, _shoot);
+                    
+                    _log.Debug($"Watcher deleted shoot: \"{e.FullPath}\"");
 
-                    GetWorkspaceShoots();
-                    ClearPictureBoxesAndListBoxesAndLabels();
-                    int countItems = lbShoot.Items.Count;
-                    ThreadListBox.SetSelectedIndex(lbShoot, Methods.CalcListBoxIndex(indexBefore, countItems));
+                    if (e.FullPath == pathShoot)
+                    {
+                        int indexBefore = ThreadListBox.SelectedIndex(lbShoot);
 
-                    isShootDeleting = false;
-                }
-            }
+                        GetWorkspaceShoots();
+                        ClearPictureBoxesAndListBoxesAndLabels();
+                        int countItems = lbShoot.Items.Count;
+                        ThreadListBox.SetSelectedIndex(lbShoot, Methods.CalcListBoxIndex(indexBefore, countItems));
 
-            else
-            {
-                // Check whether a picture within the preview flow is deleted
-                if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
-                {
-                    int indexBefore = ThreadListBox.SelectedIndex(lbPreview);
-                    ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
-                    int countItems = lbPreview.Items.Count;
-                    ThreadListBox.SetSelectedIndex(lbPreview, Methods.CalcListBoxIndex(indexBefore, countItems));
+                        isShootDeleting = false;
+                        isWatcherDeleted = false;
+                    }
                 }
 
-                else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)))
+                else
                 {
-                    int indexBefore = ThreadListBox.SelectedIndex(lbSelection);
-                    ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Workflow.Selection, Config[WsIndex].Selection, e.FullPath);
-                    int countItems = lbSelection.Items.Count;
+                    _log.Debug($"Watcher deleted flow: \"{e.FullPath}\"");
 
-                    ThreadListBox.SetSelectedIndex(lbSelection, Methods.CalcListBoxIndex(indexBefore, countItems));
-                }
+                    // Check whether a picture within the preview flow is deleted
+                    if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
+                    {
+                        int indexBefore = ThreadListBox.SelectedIndex(lbPreview);
+                        ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
+                        int countItems = lbPreview.Items.Count;
+                        ThreadListBox.SetSelectedIndex(lbPreview, Methods.CalcListBoxIndex(indexBefore, countItems));
+                    }
 
-                else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
-                {
-                    int indexBefore = ThreadListBox.SelectedIndex(lbEdited);
-                    ClearAndUpdateFlow(lbEdited, pbEdited, lblSelection, _listEditedPictures, Workflow.Edited, Config[WsIndex].Edited, e.FullPath);
-                    int countItems = lbEdited.Items.Count;
+                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)))
+                    {
+                        int indexBefore = ThreadListBox.SelectedIndex(lbSelection);
+                        ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Workflow.Selection, Config[WsIndex].Selection, e.FullPath);
+                        int countItems = lbSelection.Items.Count;
 
-                    ThreadListBox.SetSelectedIndex(lbEdited, Methods.CalcListBoxIndex(indexBefore, countItems));
-                }
+                        ThreadListBox.SetSelectedIndex(lbSelection, Methods.CalcListBoxIndex(indexBefore, countItems));
+                    }
 
-                else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)))
-                {
-                    int indexBefore = ThreadListBox.SelectedIndex(lbInstagram);
-                    ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
-                    int countItems = lbInstagram.Items.Count;
+                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
+                    {
+                        int indexBefore = ThreadListBox.SelectedIndex(lbEdited);
+                        ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Workflow.Edited, Config[WsIndex].Edited, e.FullPath);
+                        int countItems = lbEdited.Items.Count;
 
-                    ThreadListBox.SetSelectedIndex(lbInstagram, Methods.CalcListBoxIndex(indexBefore, countItems));
+                        ThreadListBox.SetSelectedIndex(lbEdited, Methods.CalcListBoxIndex(indexBefore, countItems));
+                    }
+
+                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)))
+                    {
+                        int indexBefore = ThreadListBox.SelectedIndex(lbInstagram);
+                        ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
+                        int countItems = lbInstagram.Items.Count;
+
+                        ThreadListBox.SetSelectedIndex(lbInstagram, Methods.CalcListBoxIndex(indexBefore, countItems));
+                    }
+
+                    isWatcherDeleted = false;
                 }
             }
         }
