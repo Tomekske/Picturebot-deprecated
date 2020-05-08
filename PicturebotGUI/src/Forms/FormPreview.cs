@@ -24,6 +24,7 @@ namespace PicturebotGUI
         private string _metadata = string.Empty;
 
         private List<Picture> _listPictures = new List<Picture>();
+        private Config _config;
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
@@ -32,9 +33,10 @@ namespace PicturebotGUI
         /// </summary>
         /// <param name="listPictures">Picture list containing all the pictures within a specified flow</param>
         /// <param name="index">Current selected index</param>
-        public FormPreview(List<Picture> listPictures, int index)
+        public FormPreview(Config config, List<Picture> listPictures, int index)
         {
             InitializeComponent();
+            _config = config;
             pbPicture.Size = new Size(1920, 1080);
 
             _index = index;
@@ -44,7 +46,6 @@ namespace PicturebotGUI
 
             DeterminePictureBoxSizeMode();
             UpdateMetaData(listPictures[_index].Absolute);
-            //1880, 1040
         }
 
         #region PictureBox
@@ -170,7 +171,7 @@ namespace PicturebotGUI
         {
             Dimension dimension = GetDimension(_listPictures[_index]);
 
-            if ((dimension.Width > dimension.Height) && _listPictures[_index].Absolute.Contains(Workflow.Preview))
+            if ((dimension.Width > dimension.Height) && _listPictures[_index].Absolute.Contains(_config.Preview))
             {
                 pbPicture.SizeMode = PictureBoxSizeMode.StretchImage;
             }

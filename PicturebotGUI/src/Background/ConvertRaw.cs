@@ -42,7 +42,7 @@ namespace PicturebotGUI.src.Background
             try
             {
                 // Get the path to the base flow
-                string path = Path.Combine(Config.Workspace, _shootInfo, Workflow.Baseflow);
+                string path = Path.Combine(Config.Workspace, _shootInfo, Config.Base);
 
                 int count = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly).Length;
 
@@ -60,7 +60,7 @@ namespace PicturebotGUI.src.Background
                         BackgroundWorker.ReportProgress(procent, $"Converting: {index - 1}/{count}");
 
                         // Get the path to the preview flow
-                        string destination = Path.Combine(Config.Workspace, _shootInfo, Workflow.Preview, $"{picture.Filename}.jpg");
+                        string destination = Path.Combine(Config.Workspace, _shootInfo, Config.Preview, $"{picture.Filename}.jpg");
                         // Convert the picture
                         GUI.Convert(picture.Absolute, destination);
                     }

@@ -41,7 +41,7 @@ namespace PicturebotGUI.src.Background
             try
             {
                 // Get the path to the base flow directory
-                string path = Path.Combine(Config.Workspace, _shootInfo, Workflow.Baseflow);
+                string path = Path.Combine(Config.Workspace, _shootInfo, Config.Base);
 
                 int count = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly).Length;
 
@@ -56,7 +56,7 @@ namespace PicturebotGUI.src.Background
                         Picture picture = new Picture(file, Config.Workspace);
 
                         // Get the back up flow directory
-                        string destination = Path.Combine(Config.Workspace, _shootInfo, Workflow.Backup, picture.FilenameExtension);
+                        string destination = Path.Combine(Config.Workspace, _shootInfo, Config.Backup, picture.FilenameExtension);
 
                         int procent = index++ * 100 / count;
                         BackgroundWorker.ReportProgress(procent, $"Backup: {index - 1}/{count}");

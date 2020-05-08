@@ -1,6 +1,6 @@
 ﻿using PicturebotGUI.src.Enums;
 using PicturebotGUI.src.Logger;
-using PicturebotGUI.src.PicturebotGUI;
+using PicturebotGUI.src.Command;
 using System.Diagnostics;
 
 namespace PicturebotGUI.src.Command
@@ -56,6 +56,15 @@ namespace PicturebotGUI.src.Command
         public static void OpenWebsite(string url)
         {
             Process.Start(url);
+        }
+
+        /// <summary>
+        /// Static method to open a specified file in the user's default editor
+        /// </summary>
+        /// <param name="path">Path to the file</param>
+        public static void OpenFile(string path)
+        {
+            Process.Start(path);
         }
 
         /// <summary>

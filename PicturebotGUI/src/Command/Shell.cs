@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PicturebotGUI.src.PicturebotGUI
+namespace PicturebotGUI.src.Command
 {
     public static class Shell
     {

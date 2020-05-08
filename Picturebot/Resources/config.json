@@ -10,7 +10,7 @@
       "Backup",
       "Preview"
     ],
-    "baseflow": "RAW",
+    "base": "RAW",
     "backup": "Backup",
     "selection": "Selection",
     "edited": "Edited",
@@ -29,7 +29,7 @@
       "Backup",
       "Preview"
     ],
-    "baseflow": "RAW",
+    "base": "RAW",
     "backup": "Backup",
     "selection": "Selection",
     "edited": "Edited",

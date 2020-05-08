@@ -18,7 +18,7 @@ namespace Picturebot.src.POCO
         /// <summary>
         /// Property contains the user defined name for the base flow
         /// </summary>
-        public string BaseFlow { get; set; }
+        public string Base { get; set; }
         /// <summary>
         /// Property contains the user defined name for the backup flow
         /// </summary>
@@ -47,10 +47,6 @@ namespace Picturebot.src.POCO
         /// Property contains an array of flows
         /// </summary>
         public List<string> Workflows { get; set; }
-        /// <summary>
-        /// Property contains the index number of the selected workspace
-        /// </summary>
-        public int Index { get; set; }
 
         /// <summary>
         /// Override the ToString() method
@@ -59,7 +55,7 @@ namespace Picturebot.src.POCO
         public override string ToString()
         {
             return $"Workspace: {Workspace}\r\n" +
-                   $"BaseFlow: {BaseFlow}\r\n" +
+                   $"Base: {Base}\r\n" +
                    $"Backup: {Backup}\r\n" +
                    $"Selection: {Selection}\r\n" +
                    $"Edited: {Edited}\r\n" +
@@ -67,8 +63,7 @@ namespace Picturebot.src.POCO
                    $"Edited: {Edited}\r\n" +
                    $"Editing: {Editing}\r\n" +
                    $"Instagram: {Instagram}\r\n" +
-                   $"Workflows: {string.Join(", ", Workflows.ToArray())}" +
-                   $"Index: {Index}";
+                   $"Workflows: {string.Join(", ", Workflows.ToArray())}";
         }
     }
 }

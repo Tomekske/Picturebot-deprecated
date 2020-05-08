@@ -100,7 +100,7 @@ namespace Picturebot
                 if (isBaseflow)
                 {
                     // Only rename every picture within a flow when the directory contains pictures and when the flow isn't the backup flow
-                    if ((flow != _config.Backup) && ((flow == _config.BaseFlow) || (flow == _config.Preview)) && (amountOfPictures != 0))
+                    if ((flow != _config.Backup) && ((flow == _config.Base) || (flow == _config.Preview)) && (amountOfPictures != 0))
                     {
                         // Loop-over every picture within a flow directory
                         for (int i = 0; i < amountOfPictures; i++)

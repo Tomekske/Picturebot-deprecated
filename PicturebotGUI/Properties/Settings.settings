@@ -17,5 +17,8 @@
     <Setting Name="LoggingLevelConsoleAppender" Type="System.String" Scope="User">
       <Value Profile="(Default)">ERROR</Value>
     </Setting>
+    <Setting Name="RootDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

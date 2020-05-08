@@ -33,8 +33,10 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openConfigFileTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.workspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reorderWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +81,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblSelection = new System.Windows.Forms.Label();
             this.pbInstagram = new System.Windows.Forms.PictureBox();
+            this.deleteWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutWorkspace.SuspendLayout();
             this.panelConfig.SuspendLayout();
@@ -118,7 +122,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openWorkspaceToolStripMenuItem,
-            this.openLogFileToolStripMenuItem});
+            this.openLogFileToolStripMenuItem,
+            this.openConfigFileTSMenuItem});
             this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -144,23 +149,46 @@
             this.openLogFileToolStripMenuItem.Text = "Open log file";
             this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
             // 
+            // openConfigFileTSMenuItem
+            // 
+            this.openConfigFileTSMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.openConfigFileTSMenuItem.ForeColor = System.Drawing.Color.White;
+            this.openConfigFileTSMenuItem.Name = "openConfigFileTSMenuItem";
+            this.openConfigFileTSMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.openConfigFileTSMenuItem.Text = "Open config file ";
+            this.openConfigFileTSMenuItem.Click += new System.EventHandler(this.openConfigFileToolStripMenuItem_Click);
+            // 
             // workspaceToolStripMenuItem
             // 
             this.workspaceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addWorkspaceToolStripMenuItem});
+            this.addWorkspaceToolStripMenuItem,
+            this.reorderWorkspaceToolStripMenuItem,
+            this.deleteWorkspaceToolStripMenuItem,
+            this.editWorkspaceToolStripMenuItem});
             this.workspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.workspaceToolStripMenuItem.Name = "workspaceToolStripMenuItem";
             this.workspaceToolStripMenuItem.Size = new System.Drawing.Size(77, 21);
             this.workspaceToolStripMenuItem.Text = "Workspace";
+            this.workspaceToolStripMenuItem.Click += new System.EventHandler(this.workspaceToolStripMenuItem_Click);
             // 
             // addWorkspaceToolStripMenuItem
             // 
             this.addWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.addWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.addWorkspaceToolStripMenuItem.Name = "addWorkspaceToolStripMenuItem";
-            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.addWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.addWorkspaceToolStripMenuItem.Text = "Add workspace";
             this.addWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.addWorkspaceToolStripMenuItem_Click);
+            // 
+            // reorderWorkspaceToolStripMenuItem
+            // 
+            this.reorderWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.reorderWorkspaceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.reorderWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.reorderWorkspaceToolStripMenuItem.Name = "reorderWorkspaceToolStripMenuItem";
+            this.reorderWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.reorderWorkspaceToolStripMenuItem.Text = "Reorder workspace";
+            this.reorderWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.reorderWorkspaceToolStripMenuItem_Click);
             // 
             // VersionTSMenuItem
             // 
@@ -659,6 +687,26 @@
             this.pbInstagram.TabStop = false;
             this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
             // 
+            // deleteWorkspaceToolStripMenuItem
+            // 
+            this.deleteWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.deleteWorkspaceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.deleteWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.deleteWorkspaceToolStripMenuItem.Name = "deleteWorkspaceToolStripMenuItem";
+            this.deleteWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.deleteWorkspaceToolStripMenuItem.Text = "Delete workspace";
+            this.deleteWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.deleteWorkspaceToolStripMenuItem_Click);
+            // 
+            // editWorkspaceToolStripMenuItem
+            // 
+            this.editWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.editWorkspaceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.editWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.editWorkspaceToolStripMenuItem.Name = "editWorkspaceToolStripMenuItem";
+            this.editWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.editWorkspaceToolStripMenuItem.Text = "Edit workspace";
+            this.editWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.editWorkspaceToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -758,6 +806,10 @@
         private System.Windows.Forms.ToolStripMenuItem errorConsoleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem workspaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addWorkspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openConfigFileTSMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reorderWorkspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteWorkspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editWorkspaceToolStripMenuItem;
     }
 }
 

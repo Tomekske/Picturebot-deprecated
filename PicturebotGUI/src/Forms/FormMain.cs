@@ -59,10 +59,6 @@ namespace PicturebotGUI
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
-        private MemoryCache _memCache;
-        private CacheItemPolicy _cacheItemPolicy;
-        private const int CacheTimeMilliseconds = 1000;
-
         public FormMain()
         {
             InitializeComponent();
@@ -96,6 +92,7 @@ namespace PicturebotGUI
                     _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
                 }
             #else
+                openConfigFileTSMenuItem.Visible = false;
                 loggingConsoleToolStripMenuItem.Visible = false;
             #endif
         }
@@ -106,22 +103,32 @@ namespace PicturebotGUI
         /// </summary>
         public void GetWorkspaceShoots()
         {
-            ThreadListBox.Clear(lbShoot);
 
-            // Get a list of all subdirectories  
-            var dirs = from dir in
-                Directory.EnumerateDirectories(Config[WsIndex].Workspace)
-                       select dir;
-
-            // Get the shoot names within the workspace directories and append them to the shoot listBox
-            foreach (var dir in dirs)
+            if (Config != null)
             {
-                ThreadListBox.AppendItem(lbShoot, dir.Substring(dir.LastIndexOf("\\") + 1));
-                _log.Debug($"ListBox lbShoot: \"{dir.Substring(dir.LastIndexOf("\\") + 1)}\" appended");
+                ThreadListBox.Clear(lbShoot);
+                comboWorkspace.Enabled = true;
+
+                // Get a list of all subdirectories  
+                var dirs = from dir in
+                    Directory.EnumerateDirectories(Config[WsIndex].Workspace)
+                           select dir;
+
+                // Get the shoot names within the workspace directories and append them to the shoot listBox
+                foreach (var dir in dirs)
+                {
+                    ThreadListBox.AppendItem(lbShoot, dir.Substring(dir.LastIndexOf("\\") + 1));
+                    _log.Debug($"ListBox lbShoot: \"{dir.Substring(dir.LastIndexOf("\\") + 1)}\" appended");
+                }
+
+                // Display the amount of pictures within the shoot label
+                ThreadLabel.SetText(lblShoots, $"Shoots ({dirs.Count()})");
             }
 
-            // Display the amount of pictures within the shoot label
-            ThreadLabel.SetText(lblShoots, $"Shoots ({dirs.Count()})");
+            else
+            {
+                comboWorkspace.Enabled = false;
+            }
         }
 
         #region LeftClick
@@ -174,7 +181,7 @@ namespace PicturebotGUI
             {
                 // Get the absolute path to the picture
                 Picture picture = _listSelectionPictures[lbSelection.SelectedIndex];
-                string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Preview, $"{picture.Filename}{Extension.JPG}");
+                string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Preview, $"{picture.Filename}{Extension.JPG}");
 
                 // Check whether the path to the picture exists
                 if (Guard.Filesystem.IsPath(path))
@@ -255,7 +262,7 @@ namespace PicturebotGUI
         {
             if (e.Button == MouseButtons.Right && lbShoot.Text != string.Empty)
             {
-                int countFileSelectionFlow = Helper.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)).Count();
+                int countFileSelectionFlow = Helper.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Selection)).Count();
 
                 // Add menu items to the context menu strip
                 ContextMenuStrip menu = new ContextMenuStrip();
@@ -429,7 +436,7 @@ namespace PicturebotGUI
             if (lbEdited.Text != string.Empty)
             {
                 // Get the path to the affinity file within the editing flow
-                string path = Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Editing, $"{lbEdited.Text}{Extension.AFPHOTO}");
+                string path = Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Editing, $"{lbEdited.Text}{Extension.AFPHOTO}");
 
                 // Only open the affinity file when it's exists within the editing flow
                 if (File.Exists(path))
@@ -496,7 +503,7 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, Extension.NEF, true);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -516,7 +523,7 @@ namespace PicturebotGUI
                 {
                     try
                     {
-                        FormPreview f = new FormPreview(_listPreviewPictures, lbPreview.SelectedIndex);
+                        FormPreview f = new FormPreview(Config[WsIndex], _listPreviewPictures, lbPreview.SelectedIndex);
                         _log.Info($"PictureBox pbPreview: opened \"{pbPreview.ImageLocation}\"");
 
                         f.Show();
@@ -565,11 +572,11 @@ namespace PicturebotGUI
 
                         for (int i = 0; i < _listSelectionPictures.Count; i++)
                         {
-                            string path = Path.Combine(Config[WsIndex].Workspace, _listSelectionPictures[i].ShootInfo, Workflow.Preview, $"{_listSelectionPictures[i].Filename}.jpg");
+                            string path = Path.Combine(Config[WsIndex].Workspace, _listSelectionPictures[i].ShootInfo, Config[WsIndex].Preview, $"{_listSelectionPictures[i].Filename}.jpg");
                             list.Add(new Picture(path));
                         }
 
-                        FormPreview f = new FormPreview(list, lbSelection.SelectedIndex);
+                        FormPreview f = new FormPreview(Config[WsIndex], list, lbSelection.SelectedIndex);
                         f.Show();
                     }
                     catch (Exception ex)
@@ -593,7 +600,7 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, Extension.JPG);
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, Extension.JPG);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -611,14 +618,14 @@ namespace PicturebotGUI
 
                 else if (e.KeyCode == Keys.U)
                 {
-                    src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
+                    src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Config[WsIndex].Edited, Properties.Settings.Default.UploadEdited);
                 }
 
                 else if(e.KeyCode == Keys.Enter)
                 {
                     try
                     {
-                        FormPreview f = new FormPreview(_listEditedPictures, lbEdited.SelectedIndex);
+                        FormPreview f = new FormPreview(Config[WsIndex], _listEditedPictures, lbEdited.SelectedIndex);
                         _log.Info($"PictureBox pbEdited: opened \"{pbEdited.ImageLocation}\"");
 
                         f.Show();
@@ -644,7 +651,7 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, Extension.JPG);
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram, Extension.JPG);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -655,14 +662,14 @@ namespace PicturebotGUI
 
                 else if (e.KeyCode == Keys.U)
                 {
-                    src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
+                    src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Config[WsIndex].Instagram, Properties.Settings.Default.UploadInstagram);
                 }
 
                 else if(e.KeyCode == Keys.Enter)
                 {
                     try
                     {
-                        FormPreview f = new FormPreview(_listInstagramPictures, lbInstagram.SelectedIndex);
+                        FormPreview f = new FormPreview(Config[WsIndex], _listInstagramPictures, lbInstagram.SelectedIndex);
                         _log.Info($"PictureBox pbInstagram: opened \"{pbInstagram.ImageLocation}\"");
 
                         f.Show();
@@ -689,22 +696,23 @@ namespace PicturebotGUI
             // Read the configuration file
             Config = Picturebot.Configuration.Read();
 
-            _log.Info("Config file: successfully populated the config object");
-
-            //Loop over every workspace within the configuration file
-            foreach (var c in Config)
+            if (Config != null)
             {
-                // Append every workspace to the combobox, this way the user can switch between workspaces
-                comboWorkspace.Items.Add(c.Workspace);
-                _log.Info($"ComboBox comboWorkspace: \"{c.Workspace}\" added");
-            }
+                _log.Info("Config file: successfully populated the config object");
 
-            // The default workspace is always the zero-th index
-            comboWorkspace.SelectedIndex = 0;
-            // The workspace index is determined by the default value of the selected index of the combobox(index=0)
-            WsIndex = comboWorkspace.SelectedIndex;
-            // The same index is assigned to the config object
-            Config[WsIndex].Index = WsIndex;
+                //Loop over every workspace within the configuration file
+                foreach (var c in Config)
+                {
+                    // Append every workspace to the combobox, this way the user can switch between workspaces
+                    comboWorkspace.Items.Add(c.Workspace);
+                    _log.Info($"ComboBox comboWorkspace: \"{c.Workspace}\" added");
+                }
+
+                // The default workspace is always the zero-th index
+                comboWorkspace.SelectedIndex = 0;
+                // The workspace index is determined by the default value of the selected index of the combobox(index=0)
+                WsIndex = comboWorkspace.SelectedIndex;
+            }
         }
         #endregion ConfigFile
 
@@ -714,27 +722,40 @@ namespace PicturebotGUI
         /// </summary>
         private void comboWorkspace_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Get the selected index
-            WsIndex = comboWorkspace.SelectedIndex;
-            // Assign the selected to the Config object
-            Config[WsIndex].Index = WsIndex;
+            if(Config != null)
+            {
+                // Get the selected index
+                WsIndex = comboWorkspace.SelectedIndex;
 
-            Sht = new Shoot(Config[WsIndex]);
-            Flw = new Flow(Config[WsIndex]);
+                Sht = new Shoot(Config[WsIndex]);
+                Flw = new Flow(Config[WsIndex]);
 
-            // Setup a file system watcher
-            FileSystemWatcher watcher = new FileSystemWatcher(Config[WsIndex].Workspace);
-            watcher.EnableRaisingEvents = true;
-            watcher.IncludeSubdirectories = true;
-            //watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size;
+                if(Guard.Filesystem.IsPath(Config[WsIndex].Workspace))
+                {
+                    // Setup a file system watcher
+                    FileSystemWatcher watcher = new FileSystemWatcher(Config[WsIndex].Workspace);
+                    watcher.EnableRaisingEvents = true;
+                    watcher.IncludeSubdirectories = true;
 
-            // Create even handlers
-            watcher.Created += Watcher_Created;
-            watcher.Deleted += Watcher_Deleted;
+                    // Create even handlers
+                    watcher.Created += Watcher_Created;
+                    watcher.Deleted += Watcher_Deleted;
 
+                    GetWorkspaceShoots();
+                    ClearPictureBoxesAndListBoxesAndLabels();
 
-            GetWorkspaceShoots();
-            ClearPictureBoxesAndListBoxesAndLabels();
+                    _log.Info($"Workspace: {Config[WsIndex].Workspace} has successfully loaded shoots");
+                }
+
+                else
+                {
+                    ThreadListBox.Clear(lbShoot);
+                    ClearPictureBoxesAndListBoxesAndLabels();
+
+                    MessageBox.Show($"Workspace: {Config[WsIndex].Workspace} does not exists - unable to load shoots");
+                    _log.Info($"Workspace: {Config[WsIndex].Workspace} does not exists - unable to load shoots");
+                }
+            }
         }
         #endregion ComboBox
 
@@ -787,6 +808,16 @@ namespace PicturebotGUI
             FormSettingsUpload form = new FormSettingsUpload();
             form.ShowDialog();
         }
+
+        private void deleteWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("DELETED");
+        }
+
+        private void editWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("EDITED");
+        }
         #endregion ToolStrip
 
         #region PictureBoxes
@@ -824,22 +855,22 @@ namespace PicturebotGUI
             int counter = 0;
 
             // Get pictures from the work flow and add them to the associated listBox 
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbPreview, pbPreview, _listPreviewPictures, _shoot, Workflow.Preview);
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbSelection, pbSelection, _listSelectionPictures, _shoot, Workflow.Selection);
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbEdited, pbEdited, _listEditedPictures, _shoot, Workflow.Edited);
-            Clear.ClearAndUpdateFlow(Config[WsIndex], lbInstagram, pbInstagram, _listInstagramPictures, _shoot, Workflow.Instagram);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbPreview, pbPreview, _listPreviewPictures, _shoot, Config[WsIndex].Preview);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbSelection, pbSelection, _listSelectionPictures, _shoot, Config[WsIndex].Selection);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbEdited, pbEdited, _listEditedPictures, _shoot, Config[WsIndex].Edited);
+            Clear.ClearAndUpdateFlow(Config[WsIndex], lbInstagram, pbInstagram, _listInstagramPictures, _shoot, Config[WsIndex].Instagram);
 
             // Display the amount of pictures within the associated flow labels
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)).Length;
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Preview)).Length;
             ThreadLabel.SetText(lblPreview, $"{Config[WsIndex].Preview} ({counter})");
 
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)).Length;
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Selection)).Length;
             ThreadLabel.SetText(lblSelection, $"{Config[WsIndex].Selection} ({counter})");
 
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)).Length;
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Edited)).Length;
             ThreadLabel.SetText(lblEdited, $"{Config[WsIndex].Edited} ({counter})");
 
-            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)).Length;
+            counter = Directory.GetFiles(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Instagram)).Length;
             ThreadLabel.SetText(lblInstagram, $"{Config[WsIndex].Instagram} ({counter})");
 
             _log.Info($"Cleared and updated flows: \"{path}\"");
@@ -895,7 +926,7 @@ namespace PicturebotGUI
             {
                 flow.Rename(path, true, true);
 
-                ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, path);
+                ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Config[WsIndex].Preview, Config[WsIndex].Preview, path);
             }
 
             else if(e.ClickedItem.Text == Strip.RenameShoot)
@@ -923,7 +954,7 @@ namespace PicturebotGUI
             if (e.ClickedItem.Text == Strip.Delete)
             {
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Workflow.Baseflow, Extension.NEF, true);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, Extension.NEF, true);
             }
 
             else if (e.ClickedItem.Text == Strip.AddSelection)
@@ -940,7 +971,7 @@ namespace PicturebotGUI
         {
             // Get the passed data from the context strip menu 
             Picture picture = (Picture)(sender as ContextMenuStrip).Tag;
-            string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Selection, $"{picture.Filename}.NEF");
+            string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Selection, $"{picture.Filename}.NEF");
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
@@ -967,12 +998,12 @@ namespace PicturebotGUI
         {
             // Get the passed data from the context strip menu 
             Picture picture = (Picture)(sender as ContextMenuStrip).Tag;
-            string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Edited, picture.FilenameExtension);
+            string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Edited, picture.FilenameExtension);
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Workflow.Edited, picture.Extension);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, picture.Extension);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
@@ -983,7 +1014,7 @@ namespace PicturebotGUI
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
             {
-                string pathToAffinity = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Workflow.Editing, $"{picture.Filename}{Extension.AFPHOTO}");
+                string pathToAffinity = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Editing, $"{picture.Filename}{Extension.AFPHOTO}");
 
                 if (File.Exists(pathToAffinity))
                 {
@@ -998,7 +1029,7 @@ namespace PicturebotGUI
 
             else if(e.ClickedItem.Text == Strip.Upload)
             {
-                src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Workflow.Edited, Properties.Settings.Default.UploadEdited);
+                src.Command.General.Upload(Config[WsIndex], _shoot, lbEdited.Text, Config[WsIndex].Edited, Properties.Settings.Default.UploadEdited);
             }
         }
 
@@ -1013,12 +1044,12 @@ namespace PicturebotGUI
             if (e.ClickedItem.Text == Strip.Delete)
             {
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Workflow.Instagram, picture.Extension);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram, picture.Extension);
             }
 
             else if (e.ClickedItem.Text == Strip.Upload)
             {
-                src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Workflow.Instagram, Properties.Settings.Default.UploadInstagram);
+                src.Command.General.Upload(Config[WsIndex], _shoot, lbInstagram.Text, Config[WsIndex].Instagram, Properties.Settings.Default.UploadInstagram);
             }
         }
 
@@ -1101,6 +1132,48 @@ namespace PicturebotGUI
         {
             FormWorkspace form = new FormWorkspace();
             form.ShowDialog();
+            comboWorkspace.Items.Clear();
+            ReadConfigFile();
+            GetWorkspaceShoots();
+        }
+
+        /// <summary>
+        /// Open the configuration file within the default editor
+        /// </summary>
+        private void openConfigFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = "config.json";
+            if(Guard.Filesystem.IsPath(path))
+            {
+                src.Command.GUI.OpenFile(path);
+            }
+            else
+            {
+                MessageBox.Show($"\"{path}\" does not exist");
+            }
+        }
+
+        /// <summary>
+        /// Reorder the workspace order
+        /// </summary>
+        private void reorderWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Only reorder files when there is at least one workspace within the configuration file
+            if(comboWorkspace.Items.Count != 0)
+            {
+                FormReorderWorkspace form = new FormReorderWorkspace(Config);
+                form.ShowDialog();
+
+                comboWorkspace.Items.Clear();
+                ReadConfigFile();
+                GetWorkspaceShoots();
+            }
+
+            else
+            {
+                MessageBox.Show("There are no shoots to reorder, add a new shoot");
+                _log.Info("There are no shoots to reorder, add a new shoot");
+            }
         }
         #endregion MenuStrip
 
@@ -1112,7 +1185,7 @@ namespace PicturebotGUI
         {
             _log.Debug($"Watcher renamed: \"{e.FullPath}\"");
 
-            if (!e.FullPath.Contains("jpg_exiftool_tmp") && !e.FullPath.Contains(Workflow.Baseflow) && !e.FullPath.Contains(Workflow.Backup) && !e.FullPath.Contains(Workflow.Preview) && e.FullPath == Path.Combine(Config[WsIndex].Workspace, _shoot) && !isFileSaving)
+            if (!e.FullPath.Contains("jpg_exiftool_tmp") && !e.FullPath.Contains(Config[WsIndex].Base) && !e.FullPath.Contains(Config[WsIndex].Backup) && !e.FullPath.Contains(Config[WsIndex].Preview) && e.FullPath == Path.Combine(Config[WsIndex].Workspace, _shoot) && !isFileSaving)
             {
                 ClearAndUpdateFlows(e.FullPath);
             }
@@ -1126,28 +1199,28 @@ namespace PicturebotGUI
 
             _log.Debug($"Watcher Created: \"{e.FullPath}\"");
 
-            if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)) && isWatcherCreated)
+            if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Preview)) && isWatcherCreated)
             {
-                ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
+                ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Config[WsIndex].Preview, Config[WsIndex].Preview, e.FullPath);
                 isFileSaving = true;
                 isWatcherCreated = false;
             }
 
-            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)) && isWatcherCreated)
+            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Selection)) && isWatcherCreated)
             {
-                ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Workflow.Selection, Config[WsIndex].Selection, e.FullPath);
+                ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Config[WsIndex].Selection, Config[WsIndex].Selection, e.FullPath);
                 isFileSaving = true;
                 isWatcherCreated = false;
             }
 
-            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
+            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Edited)))
             {
-                ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Workflow.Edited, Config[WsIndex].Edited, e.FullPath);
+                ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Config[WsIndex].Edited, Config[WsIndex].Edited, e.FullPath);
             }
 
-            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)) && isWatcherCreated)
+            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Instagram)) && isWatcherCreated)
             {
-                ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
+                ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Config[WsIndex].Instagram, Config[WsIndex].Instagram, e.FullPath);
                 isFileSaving = true;
                 isWatcherCreated = false;
             }
@@ -1186,36 +1259,36 @@ namespace PicturebotGUI
                     _log.Debug($"Watcher deleted flow: \"{e.FullPath}\"");
 
                     // Check whether a picture within the preview flow is deleted
-                    if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Preview)))
+                    if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Preview)))
                     {
                         int indexBefore = ThreadListBox.SelectedIndex(lbPreview);
-                        ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Workflow.Preview, Config[WsIndex].Preview, e.FullPath);
+                        ClearAndUpdateFlow(lbPreview, pbPreview, lblPreview, _listPreviewPictures, Config[WsIndex].Preview, Config[WsIndex].Preview, e.FullPath);
                         int countItems = lbPreview.Items.Count;
                         ThreadListBox.SetSelectedIndex(lbPreview, Methods.CalcListBoxIndex(indexBefore, countItems));
                     }
 
-                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Selection)))
+                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Selection)))
                     {
                         int indexBefore = ThreadListBox.SelectedIndex(lbSelection);
-                        ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Workflow.Selection, Config[WsIndex].Selection, e.FullPath);
+                        ClearAndUpdateFlow(lbSelection, pbSelection, lblSelection, _listSelectionPictures, Config[WsIndex].Selection, Config[WsIndex].Selection, e.FullPath);
                         int countItems = lbSelection.Items.Count;
 
                         ThreadListBox.SetSelectedIndex(lbSelection, Methods.CalcListBoxIndex(indexBefore, countItems));
                     }
 
-                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Edited)))
+                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Edited)))
                     {
                         int indexBefore = ThreadListBox.SelectedIndex(lbEdited);
-                        ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Workflow.Edited, Config[WsIndex].Edited, e.FullPath);
+                        ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Config[WsIndex].Edited, Config[WsIndex].Edited, e.FullPath);
                         int countItems = lbEdited.Items.Count;
 
                         ThreadListBox.SetSelectedIndex(lbEdited, Methods.CalcListBoxIndex(indexBefore, countItems));
                     }
 
-                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Workflow.Instagram)))
+                    else if (e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Instagram)))
                     {
                         int indexBefore = ThreadListBox.SelectedIndex(lbInstagram);
-                        ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Workflow.Instagram, Config[WsIndex].Instagram, e.FullPath);
+                        ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Config[WsIndex].Instagram, Config[WsIndex].Instagram, e.FullPath);
                         int countItems = lbInstagram.Items.Count;
 
                         ThreadListBox.SetSelectedIndex(lbInstagram, Methods.CalcListBoxIndex(indexBefore, countItems));
@@ -1233,8 +1306,16 @@ namespace PicturebotGUI
         /// </summary>
         private void pbAddShoot_Click(object sender, EventArgs e)
         {
-            FormShoot f = new FormShoot(this);
-            f.Show();
+            if(comboWorkspace.Items.Count != 0)
+            {
+                FormShoot f = new FormShoot(this);
+                f.Show();
+            }
+
+            else
+            {
+                _log.Info("FormShoot: unable to open formShoot");
+            }
         }
         #endregion Buttons
 
@@ -1246,7 +1327,7 @@ namespace PicturebotGUI
         {
             try
             {
-                FormPreview f = new FormPreview(_listPreviewPictures, lbPreview.SelectedIndex);
+                FormPreview f = new FormPreview(Config[WsIndex], _listPreviewPictures, lbPreview.SelectedIndex);
                 _log.Info($"PictureBox pbPreview: opened \"{pbPreview.ImageLocation}\"");
 
                 f.Show();
@@ -1269,11 +1350,11 @@ namespace PicturebotGUI
 
                 for (int i = 0; i < _listSelectionPictures.Count; i++)
                 {
-                    string path = Path.Combine(Config[WsIndex].Workspace, _listSelectionPictures[i].ShootInfo, Workflow.Preview, $"{_listSelectionPictures[i].Filename}.jpg");
+                    string path = Path.Combine(Config[WsIndex].Workspace, _listSelectionPictures[i].ShootInfo, Config[WsIndex].Preview, $"{_listSelectionPictures[i].Filename}.jpg");
                     list.Add(new Picture(path));
                 }
 
-                FormPreview f = new FormPreview(list, lbSelection.SelectedIndex);
+                FormPreview f = new FormPreview(Config[WsIndex], list, lbSelection.SelectedIndex);
                 f.Show();
             }
             catch (Exception ex)
@@ -1289,7 +1370,7 @@ namespace PicturebotGUI
         {
             try
             {
-                FormPreview f = new FormPreview(_listEditedPictures, lbEdited.SelectedIndex);
+                FormPreview f = new FormPreview(Config[WsIndex], _listEditedPictures, lbEdited.SelectedIndex);
                 _log.Info($"PictureBox pbEdited: opened \"{pbEdited.ImageLocation}\"");
 
                 f.Show();
@@ -1307,7 +1388,7 @@ namespace PicturebotGUI
         {
             try
             {
-                FormPreview f = new FormPreview(_listInstagramPictures, lbInstagram.SelectedIndex);
+                FormPreview f = new FormPreview(Config[WsIndex], _listInstagramPictures, lbInstagram.SelectedIndex);
                 _log.Info($"PictureBox pbInstagram: opened \"{pbInstagram.ImageLocation}\"");
 
                 f.Show();
@@ -1318,5 +1399,10 @@ namespace PicturebotGUI
             }
         }
         #endregion PictureBoxes
+
+        private void workspaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
