@@ -15,13 +15,21 @@ namespace PicturebotGUI
     {
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
+        private bool _editing;
+
         /// <summary>
         /// Create a FormWorkspace
         /// This class creates a new workspace
         /// </summary>
-        public FormWorkspace()
+        public FormWorkspace(bool editing)
         {
             InitializeComponent();
+
+            _editing = editing;
+
+            string title = _editing == true ? "Edit workspace" : "Add workspace";
+
+            this.Text = title;
 
             // Set the workspace textBox to the value within the configuration file
             if (Properties.Settings.Default.RootDirectory != string.Empty)
@@ -30,16 +38,9 @@ namespace PicturebotGUI
             }
         }
 
-        #region Buttons
-        /// <summary>
-        /// The filled in shoot name and date are set to their associated properties
-        /// </summary>
-        private void pbSave_Click(object sender, EventArgs e)
+        private Config GetConfigObject()
         {
             Config config = new Config();
-
-            bool isDuplicate = false;
-
             config.Workspace = txtWorkspace.Text.Trim();
             config.Backup = txtBackup.Text.Trim();
             config.Editing = txtEditing.Text.Trim();
@@ -49,7 +50,20 @@ namespace PicturebotGUI
             config.Edited = txtEdited.Text.Trim();
             config.Instagram = txtInstagram.Text.Trim();
 
-            config.Workflows = new List<string>(new string[] { config.Workspace, config.Backup, config.Editing, config.Base, config.Preview, config.Selection, config.Edited, config.Instagram });
+            config.Workflows = new List<string>(new string[] { config.Backup, config.Editing, config.Base, config.Preview, config.Selection, config.Edited, config.Instagram });
+
+            return config;
+        }
+
+        #region Buttons
+        /// <summary>
+        /// The filled in shoot name and date are set to their associated properties
+        /// </summary>
+        private void pbSave_Click(object sender, EventArgs e)
+        {
+            bool isDuplicate = false;
+
+            Config config = GetConfigObject();
 
             bool isEmpty = config.Workflows.Contains(string.Empty);
 
@@ -137,23 +151,10 @@ namespace PicturebotGUI
         }
         #endregion Buttons
 
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-            Console.WriteLine("lool");
-        }
-
         /// <summary>
         /// Select the workspace using the folder broswer dialog
         /// </summary>
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Select the workspace using the folder broswer dialog
-        /// </summary>
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void pbBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog browser = new FolderBrowserDialog();
 

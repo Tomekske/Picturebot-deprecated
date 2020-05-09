@@ -809,14 +809,59 @@ namespace PicturebotGUI
             form.ShowDialog();
         }
 
-        private void deleteWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("DELETED");
+        /// <summary>
+        /// Delete a workspace within the configuration file
+        /// </summary>
+         private void deleteWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
+         {
+            // Only delete a workspace when a configuration file exists
+            if (Config != null)
+            {
+                var result = MessageBox.Show($"Are you sure to delete the \"{Config[WsIndex].Workspace}\" workspace ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                    Picturebot.Configuration.Delete(Config, WsIndex);
+                    
+                    // When there are no workspaces left after deleting a workspace form the configuration file then restore the default values
+                    if (Config.Count == 0)
+                    {
+                        comboWorkspace.Items.Clear();
+                        comboWorkspace.ResetText();
+                        comboWorkspace.Enabled = false;
+                        lbShoot.Items.Clear();
+                        ClearPictureBoxesAndListBoxesAndLabelsEverything();
+                    }
+                    else
+                    {
+                        comboWorkspace.Items.Clear();
+                        ReadConfigFile();
+
+                        GetWorkspaceShoots();
+                    }
+                }
+            }
+
+            else
+            {
+                MessageBox.Show("There is no workspace to delete");
+                _log.Info("There is no workspace to delete");
+            }
         }
 
+        /// <summary>
+        /// Edit a workspace within the configuration file
+        /// </summary>
         private void editWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("EDITED");
+            /*            FormWorkspace form = new FormWorkspace(true);
+                        form.ShowDialog();
+                        comboWorkspace.Items.Clear();
+                        ReadConfigFile();
+                        GetWorkspaceShoots();*/
+            Config c = Config[WsIndex];
+            c.Base = "NEW BASE";
+            Picturebot.Configuration.Edit(Config, c, WsIndex);
         }
         #endregion ToolStrip
 
@@ -845,6 +890,32 @@ namespace PicturebotGUI
             ThreadLabel.SetText(lblSelection, Config[WsIndex].Selection);
             ThreadLabel.SetText(lblEdited, Config[WsIndex].Edited);
             ThreadLabel.SetText(lblInstagram, Config[WsIndex].Instagram);
+        }
+
+        /// <summary>
+        /// Restore the default values for the 
+        /// </summary>
+        private void ClearPictureBoxesAndListBoxesAndLabelsEverything()
+        {
+            // Set pictureBox to the default settings
+            ThreadPictureBox.Clear(pbPreview);
+            ThreadPictureBox.Clear(pbSelection);
+            ThreadPictureBox.Clear(pbEdited);
+            ThreadPictureBox.Clear(pbInstagram);
+
+            // Set listBox to the default settings
+            ThreadListBox.Clear(lbShoot);
+            ThreadListBox.Clear(lbPreview);
+            ThreadListBox.Clear(lbSelection);
+            ThreadListBox.Clear(lbEdited);
+            ThreadListBox.Clear(lbInstagram);
+
+            // Set labels to their default settings
+            ThreadLabel.SetText(lblShoots, "Shoots");
+            ThreadLabel.SetText(lblPreview, string.Empty);
+            ThreadLabel.SetText(lblSelection, string.Empty);
+            ThreadLabel.SetText(lblEdited, string.Empty);
+            ThreadLabel.SetText(lblInstagram, string.Empty);
         }
 
         /// <summary>
@@ -1130,7 +1201,7 @@ namespace PicturebotGUI
         /// </summary>
         private void addWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormWorkspace form = new FormWorkspace();
+            FormWorkspace form = new FormWorkspace(false);
             form.ShowDialog();
             comboWorkspace.Items.Clear();
             ReadConfigFile();
@@ -1143,6 +1214,7 @@ namespace PicturebotGUI
         private void openConfigFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string path = "config.json";
+
             if(Guard.Filesystem.IsPath(path))
             {
                 src.Command.GUI.OpenFile(path);

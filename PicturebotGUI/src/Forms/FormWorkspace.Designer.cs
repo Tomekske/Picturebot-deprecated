@@ -46,11 +46,11 @@
             this.txtSelection = new System.Windows.Forms.TextBox();
             this.txtEdited = new System.Windows.Forms.TextBox();
             this.txtInstagram = new System.Windows.Forms.TextBox();
+            this.pbBrowse = new System.Windows.Forms.PictureBox();
             this.pbSave = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBrowse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSave)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -59,7 +59,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.93103F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.06897F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 63F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
             this.tableLayoutPanel1.Controls.Add(this.lblEditing, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.lblWorkspace, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblBackup, 0, 1);
@@ -76,8 +76,8 @@
             this.tableLayoutPanel1.Controls.Add(this.txtSelection, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.txtEdited, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.txtInstagram, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.pbBrowse, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.pbSave, 2, 8);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -102,7 +102,7 @@
             this.lblEditing.ForeColor = System.Drawing.Color.White;
             this.lblEditing.Location = new System.Drawing.Point(3, 71);
             this.lblEditing.Name = "lblEditing";
-            this.lblEditing.Size = new System.Drawing.Size(85, 17);
+            this.lblEditing.Size = new System.Drawing.Size(84, 17);
             this.lblEditing.TabIndex = 7;
             this.lblEditing.Text = "Editing";
             // 
@@ -114,7 +114,7 @@
             this.lblWorkspace.ForeColor = System.Drawing.Color.White;
             this.lblWorkspace.Location = new System.Drawing.Point(3, 7);
             this.lblWorkspace.Name = "lblWorkspace";
-            this.lblWorkspace.Size = new System.Drawing.Size(85, 17);
+            this.lblWorkspace.Size = new System.Drawing.Size(84, 17);
             this.lblWorkspace.TabIndex = 0;
             this.lblWorkspace.Text = "Workspace";
             // 
@@ -126,7 +126,7 @@
             this.lblBackup.ForeColor = System.Drawing.Color.White;
             this.lblBackup.Location = new System.Drawing.Point(3, 39);
             this.lblBackup.Name = "lblBackup";
-            this.lblBackup.Size = new System.Drawing.Size(85, 17);
+            this.lblBackup.Size = new System.Drawing.Size(84, 17);
             this.lblBackup.TabIndex = 1;
             this.lblBackup.Text = "Backup";
             // 
@@ -138,7 +138,7 @@
             this.lblBase.ForeColor = System.Drawing.Color.White;
             this.lblBase.Location = new System.Drawing.Point(3, 103);
             this.lblBase.Name = "lblBase";
-            this.lblBase.Size = new System.Drawing.Size(85, 17);
+            this.lblBase.Size = new System.Drawing.Size(84, 17);
             this.lblBase.TabIndex = 9;
             this.lblBase.Text = "Base";
             // 
@@ -150,7 +150,7 @@
             this.lblPreview.ForeColor = System.Drawing.Color.White;
             this.lblPreview.Location = new System.Drawing.Point(3, 135);
             this.lblPreview.Name = "lblPreview";
-            this.lblPreview.Size = new System.Drawing.Size(85, 17);
+            this.lblPreview.Size = new System.Drawing.Size(84, 17);
             this.lblPreview.TabIndex = 8;
             this.lblPreview.Text = "Preview";
             // 
@@ -162,7 +162,7 @@
             this.lblEdited.ForeColor = System.Drawing.Color.White;
             this.lblEdited.Location = new System.Drawing.Point(3, 199);
             this.lblEdited.Name = "lblEdited";
-            this.lblEdited.Size = new System.Drawing.Size(85, 17);
+            this.lblEdited.Size = new System.Drawing.Size(84, 17);
             this.lblEdited.TabIndex = 10;
             this.lblEdited.Text = "Edited";
             // 
@@ -174,7 +174,7 @@
             this.lblSelction.ForeColor = System.Drawing.Color.White;
             this.lblSelction.Location = new System.Drawing.Point(3, 167);
             this.lblSelction.Name = "lblSelction";
-            this.lblSelction.Size = new System.Drawing.Size(85, 17);
+            this.lblSelction.Size = new System.Drawing.Size(84, 17);
             this.lblSelction.TabIndex = 11;
             this.lblSelction.Text = "Selection";
             // 
@@ -186,103 +186,103 @@
             this.lblInstagram.ForeColor = System.Drawing.Color.White;
             this.lblInstagram.Location = new System.Drawing.Point(3, 231);
             this.lblInstagram.Name = "lblInstagram";
-            this.lblInstagram.Size = new System.Drawing.Size(85, 17);
+            this.lblInstagram.Size = new System.Drawing.Size(84, 17);
             this.lblInstagram.TabIndex = 12;
             this.lblInstagram.Text = "Instagram";
             // 
             // txtWorkspace
             // 
             this.txtWorkspace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtWorkspace.Location = new System.Drawing.Point(94, 6);
+            this.txtWorkspace.Location = new System.Drawing.Point(93, 6);
             this.txtWorkspace.Name = "txtWorkspace";
-            this.txtWorkspace.Size = new System.Drawing.Size(143, 20);
+            this.txtWorkspace.Size = new System.Drawing.Size(142, 20);
             this.txtWorkspace.TabIndex = 2;
             // 
             // txtBackup
             // 
             this.txtBackup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBackup.Location = new System.Drawing.Point(94, 38);
+            this.txtBackup.Location = new System.Drawing.Point(93, 38);
             this.txtBackup.Name = "txtBackup";
-            this.txtBackup.Size = new System.Drawing.Size(143, 20);
+            this.txtBackup.Size = new System.Drawing.Size(142, 20);
             this.txtBackup.TabIndex = 13;
             this.txtBackup.Text = "Backup";
             // 
             // txtEditing
             // 
             this.txtEditing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEditing.Location = new System.Drawing.Point(94, 70);
+            this.txtEditing.Location = new System.Drawing.Point(93, 70);
             this.txtEditing.Name = "txtEditing";
-            this.txtEditing.Size = new System.Drawing.Size(143, 20);
+            this.txtEditing.Size = new System.Drawing.Size(142, 20);
             this.txtEditing.TabIndex = 14;
             this.txtEditing.Text = "Affinity";
             // 
             // txtBase
             // 
             this.txtBase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBase.Location = new System.Drawing.Point(94, 102);
+            this.txtBase.Location = new System.Drawing.Point(93, 102);
             this.txtBase.Name = "txtBase";
-            this.txtBase.Size = new System.Drawing.Size(143, 20);
+            this.txtBase.Size = new System.Drawing.Size(142, 20);
             this.txtBase.TabIndex = 15;
             this.txtBase.Text = "RAW";
             // 
             // txtPreview
             // 
             this.txtPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPreview.Location = new System.Drawing.Point(94, 134);
+            this.txtPreview.Location = new System.Drawing.Point(93, 134);
             this.txtPreview.Name = "txtPreview";
-            this.txtPreview.Size = new System.Drawing.Size(143, 20);
+            this.txtPreview.Size = new System.Drawing.Size(142, 20);
             this.txtPreview.TabIndex = 16;
             this.txtPreview.Text = "Preview";
             // 
             // txtSelection
             // 
             this.txtSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSelection.Location = new System.Drawing.Point(94, 166);
+            this.txtSelection.Location = new System.Drawing.Point(93, 166);
             this.txtSelection.Name = "txtSelection";
-            this.txtSelection.Size = new System.Drawing.Size(143, 20);
+            this.txtSelection.Size = new System.Drawing.Size(142, 20);
             this.txtSelection.TabIndex = 17;
             this.txtSelection.Text = "Selection";
             // 
             // txtEdited
             // 
             this.txtEdited.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEdited.Location = new System.Drawing.Point(94, 198);
+            this.txtEdited.Location = new System.Drawing.Point(93, 198);
             this.txtEdited.Name = "txtEdited";
-            this.txtEdited.Size = new System.Drawing.Size(143, 20);
+            this.txtEdited.Size = new System.Drawing.Size(142, 20);
             this.txtEdited.TabIndex = 18;
             this.txtEdited.Text = "Edited";
             // 
             // txtInstagram
             // 
             this.txtInstagram.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInstagram.Location = new System.Drawing.Point(94, 230);
+            this.txtInstagram.Location = new System.Drawing.Point(93, 230);
             this.txtInstagram.Name = "txtInstagram";
-            this.txtInstagram.Size = new System.Drawing.Size(143, 20);
+            this.txtInstagram.Size = new System.Drawing.Size(142, 20);
             this.txtInstagram.TabIndex = 19;
             this.txtInstagram.Text = "Instagram";
+            // 
+            // pbBrowse
+            // 
+            this.pbBrowse.BackgroundImage = global::PicturebotGUI.Properties.Resources.Browse;
+            this.pbBrowse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbBrowse.Location = new System.Drawing.Point(241, 3);
+            this.pbBrowse.Name = "pbBrowse";
+            this.pbBrowse.Size = new System.Drawing.Size(30, 26);
+            this.pbBrowse.TabIndex = 21;
+            this.pbBrowse.TabStop = false;
+            this.pbBrowse.Click += new System.EventHandler(this.pbBrowse_Click);
             // 
             // pbSave
             // 
             this.pbSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSave.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
             this.pbSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbSave.Location = new System.Drawing.Point(243, 259);
+            this.pbSave.Location = new System.Drawing.Point(241, 259);
             this.pbSave.Name = "pbSave";
-            this.pbSave.Size = new System.Drawing.Size(58, 82);
+            this.pbSave.Size = new System.Drawing.Size(60, 82);
             this.pbSave.TabIndex = 6;
             this.pbSave.TabStop = false;
             this.pbSave.Click += new System.EventHandler(this.pbSave_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::PicturebotGUI.Properties.Resources.Browse;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.Location = new System.Drawing.Point(243, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(30, 26);
-            this.pictureBox1.TabIndex = 21;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // FormWorkspace
             // 
@@ -296,8 +296,8 @@
             this.Text = "Add workspace";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBrowse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSave)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -322,6 +322,6 @@
         private System.Windows.Forms.TextBox txtSelection;
         private System.Windows.Forms.TextBox txtEdited;
         private System.Windows.Forms.TextBox txtInstagram;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbBrowse;
     }
 }

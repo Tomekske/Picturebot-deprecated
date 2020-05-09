@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Picturebot.Properties;
 using System.IO;
+using Picturebot.src.Logger;
 
 namespace Picturebot
 {
@@ -42,14 +43,60 @@ namespace Picturebot
         /// <param name="config">The configuration list containing config objects</param>
         public static void Write(List<Config> config)
         {
+            log4net.ILog log = LogHelper.GetLogger();
+
             string json = JsonConvert.SerializeObject(config, Formatting.Indented);
             File.WriteAllText("config.json", json);
+
+            log.Info("Write: Data to configuration file written");
+        }
+        
+        /// <summary>
+        /// Delete a workspace within the configuration file
+        /// </summary>
+        /// <param name="config">Configuration list</param>
+        /// <param name="index">The index at which the workspace needs to get deleted</param>
+        public static void Delete(List<Config> config, int index)
+        {
+            log4net.ILog log = LogHelper.GetLogger();
+
+            if (index >= 0)
+            {
+                log.Info($"Delete: Deleted \"{config[index].Workspace}\" from config file");
+
+                config.RemoveAt(index);
+
+                // Delete the configuration file when there are no workspaces left
+                if (config.Count == 0)
+                {
+                    File.Delete("config.json");
+                }
+                else
+                {
+                    Write(config);
+                }
+            }
         }
 
-        public static List<Config> Delete(List<Config> config, int index)
+        public static void Edit(List<Config> config, Config oldConfig, int index)
         {
-            config.RemoveAt(index);
-            return config;
+            List<Config> c = Read();
+
+            if(config[index].Workspace != oldConfig.Workspace)
+            {
+                // Workspace naam veranderen
+            }
+
+            if(c[index].Base != oldConfig.Base)
+            {
+                string pathSource = Path.Combine(oldConfig.Workspace, oldConfig.Base);
+                string pathDestination = Path.Combine(oldConfig.Workspace, c[index].Base);
+
+                System.Console.WriteLine($"SRC: {pathSource}");
+                System.Console.WriteLine($"DST: {pathDestination}");
+            }
+
+            //Write(c);
         }
     }
 }
