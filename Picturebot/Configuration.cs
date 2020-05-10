@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Picturebot.Properties;
 using System.IO;
 using Picturebot.src.Logger;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Picturebot
 {
@@ -78,25 +80,85 @@ namespace Picturebot
             }
         }
 
-        public static void Edit(List<Config> config, Config oldConfig, int index)
+        /// <summary>
+        /// Edit a workspace within the configuration file
+        /// </summary>
+        /// <param name="configCurrent">List of all workspace configurations</param>
+        /// <param name="configUpdated">Updated workspace configuration data</param>
+        /// <param name="shoots">List of all shoots within the workspace</param>
+        /// <param name="index">Selected workspace index</param>      
+        /// <param name="path">Path to the workspace</param>      
+        public static bool Edit(List<Config> configCurrent, Config configUpdated, IEnumerable<string> shoots, int index, string path)
         {
-            List<Config> c = Read();
+            log4net.ILog log = LogHelper.GetLogger();
 
-            if(config[index].Workspace != oldConfig.Workspace)
+            bool isRoot = true;
+
+            // Get the shoot names within the workspace directories and append them to the shoot listBox
+            foreach (var shoot in shoots)
             {
-                // Workspace naam veranderen
+                string pathToShoot = Path.Combine(path, shoot.Substring(shoot.LastIndexOf("\\") + 1));
+
+                // Simultaneously zip current config and updated config objects  
+                var zippedWorkflows = configCurrent[index].Workflows.Zip(configUpdated.Workflows, (c, u) => new { Current = c, Updated = u });
+
+                foreach (var flow in zippedWorkflows)
+                {
+                    // Rename flows when current flow and updated flow aren't equal
+                    if (flow.Updated != flow.Current)
+                    {
+                        string source = Path.Combine(pathToShoot, flow.Current);
+                        string destination = Path.Combine(pathToShoot, flow.Updated);
+
+                        if (Guard.Filesystem.IsPath(source))
+                        {
+                            Directory.Move(source, destination);
+                            log.Info($"Workspace rename: Renamed flow \"{source}\" -> \"{destination}\"");
+                        }
+
+                        else
+                        {
+                            log.Error($"Workspace rename: flow \"{source}\" doesn't exists");
+                        }
+                    }
+                }
             }
 
-            if(c[index].Base != oldConfig.Base)
+            // Rename the workspace when updated and current workspace aren't equal
+            if (configUpdated.Workspace != configCurrent[index].Workspace)
             {
-                string pathSource = Path.Combine(oldConfig.Workspace, oldConfig.Base);
-                string pathDestination = Path.Combine(oldConfig.Workspace, c[index].Base);
+                string rootWorkspaceCurrent =  configCurrent[index].Workspace.Substring(0, configCurrent[index].Workspace.LastIndexOf('\\'));
+                string rootWorkspaceUpdated = configUpdated.Workspace.Substring(0, configUpdated.Workspace.LastIndexOf('\\'));
 
-                System.Console.WriteLine($"SRC: {pathSource}");
-                System.Console.WriteLine($"DST: {pathDestination}");
+                // Only rename a workspace when the root directories are equal
+                if (rootWorkspaceUpdated == rootWorkspaceCurrent)
+                {
+                    if (Guard.Filesystem.IsPath(configCurrent[index].Workspace))
+                    {
+                        Directory.Move(configCurrent[index].Workspace, configUpdated.Workspace);
+                        configUpdated.Workspace = configUpdated.Workspace;
+                        log.Info($"Workspace rename: Renamed workspace \"{rootWorkspaceCurrent}\" -> \"{rootWorkspaceUpdated}\"");
+                    }
+                    else
+                    {
+                        configUpdated.Workspace = configCurrent[index].Workspace;
+                        isRoot = false;
+                        log.Error($"Workspace rename: flow \"{rootWorkspaceCurrent}\" doesn't exists");
+                    }
+                }
+                else
+                {
+                    configUpdated.Workspace = configCurrent[index].Workspace;
+                    isRoot = false;
+                    MessageBox.Show("Workspace roots aren't equal");
+                    log.Info($"Workspace rename: Workspace roots \"{rootWorkspaceCurrent}\" and \"{rootWorkspaceUpdated}\" aren't equal");
+                }
             }
 
-            //Write(c);
+            configCurrent[index] = configUpdated;
+            Write(configCurrent);
+
+            return isRoot;
         }
     }
 }

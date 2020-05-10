@@ -16,16 +16,17 @@ namespace PicturebotGUI
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
         private bool _editing;
-
+        private int _index;
         /// <summary>
         /// Create a FormWorkspace
         /// This class creates a new workspace
         /// </summary>
-        public FormWorkspace(bool editing)
+        public FormWorkspace(bool editing, int index)
         {
             InitializeComponent();
 
             _editing = editing;
+            _index = index;
 
             string title = _editing == true ? "Edit workspace" : "Add workspace";
 
@@ -35,6 +36,20 @@ namespace PicturebotGUI
             if (Properties.Settings.Default.RootDirectory != string.Empty)
             {
                 txtWorkspace.Text = Properties.Settings.Default.RootDirectory;
+            }
+
+            if(_editing)
+            {
+                List<Config> workspaces = Picturebot.Configuration.Read();
+
+                txtWorkspace.Text = workspaces[_index].Workspace;
+                txtBackup.Text = workspaces[_index].Backup;
+                txtEditing.Text = workspaces[_index].Editing;
+                txtBase.Text = workspaces[_index].Base;
+                txtPreview.Text = workspaces[_index].Preview;
+                txtSelection.Text = workspaces[_index].Selection;
+                txtEdited.Text = workspaces[_index].Edited;
+                txtInstagram.Text = workspaces[_index].Instagram;
             }
         }
 
@@ -70,83 +85,101 @@ namespace PicturebotGUI
             // Check if a list is unique
             bool isUnique = config.Workflows.GroupBy(i => i).Count() == config.Workflows.Count;
 
+            List<Config> workspaces = Picturebot.Configuration.Read();
+
             // Only append the Config object when all properties are unique
-            if(isUnique && !isEmpty)
+            if (!_editing)
             {
-                List<Config> workspaces = Picturebot.Configuration.Read();
-
-                if (workspaces != null)
-                {
-                    foreach (var workspace in workspaces)
-                    {
-                        // Check if the new workspace is a duplicate
-                        if (workspace.Workspace == config.Workspace)
-                        {
-                            isDuplicate = true;
-                            break;
-                        }
-                    }
-                }
-
-                // Make duplicates are not added to the configuration file
-                if(!isDuplicate)
+                if (isUnique)
                 {
                     if (workspaces != null)
                     {
-                        workspaces.Add(config);
-                        Picturebot.Configuration.Write(workspaces);
-
-                        this.Close();
+                        foreach (var workspace in workspaces)
+                        {
+                            // Check if the new workspace is a duplicate
+                            if (workspace.Workspace == config.Workspace)
+                            {
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
                     }
 
+                    // Make duplicates are not added to the configuration file
+                    if (!isDuplicate && !_editing)
+                    {
+
+                        if (workspaces != null)
+                        {
+                            workspaces.Add(config);
+                            Picturebot.Configuration.Write(workspaces);
+
+                            this.Close();
+                        }
+
+                        else
+                        {
+                            Picturebot.Configuration.Write(new List<Config>(new Config[] { config }));
+
+                            this.Close();
+                        }
+
+                        // Create the specified directory when it doesn't exist yet
+                        if (!Guard.Filesystem.IsPath(config.Workspace))
+                        {
+                            try
+                            {
+                                Directory.CreateDirectory(config.Workspace);
+                                _log.Info($"FormWorkspace: Created directory \"{config.Workspace}\"");
+                            }
+                            catch (DirectoryNotFoundException ex)
+                            {
+                                _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
+                            }
+
+                            catch (IOException ex)
+                            {
+                                _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
+                            }
+
+                            catch (UnauthorizedAccessException ex)
+                            {
+                                _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
+                            }
+
+                            catch (ArgumentNullException ex)
+                            {
+                                _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
+                            }
+                        }
+
+                        _log.Info($"FormWorkspace serialized: Added - {config.ToString().Replace("\r\n", string.Empty)}");
+                    }
                     else
                     {
-                        Picturebot.Configuration.Write(new List<Config>(new Config[] { config }));
-
-                        this.Close();
+                        MessageBox.Show($"Workspace: {config.Workspace} already exists!");
+                        _log.Info($"FormWorkspace serialized: workspace already exists - {config.ToString().Replace("\r\n", string.Empty)}");
                     }
-
-                    // Create the specified directory when it doesn't exist yet
-                    if(!Guard.Filesystem.IsPath(config.Workspace))
-                    {
-                        try
-                        {
-                            Directory.CreateDirectory(config.Workspace);
-                            _log.Info($"FormWorkspace: Created directory \"{config.Workspace}\"");
-                        }
-                        catch (DirectoryNotFoundException ex)
-                        {
-                            _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
-                        }
-
-                        catch (IOException ex)
-                        {
-                            _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
-                        }
-
-                        catch (UnauthorizedAccessException ex)
-                        {
-                            _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
-                        }
-
-                        catch (ArgumentNullException ex)
-                        {
-                            _log.Error($"FormWorkspace: Unable to create directory \"{config.Workspace}\"", ex);
-                        }
-                    }
-
-                    _log.Info($"FormWorkspace serialized: Added - {config.ToString().Replace("\r\n", string.Empty)}");
                 }
                 else
                 {
-                    MessageBox.Show($"Workspace: {config.Workspace} already exists!");
-                    _log.Info($"FormWorkspace serialized: workspace already exists - {config.ToString().Replace("\r\n", string.Empty)}");
+                    _log.Info("FormWorkspace: workflows aren't unique or are empty");
+                    MessageBox.Show("Workflows aren't unique or are empty");
                 }
             }
             else
             {
-                _log.Info("FormWorkspace: workflows aren't unique or are empty");
-                MessageBox.Show("Workflows aren't unique or are empty");
+                string path = Path.Combine(workspaces[_index].Workspace);
+
+                // Get a list of all subdirectories  
+                IEnumerable<string> dirs = Directory.EnumerateDirectories(path);
+
+                bool isRoot = Picturebot.Configuration.Edit(workspaces, config, dirs, _index, path);
+
+                if(isRoot)
+                {
+                    this.Close();
+                }
             }
         }
         #endregion Buttons

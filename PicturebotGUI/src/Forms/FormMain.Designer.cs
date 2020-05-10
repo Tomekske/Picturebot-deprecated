@@ -162,14 +162,13 @@
             // 
             this.workspaceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addWorkspaceToolStripMenuItem,
-            this.reorderWorkspaceToolStripMenuItem,
             this.editWorkspaceToolStripMenuItem,
+            this.reorderWorkspaceToolStripMenuItem,
             this.deleteWorkspaceToolStripMenuItem});
             this.workspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.workspaceToolStripMenuItem.Name = "workspaceToolStripMenuItem";
             this.workspaceToolStripMenuItem.Size = new System.Drawing.Size(77, 21);
             this.workspaceToolStripMenuItem.Text = "Workspace";
-            this.workspaceToolStripMenuItem.Click += new System.EventHandler(this.workspaceToolStripMenuItem_Click);
             // 
             // addWorkspaceToolStripMenuItem
             // 

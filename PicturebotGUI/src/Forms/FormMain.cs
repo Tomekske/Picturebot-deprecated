@@ -13,12 +13,6 @@ using PicturebotGUI.src.GUIThread;
 using System.Diagnostics;
 using PicturebotGUI.src.Logger;
 using Picturebot.src.Helper;
-using System.Configuration;
-using System.Collections.Specialized;
-using System.Xml;
-using System.Xml.Linq;
-using System.Text;
-using System.Runtime.Caching;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -103,16 +97,13 @@ namespace PicturebotGUI
         /// </summary>
         public void GetWorkspaceShoots()
         {
-
             if (Config != null)
             {
                 ThreadListBox.Clear(lbShoot);
                 comboWorkspace.Enabled = true;
 
                 // Get a list of all subdirectories  
-                var dirs = from dir in
-                    Directory.EnumerateDirectories(Config[WsIndex].Workspace)
-                           select dir;
+                var dirs = Directory.EnumerateDirectories(Config[WsIndex].Workspace);
 
                 // Get the shoot names within the workspace directories and append them to the shoot listBox
                 foreach (var dir in dirs)
@@ -694,7 +685,7 @@ namespace PicturebotGUI
             Config = new List<Config>();
 
             // Read the configuration file
-            Config = Picturebot.Configuration.Read();
+            Config = Configuration.Read();
 
             if (Config != null)
             {
@@ -821,7 +812,7 @@ namespace PicturebotGUI
 
                 if (result == DialogResult.Yes)
                 {
-                    Picturebot.Configuration.Delete(Config, WsIndex);
+                    Configuration.Delete(Config, WsIndex);
                     
                     // When there are no workspaces left after deleting a workspace form the configuration file then restore the default values
                     if (Config.Count == 0)
@@ -845,7 +836,7 @@ namespace PicturebotGUI
             else
             {
                 MessageBox.Show("There is no workspace to delete");
-                _log.Info("There is no workspace to delete");
+                _log.Info("Workspace: There is no workspace to delete");
             }
         }
 
@@ -854,14 +845,21 @@ namespace PicturebotGUI
         /// </summary>
         private void editWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*            FormWorkspace form = new FormWorkspace(true);
-                        form.ShowDialog();
-                        comboWorkspace.Items.Clear();
-                        ReadConfigFile();
-                        GetWorkspaceShoots();*/
-            Config c = Config[WsIndex];
-            c.Base = "NEW BASE";
-            Picturebot.Configuration.Edit(Config, c, WsIndex);
+            if (Config != null)
+            {
+                FormWorkspace form = new FormWorkspace(true, WsIndex);
+                form.ShowDialog();
+
+                comboWorkspace.Items.Clear();
+                ReadConfigFile();
+                GetWorkspaceShoots();
+            }
+
+            else
+            {
+                MessageBox.Show("There is no workspace to edit");
+                _log.Info("Workspace: There is no workspace to edit");
+            }
         }
         #endregion ToolStrip
 
@@ -1138,7 +1136,7 @@ namespace PicturebotGUI
                 Properties.Settings.Default.LoggingLevelFileAppender = LoggingLevel.Debug;
                 _log.Info("Toolstrip menu: Saved \"debugToolStripMenuItem\" in config file");
                 Properties.Settings.Default.Save();
-                src.Helper.XmlConfig.UpdateAttributesXML(Appender.File, LoggingLevel.Debug);
+                XmlConfig.UpdateAttributesXML(Appender.File, LoggingLevel.Debug);
             }
         }
 
@@ -1156,7 +1154,7 @@ namespace PicturebotGUI
                 Properties.Settings.Default.LoggingLevelFileAppender = LoggingLevel.Error;
                 _log.Info("Toolstrip menu: Saved \"errorToolStripMenuItem\" in config file");
                 Properties.Settings.Default.Save();
-                src.Helper.XmlConfig.UpdateAttributesXML(Appender.File, LoggingLevel.Error);
+                XmlConfig.UpdateAttributesXML(Appender.File, LoggingLevel.Error);
             }
         }
 
@@ -1174,7 +1172,7 @@ namespace PicturebotGUI
                 Properties.Settings.Default.LoggingLevelConsoleAppender = LoggingLevel.Debug;
                 _log.Info("Toolstrip menu: Saved \"debugConsoleToolStripMenuItem\" in config file");
                 Properties.Settings.Default.Save();
-                src.Helper.XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Debug);
+                XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Debug);
             }
         }
 
@@ -1192,7 +1190,7 @@ namespace PicturebotGUI
                 Properties.Settings.Default.LoggingLevelConsoleAppender = LoggingLevel.Error;
                 _log.Info("Toolstrip menu: Saved \"errorConsoleToolStripMenuItem\" in config file");
                 Properties.Settings.Default.Save();
-                src.Helper.XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Error);
+                XmlConfig.UpdateAttributesXML(Appender.Console, LoggingLevel.Error);
             }
         }
 
@@ -1201,7 +1199,7 @@ namespace PicturebotGUI
         /// </summary>
         private void addWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormWorkspace form = new FormWorkspace(false);
+            FormWorkspace form = new FormWorkspace(false, WsIndex);
             form.ShowDialog();
             comboWorkspace.Items.Clear();
             ReadConfigFile();
@@ -1268,7 +1266,6 @@ namespace PicturebotGUI
         /// </summary>
         private void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-
             _log.Debug($"Watcher Created: \"{e.FullPath}\"");
 
             if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Preview)) && isWatcherCreated)
@@ -1471,10 +1468,5 @@ namespace PicturebotGUI
             }
         }
         #endregion PictureBoxes
-
-        private void workspaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
