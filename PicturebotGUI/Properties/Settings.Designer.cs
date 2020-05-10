@@ -49,7 +49,7 @@ namespace PicturebotGUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.6")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -80,6 +80,18 @@ namespace PicturebotGUI.Properties {
             }
             set {
                 this["LoggingLevelConsoleAppender"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RootDirectory {
+            get {
+                return ((string)(this["RootDirectory"]));
+            }
+            set {
+                this["RootDirectory"] = value;
             }
         }
     }

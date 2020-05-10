@@ -53,11 +53,17 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="byMarc.Net2.WinControls.ReorderingListBox, Version=1.0.6433.28501, Culture=neutral, PublicKeyToken=5ee42ada736ab19b, processorArchitecture=MSIL">
+      <HintPath>..\packages\byMarc.Net2.WinControls.ReorderingListBox.2017.812.0\lib\net20\byMarc.Net2.WinControls.ReorderingListBox.dll</HintPath>
+    </Reference>
     <Reference Include="CircularProgressBar, Version=2.7.0.7, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
       <HintPath>..\packages\CircularProgressBar.2.7.0.7\lib\net40\CircularProgressBar.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="ImageProcessor, Version=2.8.0.152, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageProcessor.2.8.0\lib\net452\ImageProcessor.dll</HintPath>
@@ -70,6 +76,10 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OpenXmlPowerTools, Version=4.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenXmlPowerTools.4.5.3.2\lib\net45\OpenXmlPowerTools.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="SQLitePCLRaw.core, Version=2.0.2.669, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
       <HintPath>..\packages\SQLitePCLRaw.core.2.0.2\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
     </Reference>
@@ -82,6 +92,17 @@
     <Reference Include="System.Data.SQLite, Version=1.0.112.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.112.1\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -89,6 +110,7 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -101,6 +123,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
     <Reference Include="WinFormAnimation, Version=1.6.0.4, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
       <HintPath>..\packages\WinFormAnimation.1.6.0.4\lib\net40\WinFormAnimation.dll</HintPath>
     </Reference>
@@ -109,6 +132,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ListBoxReorder\CancelListBoxItemDragEventArgs.cs" />
+    <Compile Include="Controls\ListBoxReorder\InsertionMode.cs" />
+    <Compile Include="Controls\ListBoxReorder\ListBoxItemDragEventArgs.cs" />
+    <Compile Include="Controls\ListBoxReorder\ListBoxReorder.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,7 +152,6 @@
     <Compile Include="Database\Database\SqliteDataAccess.cs" />
     <Compile Include="src\Enums\Appender.cs" />
     <Compile Include="src\Enums\LoggingLevel.cs" />
-    <Compile Include="src\Enums\Workflow.cs" />
     <Compile Include="src\Forms\FormAddMetadata.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +165,18 @@
       <DependentUpon>FormLoading.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Command\GUI.cs" />
+    <Compile Include="src\Forms\FormReorderWorkspace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormReorderWorkspace.Designer.cs">
+      <DependentUpon>FormReorderWorkspace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Forms\FormWorkspace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormWorkspace.Designer.cs">
+      <DependentUpon>FormWorkspace.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Forms\FormSettingsUpload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +230,7 @@
     <Compile Include="src\Enums\Strip.cs" />
     <Compile Include="src\POCO\Metadata.cs" />
     <Content Include="Icon.ico" />
+    <Content Include="Resources\Browse.png" />
     <Content Include="Resources\Icon.ico" />
     <EmbeddedResource Include="src\Forms\FormAddMetadata.resx">
       <DependentUpon>FormAddMetadata.cs</DependentUpon>
@@ -205,6 +246,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Forms\FormPreview.resx">
       <DependentUpon>FormPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormReorderWorkspace.resx">
+      <DependentUpon>FormReorderWorkspace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormWorkspace.resx">
+      <DependentUpon>FormWorkspace.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Forms\FormSettingsUpload.resx">
       <DependentUpon>FormSettingsUpload.cs</DependentUpon>

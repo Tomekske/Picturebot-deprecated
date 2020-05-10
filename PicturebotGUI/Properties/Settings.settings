@@ -9,13 +9,16 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.5</Value>
+      <Value Profile="(Default)">1.0.6</Value>
     </Setting>
     <Setting Name="LoggingLevelFileAppender" Type="System.String" Scope="User">
       <Value Profile="(Default)">ERROR</Value>
     </Setting>
     <Setting Name="LoggingLevelConsoleAppender" Type="System.String" Scope="User">
       <Value Profile="(Default)">ERROR</Value>
+    </Setting>
+    <Setting Name="RootDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

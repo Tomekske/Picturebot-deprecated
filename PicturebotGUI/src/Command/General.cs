@@ -3,7 +3,7 @@ using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using Picturebot.src.Helper;
 using PicturebotGUI.src.Enums;
-using PicturebotGUI.src.PicturebotGUI;
+using PicturebotGUI.src.Command;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,7 +86,7 @@ namespace PicturebotGUI.src.Command
         /// <param name="extension">The desired file extension</param>
         public static void DeletePicture(Config config, Picture picture, PictureBox pictureBox, Flow flow, string extension)
         {
-            string path = Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Selection, $"{picture.Filename}{extension}");
+            string path = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, $"{picture.Filename}{extension}");
             flow.Remove(path);
             GUIThread.ThreadPictureBox.Clear(pictureBox);
         }
@@ -101,10 +101,10 @@ namespace PicturebotGUI.src.Command
             log4net.ILog log = LogHelper.GetLogger();
 
             // Get the path to the base flow
-            string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow, $"{picture.Filename}{Extension.NEF}");
+            string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base, $"{picture.Filename}{Extension.NEF}");
 
             // Get the path to the selection flow
-            string pathToSelectionFlow = Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Selection, $"{picture.Filename}{Extension.NEF}");
+            string pathToSelectionFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, $"{picture.Filename}{Extension.NEF}");
 
             // Copy the picture to the selection flow only when isn't listed yet in the selection flow
             if (!Guard.Filesystem.IsPath(pathToSelectionFlow))
@@ -127,7 +127,7 @@ namespace PicturebotGUI.src.Command
             }
             else
             {
-                log.Info($"ListBox lbPreview: \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Baseflow)}\" already exists in \"{Path.Combine(config.Workspace, picture.ShootInfo, Workflow.Selection)}\"");
+                log.Info($"ListBox lbPreview: \"{Path.Combine(config.Workspace, picture.ShootInfo, config.Base)}\" already exists in \"{Path.Combine(config.Workspace, picture.ShootInfo, config.Selection)}\"");
             }
         }
 
@@ -154,7 +154,7 @@ namespace PicturebotGUI.src.Command
             FormRenameShoot formRenameShoot = new FormRenameShoot(config, oldShootInfo);
             formRenameShoot.ShowDialog();
 
-            string pathToSelection = Path.Combine(config.Workspace, oldShootInfo, Workflow.Selection);
+            string pathToSelection = Path.Combine(config.Workspace, oldShootInfo, config.Selection);
             int countFileSelectionFlow = Picturebot.src.Helper.Helper.GetFiles(pathToSelection).Count();
 
             // Rename every file recursively

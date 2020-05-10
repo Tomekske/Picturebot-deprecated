@@ -40,6 +40,8 @@ namespace PicturebotGUI
 
             // Initialize config object
             _config = _formMain.Config[_formMain.WsIndex];
+
+            _log.Info("FormShoot: opened formShoot");
         }
 
         #region BackgroundWorker
@@ -133,7 +135,7 @@ namespace PicturebotGUI
         /// </summary>
         private void bgwMove_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-             string path = Path.Combine(_config.Workspace, _shootInfo, _config.BaseFlow);
+             string path = Path.Combine(_config.Workspace, _shootInfo, _config.Base);
 
             _bgwMove.Finished("Hashing files!");
 
@@ -212,7 +214,7 @@ namespace PicturebotGUI
                 if(shoot.Add(_shootInfo))
                 {
                     _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
-                    _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, Workflow.Baseflow);
+                    _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, _config.Base);
                     _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
                     _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
 
@@ -249,7 +251,7 @@ namespace PicturebotGUI
                 foreach (var file in files)
                 {
                     // Get the destination path where the pictures are going to be moved to
-                    string destination = Path.Combine(pathToShoot, _config.BaseFlow, Path.GetFileName(file));
+                    string destination = Path.Combine(pathToShoot, _config.Base, Path.GetFileName(file));
 
                     // Picture object containing all the necessary meta-data 
                     Picture picture = new Picture(destination, _config.Workspace, index);

@@ -1,6 +1,9 @@
-﻿using Picturebot.src.Enums;
+﻿using ImageProcessor;
+using Picturebot.src.Enums;
+using Picturebot.src.POCO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -238,7 +241,7 @@ namespace Picturebot
         /// </summary>
         public override string ToString()
         {
-            return  $"Index: {Index}\r\n" +
+            return $"Index: {Index}\r\n" +
                     $"Workspace: {Workspace}\r\n" +
                     $"Flow: {Flow}\r\n" +
                     $"ShootInfo: {ShootInfo}\r\n" +

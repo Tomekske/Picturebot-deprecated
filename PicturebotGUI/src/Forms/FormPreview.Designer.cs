@@ -52,11 +52,9 @@
             // 
             this.pbPicture.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pbPicture.Location = new System.Drawing.Point(3, 3);
-            this.pbPicture.MaximumSize = new System.Drawing.Size(1920, 1080);
-            this.pbPicture.MinimumSize = new System.Drawing.Size(1920, 1080);
             this.pbPicture.Name = "pbPicture";
-            this.pbPicture.Size = new System.Drawing.Size(1920, 1080);
-            this.pbPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPicture.Size = new System.Drawing.Size(480, 322);
+            this.pbPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbPicture.TabIndex = 0;
             this.pbPicture.TabStop = false;
             this.pbPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.pbPicture_Paint);

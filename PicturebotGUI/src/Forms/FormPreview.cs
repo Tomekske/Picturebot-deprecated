@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Picturebot;
 using Picturebot.src.Logger;
 using Picturebot.src.POCO;
+using PicturebotGUI.src.Enums;
 using PicturebotGUI.src.POCO;
 
 namespace PicturebotGUI
@@ -23,6 +24,7 @@ namespace PicturebotGUI
         private string _metadata = string.Empty;
 
         private List<Picture> _listPictures = new List<Picture>();
+        private Config _config;
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
@@ -31,19 +33,19 @@ namespace PicturebotGUI
         /// </summary>
         /// <param name="listPictures">Picture list containing all the pictures within a specified flow</param>
         /// <param name="index">Current selected index</param>
-        public FormPreview(List<Picture> listPictures, int index)
+        public FormPreview(Config config, List<Picture> listPictures, int index)
         {
             InitializeComponent();
+            _config = config;
+            pbPicture.Size = new Size(1920, 1080);
 
             _index = index;
-
-            pbPicture.ImageLocation = listPictures[_index].Absolute;
 
             _listPictures = listPictures;
             _amountOfPictures = listPictures.Count;
 
+            DeterminePictureBoxSizeMode();
             UpdateMetaData(listPictures[_index].Absolute);
-            //1880, 1040
         }
 
         #region PictureBox
@@ -97,9 +99,6 @@ namespace PicturebotGUI
 
             this.Text = pbPicture.ImageLocation;
             _metadata = $"\"{pbPicture.ImageLocation}\" [{counter}]";
-            //pbPicture.Image = image;
-
-            //lblIndex.Text = msg;
         }
 
         /// <summary>
@@ -117,9 +116,10 @@ namespace PicturebotGUI
                 _index = _amountOfPictures - 1;
             }
 
-            if(Guard.Filesystem.IsPath(_listPictures[_index].Absolute))
+            if (Guard.Filesystem.IsPath(_listPictures[_index].Absolute))
             {
-                pbPicture.ImageLocation = _listPictures[_index].Absolute;
+                //pbPicture.ImageLocation = _listPictures[_index].Absolute;
+                DeterminePictureBoxSizeMode();
                 _log.Info($"PictureBox pbPicture: displayed \"{_listPictures[_index].Absolute}\"");
             }
             else
@@ -139,6 +139,48 @@ namespace PicturebotGUI
             {
                 e.Graphics.DrawString(_metadata, myFont, Brushes.White, new Point(2, 2));
             }
+        }
+
+        /// <summary>
+        /// Obtain the dimension of a picture
+        /// </summary>
+        /// <param name="picture">Picture dimension</param>
+        /// <returns></returns>
+        private Dimension GetDimension(Picture picture)
+        {
+            int width, height = 0;
+            Dimension dimension;
+
+            using (Bitmap imgage = new Bitmap(picture.Absolute))
+            {
+                width = imgage.Width;
+                height = imgage.Height;
+            }
+
+            dimension = new Dimension(width, height);
+
+            _log.Debug($"{dimension} - \"{picture.Absolute}\"");
+
+            return dimension;
+        }
+
+        /// <summary>
+        /// Determine the most pleasing pictureBox size mode
+        /// </summary>
+        private void DeterminePictureBoxSizeMode()
+        {
+            Dimension dimension = GetDimension(_listPictures[_index]);
+
+            if ((dimension.Width > dimension.Height) && _listPictures[_index].Absolute.Contains(_config.Preview))
+            {
+                pbPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
+            else
+            {
+                pbPicture.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+
+            pbPicture.LoadAsync(_listPictures[_index].Absolute);
         }
     }
 }
