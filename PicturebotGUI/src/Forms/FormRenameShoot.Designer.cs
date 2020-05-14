@@ -127,6 +127,7 @@
             this.Name = "FormRenameShoot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rename shoot";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormRenameShoot_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSave)).EndInit();

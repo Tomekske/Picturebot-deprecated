@@ -40,12 +40,17 @@
             this.bgwMove = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutAddShoot = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutAddInformation = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutRadioBtns = new System.Windows.Forms.TableLayoutPanel();
+            this.radioRAW = new System.Windows.Forms.RadioButton();
+            this.radioCompressed = new System.Windows.Forms.RadioButton();
             this.pbSaveShoot = new System.Windows.Forms.PictureBox();
             this.panelAddPictures = new System.Windows.Forms.Panel();
             this.panelLabelAddPictures = new System.Windows.Forms.Panel();
             this.lblAddPictures = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutAddShoot.SuspendLayout();
             this.tableLayoutAddInformation.SuspendLayout();
+            this.tableLayoutRadioBtns.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).BeginInit();
             this.panelAddPictures.SuspendLayout();
             this.panelLabelAddPictures.SuspendLayout();
@@ -57,7 +62,6 @@
             this.lbRaw.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(43)))), ((int)(((byte)(61)))));
             this.lbRaw.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbRaw.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbRaw.Enabled = false;
             this.lbRaw.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lbRaw.ForeColor = System.Drawing.Color.White;
             this.lbRaw.FormattingEnabled = true;
@@ -68,6 +72,7 @@
             this.lbRaw.TabIndex = 1;
             this.lbRaw.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragDrop);
             this.lbRaw.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragEnter);
+            this.lbRaw.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbRaw_KeyDown);
             // 
             // dtShoot
             // 
@@ -172,6 +177,7 @@
             this.tableLayoutAddInformation.Controls.Add(this.dtShoot, 1, 1);
             this.tableLayoutAddInformation.Controls.Add(this.lblName, 0, 0);
             this.tableLayoutAddInformation.Controls.Add(this.txtName, 1, 0);
+            this.tableLayoutAddInformation.Controls.Add(this.tableLayoutRadioBtns, 1, 2);
             this.tableLayoutAddInformation.Controls.Add(this.lblDate, 0, 1);
             this.tableLayoutAddInformation.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutAddInformation.Location = new System.Drawing.Point(3, 3);
@@ -182,6 +188,47 @@
             this.tableLayoutAddInformation.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 320F));
             this.tableLayoutAddInformation.Size = new System.Drawing.Size(297, 389);
             this.tableLayoutAddInformation.TabIndex = 0;
+            // 
+            // tableLayoutRadioBtns
+            // 
+            this.tableLayoutRadioBtns.ColumnCount = 1;
+            this.tableLayoutRadioBtns.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutRadioBtns.Controls.Add(this.radioRAW, 0, 0);
+            this.tableLayoutRadioBtns.Controls.Add(this.radioCompressed, 0, 1);
+            this.tableLayoutRadioBtns.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutRadioBtns.Location = new System.Drawing.Point(69, 336);
+            this.tableLayoutRadioBtns.Name = "tableLayoutRadioBtns";
+            this.tableLayoutRadioBtns.RowCount = 2;
+            this.tableLayoutRadioBtns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutRadioBtns.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutRadioBtns.Size = new System.Drawing.Size(225, 50);
+            this.tableLayoutRadioBtns.TabIndex = 4;
+            // 
+            // radioRAW
+            // 
+            this.radioRAW.AutoSize = true;
+            this.radioRAW.Checked = true;
+            this.radioRAW.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioRAW.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.radioRAW.Location = new System.Drawing.Point(3, 3);
+            this.radioRAW.Name = "radioRAW";
+            this.radioRAW.Size = new System.Drawing.Size(53, 19);
+            this.radioRAW.TabIndex = 0;
+            this.radioRAW.TabStop = true;
+            this.radioRAW.Text = "RAW";
+            this.radioRAW.UseVisualStyleBackColor = true;
+            // 
+            // radioCompressed
+            // 
+            this.radioCompressed.AutoSize = true;
+            this.radioCompressed.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioCompressed.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.radioCompressed.Location = new System.Drawing.Point(3, 28);
+            this.radioCompressed.Name = "radioCompressed";
+            this.radioCompressed.Size = new System.Drawing.Size(100, 19);
+            this.radioCompressed.TabIndex = 1;
+            this.radioCompressed.Text = "Compressed";
+            this.radioCompressed.UseVisualStyleBackColor = true;
             // 
             // pbSaveShoot
             // 
@@ -226,6 +273,10 @@
             this.lblAddPictures.TabIndex = 0;
             this.lblAddPictures.Text = "RAW pictures";
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
             // FormShoot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -243,6 +294,8 @@
             this.tableLayoutAddShoot.ResumeLayout(false);
             this.tableLayoutAddInformation.ResumeLayout(false);
             this.tableLayoutAddInformation.PerformLayout();
+            this.tableLayoutRadioBtns.ResumeLayout(false);
+            this.tableLayoutRadioBtns.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).EndInit();
             this.panelAddPictures.ResumeLayout(false);
             this.panelLabelAddPictures.ResumeLayout(false);
@@ -267,5 +320,9 @@
         private System.Windows.Forms.Panel panelAddPictures;
         private System.Windows.Forms.Panel panelLabelAddPictures;
         private System.Windows.Forms.Label lblAddPictures;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutRadioBtns;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.RadioButton radioRAW;
+        private System.Windows.Forms.RadioButton radioCompressed;
     }
 }

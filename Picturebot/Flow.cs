@@ -42,8 +42,7 @@ namespace Picturebot
             }
             else 
             {
-                _log.Error($"Flow: couldn't delete \"{path}\"");
-                MessageBox.Show($"Flow: couldn't delete \"{path}\"");
+                _log.Info($"Flow: couldn't delete \"{path}\"");
             }
         }
 

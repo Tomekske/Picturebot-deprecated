@@ -36,8 +36,8 @@
             this.openConfigFileTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.workspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reorderWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reorderWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteWorkspaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionTSMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -179,16 +179,6 @@
             this.addWorkspaceToolStripMenuItem.Text = "Add workspace";
             this.addWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.addWorkspaceToolStripMenuItem_Click);
             // 
-            // reorderWorkspaceToolStripMenuItem
-            // 
-            this.reorderWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.reorderWorkspaceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.reorderWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.reorderWorkspaceToolStripMenuItem.Name = "reorderWorkspaceToolStripMenuItem";
-            this.reorderWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.reorderWorkspaceToolStripMenuItem.Text = "Reorder workspace";
-            this.reorderWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.reorderWorkspaceToolStripMenuItem_Click);
-            // 
             // editWorkspaceToolStripMenuItem
             // 
             this.editWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
@@ -198,6 +188,16 @@
             this.editWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.editWorkspaceToolStripMenuItem.Text = "Edit workspace";
             this.editWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.editWorkspaceToolStripMenuItem_Click);
+            // 
+            // reorderWorkspaceToolStripMenuItem
+            // 
+            this.reorderWorkspaceToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.reorderWorkspaceToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.reorderWorkspaceToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.reorderWorkspaceToolStripMenuItem.Name = "reorderWorkspaceToolStripMenuItem";
+            this.reorderWorkspaceToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.reorderWorkspaceToolStripMenuItem.Text = "Reorder workspace";
+            this.reorderWorkspaceToolStripMenuItem.Click += new System.EventHandler(this.reorderWorkspaceToolStripMenuItem_Click);
             // 
             // deleteWorkspaceToolStripMenuItem
             // 

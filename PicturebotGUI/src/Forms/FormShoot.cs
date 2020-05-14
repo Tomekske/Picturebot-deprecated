@@ -3,11 +3,14 @@ using Picturebot.src.Logger;
 using Picturebot.src.POCO;
 using PicturebotGUI.src.Background;
 using PicturebotGUI.src.Enums;
+using PicturebotGUI.src.GUIThread;
+using PicturebotGUI.src.Helper;
 using PicturebotGUI.src.POCO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PicturebotGUI
@@ -35,7 +38,7 @@ namespace PicturebotGUI
         {
             // Create a formMain object
             _formMain = form as FormMain;
-              
+
             InitializeComponent();
 
             // Initialize config object
@@ -135,13 +138,13 @@ namespace PicturebotGUI
         /// </summary>
         private void bgwMove_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-             string path = Path.Combine(_config.Workspace, _shootInfo, _config.Base);
+            string path = Path.Combine(_config.Workspace, _shootInfo, _config.Base);
 
             _bgwMove.Finished("Hashing files!");
 
             if (Directory.Exists(path))
             {
-               _bgwHash.Start();
+                _bgwHash.Start();
             }
         }
         #endregion MoveFiles
@@ -173,7 +176,7 @@ namespace PicturebotGUI
         private void bgwConvert_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _formMain.GetWorkspaceShoots();
-            
+
             // Close the loading form
             _formLoading.Close();
             // Close the current form
@@ -201,29 +204,70 @@ namespace PicturebotGUI
         private void pbSaveShoot_Click(object sender, EventArgs e)
         {
             // Make sure pictures are moved to the listBox
-            if(lbRaw.Items.Count == 0)
+
+            bool isEmpty = txtName.Text.Trim() == string.Empty ? true : false;
+
+            if (!isEmpty && lbRaw.Items.Count != 0)
             {
-                MessageBox.Show($"Make sure the shoot information is filled in and at least one picture is dragged into the listBox");
+                // Format shoot information
+                _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
+                int index = 0;
+
+                string pathToShoot = Path.Combine(_config.Workspace, _shootInfo);
+
+                // Start the processing chain only when the new shoot name doesn't exists
+                if (!Guard.Filesystem.IsPath(pathToShoot))
+                {
+                    if (radioRAW.Checked)
+                    {
+                        bool isExtension = _listPictures.All(o => Extension.RAW.Any(w => w == o.Extension));
+
+                        if (isExtension)
+                        {
+                            //
+                        }
+
+                        else
+                        {
+                            MessageBox.Show("One or more files are not a RAW format");
+                            _log.Info("One or more files are not a RAW format");
+                        }
+                    }
+
+                    else if (radioCompressed.Checked)
+                    {
+                        Console.WriteLine("COMPRESSED");
+                    }
+                }
+                else
+                {
+                    _log.Info($"Shoot: already \"{pathToShoot}\" exists");
+                    MessageBox.Show($"Shoot: already \"{pathToShoot}\" exists");
+                }
             }
 
             else
             {
-                _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
-                Shoot shoot = new Shoot(_config);
-
-                if(shoot.Add(_shootInfo))
-                {
-                    _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
-                    _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, _config.Base);
-                    _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
-                    _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
-
-                    // Open the loading form
-                    _formLoading.Show();
-                    // Start the moving procedure
-                    _bgwMove.Start();
-                }
+                MessageBox.Show("Make sure to enter a shoot name and that at least one picture is dragged within the listBox");
+                _log.Info("Make sure to enter a shoot name and that at least one picture is dragged within the listBox");
             }
+
+            /* _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
+            Shoot shoot = new Shoot(_config);
+
+            if (shoot.Add(_shootInfo))
+            {
+                _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
+                _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, _config.Base);
+                _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
+                _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
+
+                // Open the loading form
+                _formLoading.Show();
+                // Start the moving procedure
+                _bgwMove.Start();
+            }*/
+
         }
         #endregion Buttons  
 
@@ -238,37 +282,16 @@ namespace PicturebotGUI
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             Array.Sort(files);
 
-            // Format shoot information
-            _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
-            int index = 0;
-
-            string pathToShoot = Path.Combine(_config.Workspace, _shootInfo);
-
-            // Start the processing chain only when the new shoot name doesn't exists
-            if (!Guard.Filesystem.IsPath(pathToShoot))
+            // Loop over the dragged pictures
+            foreach (var file in files)
             {
-                // Loop over the dragged pictures
-                foreach (var file in files)
-                {
-                    // Get the destination path where the pictures are going to be moved to
-                    string destination = Path.Combine(pathToShoot, _config.Base, Path.GetFileName(file));
+                Picture picture = new Picture(file, _config.Workspace);
 
-                    // Picture object containing all the necessary meta-data 
-                    Picture picture = new Picture(destination, _config.Workspace, index);
+                // Append picture to the listBox
+                lbRaw.Items.Add(picture.FilenameExtension);
 
-                    _dictMoveFiles.Add(picture.Absolute, new Drag(file, destination));
-                    // Append picture to the listBox
-                    lbRaw.Items.Add(picture.FilenameExtension);
-
-                    // Append picture to the picture list
-                    _listPictures.Add(picture);
-                    index++;
-                }
-            }
-            else
-            {
-                _log.Info($"Shoot: already \"{pathToShoot}\" exists");
-                MessageBox.Show($"Shoot: already \"{pathToShoot}\" exists");   
+                // Append picture to the picture list
+                _listPictures.Add(picture);
             }
 
             src.GUIThread.ThreadLabel.SetText(lblAddPictures, $"RAW pictures ({lbRaw.Items.Count})");
@@ -285,6 +308,36 @@ namespace PicturebotGUI
             }
         }
         #endregion DragAndDrop
+
         #endregion ListBox
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void lbRaw_KeyDown(object sender, KeyEventArgs e)
+        {
+            int index = lbRaw.SelectedIndex;
+
+            // Make sure it's not possible to perform keyboard actions when the listBox is empty
+            if (lbRaw.Items.Count != 0)
+            {
+                //Picture picture = new Picture(_listPreviewPictures[lbPreview.SelectedIndex].Absolute);
+
+                if (e.KeyCode == Keys.Delete)
+                {
+                    int indexBefore = lbRaw.SelectedIndex;
+
+                    lbRaw.Items.RemoveAt(index);
+                    _listPictures.RemoveAt(index);
+
+                    int countItems = lbRaw.Items.Count;
+
+                    ThreadLabel.SetText(lblAddPictures, $"RAW pictures ({lbRaw.Items.Count})");
+                    lbRaw.SelectedIndex = Methods.CalcListBoxIndex(indexBefore, countItems);
+                }
+            }
+        }
     }
 }

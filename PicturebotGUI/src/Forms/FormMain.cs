@@ -55,7 +55,12 @@ namespace PicturebotGUI
 
         public FormMain()
         {
+            // Hack to make sure the appearance of the date picker won't change
+            Application.EnableVisualStyles();
+
             InitializeComponent();
+            Console.WriteLine(Extension.RAW[0]);
+            Console.WriteLine(Extension.RAW[1]);
             ReadConfigFile();
             GetWorkspaceShoots();
 
@@ -474,9 +479,13 @@ namespace PicturebotGUI
                 {
                     _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
 
-                    GetWorkspaceShoots();
-                    lbShoot.SelectedItem = _shoot;
-                    ClearAndUpdateFlows(_shoot);
+                    // Only refresh the workspace when a shoot was renamed
+                    if(_shoot != string.Empty)
+                    {
+                        GetWorkspaceShoots();
+                        lbShoot.SelectedItem = _shoot;
+                        ClearAndUpdateFlows(_shoot);
+                    }
                 }
             }
         }
@@ -1001,9 +1010,14 @@ namespace PicturebotGUI
             else if(e.ClickedItem.Text == Strip.RenameShoot)
             {
                 _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
-                GetWorkspaceShoots();
-                lbShoot.SelectedItem = _shoot;
-                ClearAndUpdateFlows(_shoot);
+
+                // Only refresh the workspace when a shoot was renamed
+                if (_shoot != string.Empty)
+                {
+                    GetWorkspaceShoots();
+                    lbShoot.SelectedItem = _shoot;
+                    ClearAndUpdateFlows(_shoot);
+                }
             }
 
             else if (e.ClickedItem.Text == Strip.Explorer)
@@ -1022,6 +1036,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isWatcherDeleted = true;
                 isShootDeleting = false;
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, Extension.NEF, true);
             }
@@ -1044,6 +1059,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isWatcherDeleted = true;
                 isShootDeleting = false;
                 src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
             }
@@ -1071,8 +1087,9 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isWatcherDeleted = true;
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, picture.Extension);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, picture.Extension, false, true);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
@@ -1112,6 +1129,7 @@ namespace PicturebotGUI
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
+                isWatcherDeleted = true;
                 isShootDeleting = false;
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram, picture.Extension);
             }

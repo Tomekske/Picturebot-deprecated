@@ -2,6 +2,7 @@
 using PicturebotGUI.src.Logger;
 using PicturebotGUI.src.Command;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace PicturebotGUI.src.Command
 {
@@ -55,7 +56,17 @@ namespace PicturebotGUI.src.Command
         /// <param name="url">URL to the website</param>
         public static void OpenWebsite(string url)
         {
-            Process.Start(url);
+            log4net.ILog log = LogHelper.GetLogger();
+
+            try
+            {
+                Process.Start(url);
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show("URL to website does not exist");
+                log.Error("URL to website does not exist", e);
+            }
         }
 
         /// <summary>
