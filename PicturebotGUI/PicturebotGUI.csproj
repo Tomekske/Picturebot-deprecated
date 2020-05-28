@@ -56,9 +56,6 @@
     <Reference Include="byMarc.Net2.WinControls.ReorderingListBox, Version=1.0.6433.28501, Culture=neutral, PublicKeyToken=5ee42ada736ab19b, processorArchitecture=MSIL">
       <HintPath>..\packages\byMarc.Net2.WinControls.ReorderingListBox.2017.812.0\lib\net20\byMarc.Net2.WinControls.ReorderingListBox.dll</HintPath>
     </Reference>
-    <Reference Include="CircularProgressBar, Version=2.7.0.7, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
-      <HintPath>..\packages\CircularProgressBar.2.7.0.7\lib\net40\CircularProgressBar.dll</HintPath>
-    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -92,13 +89,13 @@
     <Reference Include="System.Data.SQLite, Version=1.0.112.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.112.1\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
     </Reference>
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
@@ -151,6 +148,7 @@
     <Compile Include="src\Command\General.cs" />
     <Compile Include="Database\Database\SqliteDataAccess.cs" />
     <Compile Include="src\Enums\Appender.cs" />
+    <Compile Include="src\Enums\FileType.cs" />
     <Compile Include="src\Enums\LoggingLevel.cs" />
     <Compile Include="src\Forms\FormAddMetadata.cs">
       <SubType>Form</SubType>

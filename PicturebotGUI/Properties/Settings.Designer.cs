@@ -49,7 +49,7 @@ namespace PicturebotGUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.7")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -92,6 +92,18 @@ namespace PicturebotGUI.Properties {
             }
             set {
                 this["RootDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RAW")]
+        public string DefaultUploadType {
+            get {
+                return ((string)(this["DefaultUploadType"]));
+            }
+            set {
+                this["DefaultUploadType"] = value;
             }
         }
     }

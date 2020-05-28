@@ -35,7 +35,7 @@ namespace PicturebotGUI.src.Background
         }
 
         /// <summary>
-        /// Move all the pictures wihtin the base flow to the backup directory
+        /// Move all pictures within the base flow to the backup directory
         /// </summary>
         public override void Work()
         {
@@ -47,8 +47,26 @@ namespace PicturebotGUI.src.Background
                 string text = $"Moved files: {index}/{lenght}";
                 int procent = index++ * 100 / lenght;
                 BackgroundWorker.ReportProgress(procent, text);
-
                 File.Copy(_dictMoveFiles[picture.Absolute].Source, _dictMoveFiles[picture.Absolute].Destination);
+            }
+        }
+
+        /// <summary>
+        /// Move all pictures within the base flow to the preview directory
+        /// </summary>
+        /// <param name="shootInfo"></param>
+        public void MoveFiles(string shootInfo)
+        {
+            string path = Path.Combine(Config.Workspace, shootInfo, Config.Base);
+
+            string[] files = Directory.GetFiles(path).OrderByDescending(d => new FileInfo(d).LastWriteTime).Reverse().ToArray();
+
+            // Loop over the files
+            foreach (var file in files)
+            {
+                Picture picture = new Picture(file);
+                string destination = Path.Combine(Config.Workspace, shootInfo, Config.Preview, picture.FilenameExtension);
+                File.Copy(picture.Absolute, destination);
             }
         }
     }

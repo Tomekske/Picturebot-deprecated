@@ -42,8 +42,7 @@ namespace Picturebot
             }
             else 
             {
-                _log.Error($"Flow: couldn't delete \"{path}\"");
-                MessageBox.Show($"Flow: couldn't delete \"{path}\"");
+                _log.Info($"Flow: couldn't delete \"{path}\"");
             }
         }
 
@@ -167,7 +166,7 @@ namespace Picturebot
             // Get the amount of pictures within the flow directory
             int amountOfPictures = pictures.Length;
 
-            for(int i = 0; i < amountOfPictures; i++)
+            for (int i = 0; i < amountOfPictures; i++)
             {
                 Picture picture = new Picture(pictures[i], _config.Workspace, i + 1);
                 string dest = Path.Combine(_config.Workspace, shootInfo, flow, HashRenamePicture(picture));

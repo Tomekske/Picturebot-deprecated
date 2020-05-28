@@ -18,9 +18,14 @@ namespace PicturebotGUI
         /// Property contains the shootInfo date
         /// </summary>
         public string ShootDate { get; set; }
+        /// <summary>
+        /// Check whether the window is closed
+        /// </summary>
+        public bool IsClosed { get; set; }
 
         private Config _config;
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
+        private bool isRenamed = false;
 
         /// <summary>
         /// Create a formRenameShoot
@@ -32,8 +37,8 @@ namespace PicturebotGUI
         {
             InitializeComponent();
 
+            IsClosed = false;
             _config = config;
-
             string[] tokens = shootInfo.Split(' ');
 
             //Get the shootname <name 12-12-12>
@@ -65,6 +70,7 @@ namespace PicturebotGUI
             // Close the current form only when the new shoot name doesn't exists
             if (!Guard.Filesystem.IsPath(pathToShoot))
             {
+                isRenamed = true;
                 this.Close();
             }
             else
@@ -74,5 +80,16 @@ namespace PicturebotGUI
             }
         }
         #endregion Buttons
+
+        /// <summary>
+        /// Toggle the boolean when the form is clossed by clicking on the 'cross'
+        /// </summary>
+        private void FormRenameShoot_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isRenamed)
+            {
+                IsClosed = true;
+            }
+        }
     }
 }

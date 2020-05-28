@@ -52,14 +52,11 @@ namespace PicturebotGUI.src.Command
         /// <param name="pictureBox">the associated pictureBox</param>
         /// <param name="flow">The flow object</param>
         /// <param name="currentFlow">Set the current flow</param>
-        /// <param name="extension">The desired file extension</param>
         /// <param name="isPreview">Check whether a picture within the preview flow is deleted</param>
-        public static void DeletePictureNotification(Config config, Picture picture,PictureBox pictureBox, Flow flow, string currentFlow, string extension, bool isPreview = false)
+        /// <param name="isEdited">Check whether a picture within the edited flow is deleted</param>
+        public static void DeletePictureNotification(Config config, Picture picture,PictureBox pictureBox, Flow flow, string currentFlow, bool isPreview = false, bool isEdited = false)
         {
             var result = MessageBox.Show($"Are you sure to delete \"{picture.Absolute}\" ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
-
-            // Create the path to the base flow, because every preview picture comes with a raw format which needs to get deleted as well
-            string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, currentFlow, $"{picture.Filename}{extension}");
 
             if (result == DialogResult.Yes)
             {
@@ -69,7 +66,21 @@ namespace PicturebotGUI.src.Command
                 // When a file within the preview flow is deleted then the associated base flow picture must be deleted
                 if(isPreview)
                 {
+                    // Get the path to the base flow
+                    string pathToBaseflow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base);
+                    // Obtain just the RAW picture within the base flow
+                    string selectedRawPicture = new Picture(Directory.GetFiles(pathToBaseflow, $"{picture.Filename}.*")[0]).FilenameExtension;
+
+                    // Create the path to the base flow, because every preview picture comes with a raw format which needs to get deleted as well
+                    string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, currentFlow, selectedRawPicture);
                     flow.Remove(pathToBaseFlow);
+                }
+
+                // When a file within the edited flow is deleted then the associated editing file must be deleted
+                if (isEdited)
+                {
+                    string pathToEditingFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Editing, $"{picture.Filename}{Extension.AFPHOTO}");
+                    flow.Remove(pathToEditingFlow);
                 }
 
                 GUIThread.ThreadPictureBox.Clear(pictureBox);
@@ -79,15 +90,12 @@ namespace PicturebotGUI.src.Command
         /// <summary>
         /// Delete a picture without a using the confirmation pop-up
         /// </summary>
-        /// <param name="config">The config object</param>
         /// <param name="picture">The picture object</param>
         /// <param name="pictureBox">the associated pictureBox</param>
         /// <param name="flow">The flow object</param>
-        /// <param name="extension">The desired file extension</param>
-        public static void DeletePicture(Config config, Picture picture, PictureBox pictureBox, Flow flow, string extension)
+        public static void DeletePicture(Picture picture, PictureBox pictureBox, Flow flow)
         {
-            string path = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, $"{picture.Filename}{extension}");
-            flow.Remove(path);
+            flow.Remove(picture.Absolute);
             GUIThread.ThreadPictureBox.Clear(pictureBox);
         }
 
@@ -101,27 +109,30 @@ namespace PicturebotGUI.src.Command
             log4net.ILog log = LogHelper.GetLogger();
 
             // Get the path to the base flow
-            string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base, $"{picture.Filename}{Extension.NEF}");
-
+            string pathToBaseflow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base);
+            // Obtain just the RAW picture within the base flow
+            string selectedRawPicture = new Picture(Directory.GetFiles(pathToBaseflow, $"{picture.Filename}.*")[0]).FilenameExtension;
+            // Obtain path to the RAW picture within the base flow
+            string pathToBaseflowRaw = Path.Combine(config.Workspace, picture.ShootInfo, config.Base, selectedRawPicture);
             // Get the path to the selection flow
-            string pathToSelectionFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, $"{picture.Filename}{Extension.NEF}");
+            string pathToSelectionFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, selectedRawPicture);
 
             // Copy the picture to the selection flow only when isn't listed yet in the selection flow
             if (!Guard.Filesystem.IsPath(pathToSelectionFlow))
             {
                 try
                 {
-                    File.Copy(pathToBaseFlow, pathToSelectionFlow);
-                    log.Info($"ListBox lbPreview: copied \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"");
+                    File.Copy(pathToBaseflowRaw, pathToSelectionFlow);
+                    log.Info($"ListBox lbPreview: copied \"{pathToBaseflowRaw}\" to \"{pathToSelectionFlow}\"");
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    log.Error($"ListBox lbPreview: unable to copy \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"", e);
+                    log.Error($"ListBox lbPreview: unable to copy \"{pathToBaseflowRaw}\" to \"{pathToSelectionFlow}\"", e);
                     MessageBox.Show(e.Message);
                 }
                 catch (FileNotFoundException e)
                 {
-                    log.Error($"ListBox lbPreview: Picture \"{pathToBaseFlow}\" or \"{pathToSelectionFlow}\" not found", e);
+                    log.Error($"ListBox lbPreview: Picture \"{pathToBaseflowRaw}\" or \"{pathToSelectionFlow}\" not found", e);
                     MessageBox.Show(e.Message);
                 }
             }
@@ -154,14 +165,19 @@ namespace PicturebotGUI.src.Command
             FormRenameShoot formRenameShoot = new FormRenameShoot(config, oldShootInfo);
             formRenameShoot.ShowDialog();
 
-            string pathToSelection = Path.Combine(config.Workspace, oldShootInfo, config.Selection);
-            int countFileSelectionFlow = Picturebot.src.Helper.Helper.GetFiles(pathToSelection).Count();
+            // Only rename a shoot when it was renamed
+            if (!formRenameShoot.IsClosed)
+            {
+                string pathToSelection = Path.Combine(config.Workspace, oldShootInfo, config.Selection);
+                int countFileSelectionFlow = Picturebot.src.Helper.Helper.GetFiles(pathToSelection).Count();
 
-            // Rename every file recursively
-            shoot.Rename(oldShootInfo, formRenameShoot.ShootName, formRenameShoot.ShootDate, false, countFileSelectionFlow);
-            string newShootInfo = $"{formRenameShoot.ShootName} {formRenameShoot.ShootDate}";
+                // Rename every file recursively
+                shoot.Rename(oldShootInfo, formRenameShoot.ShootName, formRenameShoot.ShootDate, false, countFileSelectionFlow);
+            }
 
-            return newShootInfo;
+
+            // Return the name of the shoot depending if the shoot was renamed
+            return formRenameShoot.IsClosed == true ? string.Empty : $"{formRenameShoot.ShootName} {formRenameShoot.ShootDate}";
         }
 
         /// <summary>
@@ -181,8 +197,8 @@ namespace PicturebotGUI.src.Command
 
             if(Guard.Filesystem.IsPath(pathToFlow) && Guard.Filesystem.IsPath(path))
             {
-                GUI.Explorer(pathToFlow);
                 GUI.OpenWebsite(url);
+                GUI.Explorer(pathToFlow);
 
                 log.Info($"Upload: Opening flow \"{pathToFlow}\" succeeded");
                 log.Info($"Upload: Opening website \"{url}\" succeeded");

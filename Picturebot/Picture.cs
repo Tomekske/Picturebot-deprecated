@@ -122,7 +122,7 @@ namespace Picturebot
             Relative = GetRelative(path);
             Workspace = string.Empty;
             Filename = GetFilename(path);
-            FilenameExtension = $"{GetFilename(path)}.{Extension}";
+            FilenameExtension = $"{GetFilename(path)}{Extension}";
             ModificationDate = GetModificationDate(path);
         }
 
