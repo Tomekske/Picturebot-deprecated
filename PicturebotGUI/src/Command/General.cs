@@ -52,10 +52,9 @@ namespace PicturebotGUI.src.Command
         /// <param name="pictureBox">the associated pictureBox</param>
         /// <param name="flow">The flow object</param>
         /// <param name="currentFlow">Set the current flow</param>
-        /// <param name="extension">The desired file extension</param>
         /// <param name="isPreview">Check whether a picture within the preview flow is deleted</param>
         /// <param name="isEdited">Check whether a picture within the edited flow is deleted</param>
-        public static void DeletePictureNotification(Config config, Picture picture,PictureBox pictureBox, Flow flow, string currentFlow, string extension, bool isPreview = false, bool isEdited = false)
+        public static void DeletePictureNotification(Config config, Picture picture,PictureBox pictureBox, Flow flow, string currentFlow, bool isPreview = false, bool isEdited = false)
         {
             var result = MessageBox.Show($"Are you sure to delete \"{picture.Absolute}\" ?", "Confirm Deletion!!", MessageBoxButtons.YesNo);
 
@@ -67,8 +66,13 @@ namespace PicturebotGUI.src.Command
                 // When a file within the preview flow is deleted then the associated base flow picture must be deleted
                 if(isPreview)
                 {
+                    // Get the path to the base flow
+                    string pathToBaseflow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base);
+                    // Obtain just the RAW picture within the base flow
+                    string selectedRawPicture = new Picture(Directory.GetFiles(pathToBaseflow, $"{picture.Filename}.*")[0]).FilenameExtension;
+
                     // Create the path to the base flow, because every preview picture comes with a raw format which needs to get deleted as well
-                    string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, currentFlow, $"{picture.Filename}{extension}");
+                    string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, currentFlow, selectedRawPicture);
                     flow.Remove(pathToBaseFlow);
                 }
 
@@ -86,15 +90,12 @@ namespace PicturebotGUI.src.Command
         /// <summary>
         /// Delete a picture without a using the confirmation pop-up
         /// </summary>
-        /// <param name="config">The config object</param>
         /// <param name="picture">The picture object</param>
         /// <param name="pictureBox">the associated pictureBox</param>
         /// <param name="flow">The flow object</param>
-        /// <param name="extension">The desired file extension</param>
-        public static void DeletePicture(Config config, Picture picture, PictureBox pictureBox, Flow flow, string extension)
+        public static void DeletePicture(Picture picture, PictureBox pictureBox, Flow flow)
         {
-            string path = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, $"{picture.Filename}{extension}");
-            flow.Remove(path);
+            flow.Remove(picture.Absolute);
             GUIThread.ThreadPictureBox.Clear(pictureBox);
         }
 
@@ -108,27 +109,30 @@ namespace PicturebotGUI.src.Command
             log4net.ILog log = LogHelper.GetLogger();
 
             // Get the path to the base flow
-            string pathToBaseFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base, $"{picture.Filename}{Extension.NEF}");
-
+            string pathToBaseflow = Path.Combine(config.Workspace, picture.ShootInfo, config.Base);
+            // Obtain just the RAW picture within the base flow
+            string selectedRawPicture = new Picture(Directory.GetFiles(pathToBaseflow, $"{picture.Filename}.*")[0]).FilenameExtension;
+            // Obtain path to the RAW picture within the base flow
+            string pathToBaseflowRaw = Path.Combine(config.Workspace, picture.ShootInfo, config.Base, selectedRawPicture);
             // Get the path to the selection flow
-            string pathToSelectionFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, $"{picture.Filename}{Extension.NEF}");
+            string pathToSelectionFlow = Path.Combine(config.Workspace, picture.ShootInfo, config.Selection, selectedRawPicture);
 
             // Copy the picture to the selection flow only when isn't listed yet in the selection flow
             if (!Guard.Filesystem.IsPath(pathToSelectionFlow))
             {
                 try
                 {
-                    File.Copy(pathToBaseFlow, pathToSelectionFlow);
-                    log.Info($"ListBox lbPreview: copied \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"");
+                    File.Copy(pathToBaseflowRaw, pathToSelectionFlow);
+                    log.Info($"ListBox lbPreview: copied \"{pathToBaseflowRaw}\" to \"{pathToSelectionFlow}\"");
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    log.Error($"ListBox lbPreview: unable to copy \"{pathToBaseFlow}\" to \"{pathToSelectionFlow}\"", e);
+                    log.Error($"ListBox lbPreview: unable to copy \"{pathToBaseflowRaw}\" to \"{pathToSelectionFlow}\"", e);
                     MessageBox.Show(e.Message);
                 }
                 catch (FileNotFoundException e)
                 {
-                    log.Error($"ListBox lbPreview: Picture \"{pathToBaseFlow}\" or \"{pathToSelectionFlow}\" not found", e);
+                    log.Error($"ListBox lbPreview: Picture \"{pathToBaseflowRaw}\" or \"{pathToSelectionFlow}\" not found", e);
                     MessageBox.Show(e.Message);
                 }
             }
@@ -170,6 +174,7 @@ namespace PicturebotGUI.src.Command
                 // Rename every file recursively
                 shoot.Rename(oldShootInfo, formRenameShoot.ShootName, formRenameShoot.ShootDate, false, countFileSelectionFlow);
             }
+
 
             // Return the name of the shoot depending if the shoot was renamed
             return formRenameShoot.IsClosed == true ? string.Empty : $"{formRenameShoot.ShootName} {formRenameShoot.ShootDate}";

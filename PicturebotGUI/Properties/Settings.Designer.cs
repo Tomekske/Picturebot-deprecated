@@ -94,5 +94,17 @@ namespace PicturebotGUI.Properties {
                 this["RootDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RAW")]
+        public string DefaultUploadType {
+            get {
+                return ((string)(this["DefaultUploadType"]));
+            }
+            set {
+                this["DefaultUploadType"] = value;
+            }
+        }
     }
 }

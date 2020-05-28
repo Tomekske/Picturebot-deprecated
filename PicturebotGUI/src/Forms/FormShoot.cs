@@ -9,6 +9,7 @@ using PicturebotGUI.src.POCO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -32,8 +33,6 @@ namespace PicturebotGUI
         private Dictionary<string, Drag> _dictMoveFiles = new Dictionary<string, Drag>();
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
 
-        public object GUiThread { get; private set; }
-
         public FormShoot(Form form)
         {
             // Create a formMain object
@@ -45,11 +44,20 @@ namespace PicturebotGUI
             _config = _formMain.Config[_formMain.WsIndex];
 
             _log.Info("FormShoot: opened formShoot");
+
+            if(Properties.Settings.Default.DefaultUploadType == FileType.RAW)
+            {
+                radioRAW.Checked = true;
+            }
+
+            else if (Properties.Settings.Default.DefaultUploadType == FileType.Compressed)
+            {
+                radioCompressed.Checked = true;
+            }
         }
 
-        #region BackgroundWorker
-        #region Start
-        #region MoveFiles
+        #region Backgroundworker
+        #region Move
         /// <summary>
         /// Move the pictures to the baseFlow directory
         /// </summary>
@@ -57,41 +65,7 @@ namespace PicturebotGUI
         {
             _bgwMove.Work();
         }
-        #endregion MoveFiles
 
-        #region HashFiles
-        /// <summary>
-        /// Hash the pictures within the base flow
-        /// </summary>
-        private void bgwHash_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _bgwHash.Work();
-        }
-        #endregion HashFiles
-
-        #region BackupFiles
-        /// <summary>
-        /// Move the pictures to the backup flow
-        /// </summary>
-        private void bgwBackup_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _bgwBackup.Work();
-        }
-        #endregion BackupFiles
-
-        #region ConvertFiles
-        /// <summary>
-        /// Convert RAW pictures within the base flow to a JPG format
-        /// </summary>
-        private void bgwConvert_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _bgwConvert.Work();
-        }
-        #endregion ConvertFiles
-        #endregion Start
-
-        #region Progress
-        #region MoveFiles
         /// <summary>
         /// Display progression status of the move operation
         /// </summary>
@@ -99,40 +73,7 @@ namespace PicturebotGUI
         {
             _bgwMove.Progress(e.UserState.ToString());
         }
-        #endregion MoveFiles
 
-        #region HashFiles
-        /// <summary>
-        /// Display progression status of the hash operation
-        /// </summary>
-        private void bgwHash_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-        }
-        #endregion HashFiles
-
-        #region BackupFiles
-        /// <summary>
-        /// Display progression status of the backup operation
-        /// </summary>
-        private void bgwBackup_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            _bgwBackup.Progress(e.UserState.ToString());
-        }
-        #endregion BackupFiles
-
-        #region ConvertFiles
-        /// <summary>
-        /// Display progression status of the convert operation
-        /// </summary>
-        private void bgwConvert_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            _bgwConvert.Progress(e.UserState.ToString());
-        }
-        #endregion ConvertFiles
-        #endregion Progress
-
-        #region Completed
-        #region MoveFiles
         /// <summary>
         /// When all files are moved start the hashing procedure
         /// </summary>
@@ -147,9 +88,63 @@ namespace PicturebotGUI
                 _bgwHash.Start();
             }
         }
-        #endregion MoveFiles
+        #endregion Move
 
-        #region HashFiles
+        #region Backup
+        /// <summary>
+        /// Move the pictures to the backup flow
+        /// </summary>
+        private void bgwBackup_DoWork(object sender, DoWorkEventArgs e)
+        {
+            _bgwBackup.Work();
+        }
+
+        /// <summary>
+        /// Display progression status of the backup operation
+        /// </summary>
+        private void bgwBackup_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            _bgwBackup.Progress(e.UserState.ToString());
+        }
+
+        /// <summary>
+        /// When all files are hashed start the conversion procedure
+        /// </summary>
+        private void bgwBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (radioRAW.Checked)
+            {
+                _bgwConvert.Start();
+            }
+            else
+            {
+                _bgwMove.MoveFiles(_shootInfo);
+                _formMain.GetWorkspaceShoots();
+
+                // Close the loading form
+                _formLoading.Close();
+                // Close the current form
+                this.Close();
+            }
+        }
+        #endregion Backup
+
+        #region Hash
+        /// <summary>
+        /// Hash the pictures within the base flow
+        /// </summary>
+        private void bgwHash_DoWork(object sender, DoWorkEventArgs e)
+        {
+            _bgwHash.Work();
+        }
+
+        /// <summary>
+        /// Display progression status of the hash operation
+        /// </summary>
+        private void bgwHash_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+        }
+
         /// <summary>
         /// When all files are hashed start the backup procedure
         /// </summary>
@@ -157,35 +152,46 @@ namespace PicturebotGUI
         {
             _bgwBackup.Start();
         }
-        #endregion HashFiles
+        #endregion Hash
 
-        #region BackupFiles
+        #region Convert
         /// <summary>
-        /// When all files are hashed start the conversion procedure
+        /// Convert RAW pictures within the base flow to a JPG format
         /// </summary>
-        private void bgwBackup_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void bgwConvert_DoWork(object sender, DoWorkEventArgs e)
         {
-            _bgwConvert.Start();
+            _bgwConvert.Work();
         }
-        #endregion BackupFiles
 
-        #region ConvertFiles
+        /// <summary>
+        /// Display progression status of the convert operation
+        /// </summary>
+        private void bgwConvert_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (radioRAW.Checked)
+            {
+                _bgwConvert.Progress(e.UserState.ToString());
+            }
+        }
+
         /// <summary>
         /// When all files are converted start the conversion procedure close the form
         /// </summary>
         private void bgwConvert_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _formMain.GetWorkspaceShoots();
+            if (radioRAW.Checked)
+            {
+                _formMain.GetWorkspaceShoots();
 
-            // Close the loading form
-            _formLoading.Close();
-            // Close the current form
-            this.Close();
+                // Close the loading form
+                _formLoading.Close();
+                // Close the current form
+                this.Close();
+            }
         }
-        #endregion ConvertFiles
 
-        #endregion Completed
-        #endregion BackgroundWorker
+        #endregion Convert
+        #endregion Backgroundworker
 
         #region TextBox
         /// <summary>
@@ -198,33 +204,33 @@ namespace PicturebotGUI
         #endregion TextBox
 
         #region Buttons
+        #region LeftClick
         /// <summary>
         /// Add pictures to the newly created shoot
         /// </summary>
         private void pbSaveShoot_Click(object sender, EventArgs e)
         {
-            // Make sure pictures are moved to the listBox
-
             bool isEmpty = txtName.Text.Trim() == string.Empty ? true : false;
 
+            // Only add the shoot when there are items within the listBox and when the shoot has a name
             if (!isEmpty && lbRaw.Items.Count != 0)
             {
                 // Format shoot information
                 _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
-                int index = 0;
 
                 string pathToShoot = Path.Combine(_config.Workspace, _shootInfo);
 
                 // Start the processing chain only when the new shoot name doesn't exists
                 if (!Guard.Filesystem.IsPath(pathToShoot))
-                {
+                {                   
                     if (radioRAW.Checked)
                     {
-                        bool isExtension = _listPictures.All(o => Extension.RAW.Any(w => w == o.Extension));
+                        bool isExtension = _listPictures.All(o => Extension.RAW.Any(w => w.ToLower() == o.Extension.ToLower()));
 
+                        // Only initialize the background worker chain when all pictures within the listBox are a RAW file format
                         if (isExtension)
                         {
-                            //
+                            InitialiseBackgroundWorkerChain();
                         }
 
                         else
@@ -236,9 +242,22 @@ namespace PicturebotGUI
 
                     else if (radioCompressed.Checked)
                     {
-                        Console.WriteLine("COMPRESSED");
+                        bool isExtension = _listPictures.All(o => Extension.Compressed.Any(w => w.ToLower() == o.Extension.ToLower()));
+
+                        // Only initialize the background worker chain when all pictures within the listBox are a compressed file format
+                        if (isExtension)
+                        {
+                            InitialiseBackgroundWorkerChain();
+                        }
+
+                        else
+                        {
+                            MessageBox.Show("One or more files are not a compressed format");
+                            _log.Info("One or more files are not a compressed format");
+                        }
                     }
                 }
+
                 else
                 {
                     _log.Info($"Shoot: already \"{pathToShoot}\" exists");
@@ -251,24 +270,33 @@ namespace PicturebotGUI
                 MessageBox.Show("Make sure to enter a shoot name and that at least one picture is dragged within the listBox");
                 _log.Info("Make sure to enter a shoot name and that at least one picture is dragged within the listBox");
             }
-
-            /* _shootInfo = $"{txtName.Text.Trim()} {dtShoot.Text}";
-            Shoot shoot = new Shoot(_config);
-
-            if (shoot.Add(_shootInfo))
-            {
-                _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
-                _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, _config.Base);
-                _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
-                _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
-
-                // Open the loading form
-                _formLoading.Show();
-                // Start the moving procedure
-                _bgwMove.Start();
-            }*/
-
         }
+        #endregion LeftClick
+
+        #region RightClick
+        /// <summary>
+        /// Show the menu strip when right clicking on an item within the listBox
+        /// </summary>
+        private void lbRaw_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && lbRaw.Text != string.Empty)
+            {
+                // Add menu items to the context menu strip
+                ContextMenuStrip menu = new ContextMenuStrip();
+
+                var menuItemDelete = new ToolStripMenuItem(Strip.Delete);
+                menuItemDelete.ShortcutKeyDisplayString = "Del";
+                menu.Items.Add(menuItemDelete);
+
+                menu.Tag = lbRaw.SelectedItem;
+
+                // The context menu is shown on the current coordinates of the mouse 
+                menu.Show(lbRaw, new Point(e.X, e.Y));
+                // Create an event handler
+                menu.ItemClicked += Menu_AddPicturesItemRightClicked;
+            }
+        }
+        #endregion RightClick
         #endregion Buttons  
 
         #region ListBoxs
@@ -311,11 +339,10 @@ namespace PicturebotGUI
 
         #endregion ListBox
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-
-        }
-
+        #region KeyDown
+        /// <summary>
+        /// Use shortcuts to execute something
+        /// </summary>
         private void lbRaw_KeyDown(object sender, KeyEventArgs e)
         {
             int index = lbRaw.SelectedIndex;
@@ -323,8 +350,6 @@ namespace PicturebotGUI
             // Make sure it's not possible to perform keyboard actions when the listBox is empty
             if (lbRaw.Items.Count != 0)
             {
-                //Picture picture = new Picture(_listPreviewPictures[lbPreview.SelectedIndex].Absolute);
-
                 if (e.KeyCode == Keys.Delete)
                 {
                     int indexBefore = lbRaw.SelectedIndex;
@@ -338,6 +363,54 @@ namespace PicturebotGUI
                     lbRaw.SelectedIndex = Methods.CalcListBoxIndex(indexBefore, countItems);
                 }
             }
+        }
+        #endregion KeyDown
+
+        /// <summary>
+        /// Delete menu event 
+        /// </summary>
+        private void Menu_AddPicturesItemRightClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            int index = lbRaw.SelectedIndex;
+            int indexBefore = lbRaw.SelectedIndex;
+
+            lbRaw.Items.RemoveAt(index);
+            _listPictures.RemoveAt(index);
+
+            int countItems = lbRaw.Items.Count;
+
+            ThreadLabel.SetText(lblAddPictures, $"RAW pictures ({lbRaw.Items.Count})");
+            lbRaw.SelectedIndex = Methods.CalcListBoxIndex(indexBefore, countItems);
+        }
+
+        /// <summary>
+        /// Initialize the background worker chains
+        /// </summary>
+        private void InitialiseBackgroundWorkerChain()
+        {
+            Shoot shoot = new Shoot(_config);
+            // Create the new shoot within the workspace
+            shoot.Add(_shootInfo);
+
+            // Loop-over every picture within the _listPictures list
+            foreach (var raw in _listPictures)
+            {
+                string source = raw.Absolute;
+                string destination = Path.Combine(_config.Workspace, _shootInfo, _config.Base, raw.FilenameExtension);
+
+                _dictMoveFiles.Add(raw.Absolute, new Drag(source, destination));
+            }
+
+            // Initialize background workers
+            _bgwMove = new Move(bgwMove, _config, _formLoading, _dictMoveFiles, _listPictures);
+            _bgwHash = new Hash(bgwHash, _config, _formLoading, _shootInfo, _config.Base);
+            _bgwBackup = new Backup(bgwBackup, _config, _formLoading, _shootInfo);
+            _bgwConvert = new ConvertRaw(bgwConvert, _config, _formLoading, _shootInfo);
+
+            // Open the loading form
+            _formLoading.Show();
+            // Start the moving procedure
+            _bgwMove.Start();
         }
     }
 }

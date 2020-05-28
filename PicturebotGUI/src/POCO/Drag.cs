@@ -18,7 +18,7 @@
         /// Stores the source and destination path of an image
         /// </summary>
         /// <param name="source">The source directory of the image</param>
-        /// <param name="desitnation">The source destination of the image</param>
+        /// <param name="desitnation">The destination of the image within the base flow</param>
         public Drag(string source, string desitnation)
         {
             Source = source;

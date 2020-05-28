@@ -59,8 +59,6 @@ namespace PicturebotGUI
             Application.EnableVisualStyles();
 
             InitializeComponent();
-            Console.WriteLine(Extension.RAW[0]);
-            Console.WriteLine(Extension.RAW[1]);
             ReadConfigFile();
             GetWorkspaceShoots();
 
@@ -79,6 +77,18 @@ namespace PicturebotGUI
                 _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
             }
 
+            if(Properties.Settings.Default.DefaultUploadType == FileType.RAW)
+            {
+                rawToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"rawToolStripMenuItem\"");
+            }
+
+            else if (Properties.Settings.Default.DefaultUploadType == FileType.Compressed)
+            {
+                compressedToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"compressedToolStripMenuItem\"");
+            }
+
             #if DEBUG
                 if (Properties.Settings.Default.LoggingLevelConsoleAppender == LoggingLevel.Debug)
                 {
@@ -91,7 +101,7 @@ namespace PicturebotGUI
                     _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
                 }
             #else
-                openConfigFileTSMenuItem.Visible = false;
+            openConfigFileTSMenuItem.Visible = false;
                 loggingConsoleToolStripMenuItem.Visible = false;
             #endif
         }
@@ -503,7 +513,7 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, Extension.NEF, true);
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, true);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -549,7 +559,7 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
+                    src.Command.General.DeletePicture(picture, pbSelection, Flw);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -600,7 +610,7 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, Extension.JPG);
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, false, true);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -651,7 +661,8 @@ namespace PicturebotGUI
                 if (e.KeyCode == Keys.Delete)
                 {
                     isWatcherDeleted = true;
-                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram, Extension.JPG);
+                    //src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram, Extension.JPG);
+                    src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram);
                 }
 
                 else if (e.KeyCode == Keys.O)
@@ -1038,7 +1049,7 @@ namespace PicturebotGUI
             {
                 isWatcherDeleted = true;
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, Extension.NEF, true);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbPreview, Flw, Config[WsIndex].Base, true);
             }
 
             else if (e.ClickedItem.Text == Strip.AddSelection)
@@ -1055,24 +1066,23 @@ namespace PicturebotGUI
         {
             // Get the passed data from the context strip menu 
             Picture picture = (Picture)(sender as ContextMenuStrip).Tag;
-            string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Selection, $"{picture.Filename}.NEF");
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
                 isWatcherDeleted = true;
                 isShootDeleting = false;
-                src.Command.General.DeletePicture(Config[WsIndex], picture, pbSelection, Flw, Extension.NEF);
+                src.Command.General.DeletePicture(picture, pbSelection, Flw);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
             {
-                src.Command.General.Program(External.Affinity, path);
+                src.Command.General.Program(External.Affinity, picture.Absolute);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
             {
                 isWatcherCreated = true;
-                src.Command.General.Program(External.Luminar, path);
+                src.Command.General.Program(External.Luminar, picture.Absolute);
             }
         }
 
@@ -1083,19 +1093,18 @@ namespace PicturebotGUI
         {
             // Get the passed data from the context strip menu 
             Picture picture = (Picture)(sender as ContextMenuStrip).Tag;
-            string path = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Edited, picture.FilenameExtension);
 
             if (e.ClickedItem.Text == Strip.Delete)
             {
                 isWatcherDeleted = true;
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, picture.Extension, false, true);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, false, true);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
             {
                 isWatcherCreated = true;
-                src.Command.General.Program(External.Luminar, path);
+                src.Command.General.Program(External.Luminar, picture.Absolute);
             }
 
             else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
@@ -1131,7 +1140,7 @@ namespace PicturebotGUI
             {
                 isWatcherDeleted = true;
                 isShootDeleting = false;
-                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram, picture.Extension);
+                src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbInstagram, Flw, Config[WsIndex].Instagram);
             }
 
             else if (e.ClickedItem.Text == Strip.Upload)
@@ -1261,6 +1270,40 @@ namespace PicturebotGUI
             {
                 MessageBox.Show("There are no shoots to reorder, add a new shoot");
                 _log.Info("There are no shoots to reorder, add a new shoot");
+            }
+        }
+        
+        /// <summary>
+        /// Select the RAW upload file type as the default setting
+        /// </summary>
+        private void rawToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            compressedToolStripMenuItem.Checked = false;
+
+            if (!rawToolStripMenuItem.Checked)
+            {
+                rawToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"rawToolStripMenuItem\"");
+                Properties.Settings.Default.DefaultUploadType = FileType.RAW;
+                _log.Info("Toolstrip menu: Saved \"rawToolStripMenuItem\" in config file");
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        /// <summary>
+        /// Select the compressed upload file type as the default setting
+        /// </summary>
+        private void compressedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rawToolStripMenuItem.Checked = false;
+
+            if (!compressedToolStripMenuItem.Checked)
+            {
+                compressedToolStripMenuItem.Checked = true;
+                _log.Debug("Toolstrip menu: Checked item \"compressedToolStripMenuItem\"");
+                Properties.Settings.Default.DefaultUploadType = FileType.Compressed;
+                _log.Info("Toolstrip menu: Saved \"compressedToolStripMenuItem\" in config file");
+                Properties.Settings.Default.Save();
             }
         }
         #endregion MenuStrip

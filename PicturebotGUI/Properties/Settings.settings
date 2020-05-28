@@ -20,5 +20,8 @@
     <Setting Name="RootDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DefaultUploadType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RAW</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

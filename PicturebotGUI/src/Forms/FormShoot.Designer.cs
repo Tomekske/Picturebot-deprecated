@@ -43,17 +43,17 @@
             this.tableLayoutRadioBtns = new System.Windows.Forms.TableLayoutPanel();
             this.radioRAW = new System.Windows.Forms.RadioButton();
             this.radioCompressed = new System.Windows.Forms.RadioButton();
-            this.pbSaveShoot = new System.Windows.Forms.PictureBox();
             this.panelAddPictures = new System.Windows.Forms.Panel();
             this.panelLabelAddPictures = new System.Windows.Forms.Panel();
             this.lblAddPictures = new System.Windows.Forms.Label();
+            this.pbSaveShoot = new System.Windows.Forms.PictureBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutAddShoot.SuspendLayout();
             this.tableLayoutAddInformation.SuspendLayout();
             this.tableLayoutRadioBtns.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).BeginInit();
             this.panelAddPictures.SuspendLayout();
             this.panelLabelAddPictures.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).BeginInit();
             this.SuspendLayout();
             // 
             // lbRaw
@@ -73,6 +73,7 @@
             this.lbRaw.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragDrop);
             this.lbRaw.DragEnter += new System.Windows.Forms.DragEventHandler(this.lbRaw_DragEnter);
             this.lbRaw.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbRaw_KeyDown);
+            this.lbRaw.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbRaw_MouseDown);
             // 
             // dtShoot
             // 
@@ -158,8 +159,8 @@
             this.tableLayoutAddShoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.02913F));
             this.tableLayoutAddShoot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.97087F));
             this.tableLayoutAddShoot.Controls.Add(this.tableLayoutAddInformation, 0, 0);
-            this.tableLayoutAddShoot.Controls.Add(this.pbSaveShoot, 1, 1);
             this.tableLayoutAddShoot.Controls.Add(this.panelAddPictures, 1, 0);
+            this.tableLayoutAddShoot.Controls.Add(this.pbSaveShoot, 1, 1);
             this.tableLayoutAddShoot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutAddShoot.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutAddShoot.Name = "tableLayoutAddShoot";
@@ -230,18 +231,6 @@
             this.radioCompressed.Text = "Compressed";
             this.radioCompressed.UseVisualStyleBackColor = true;
             // 
-            // pbSaveShoot
-            // 
-            this.pbSaveShoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbSaveShoot.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
-            this.pbSaveShoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbSaveShoot.Location = new System.Drawing.Point(306, 422);
-            this.pbSaveShoot.Name = "pbSaveShoot";
-            this.pbSaveShoot.Size = new System.Drawing.Size(309, 50);
-            this.pbSaveShoot.TabIndex = 2;
-            this.pbSaveShoot.TabStop = false;
-            this.pbSaveShoot.Click += new System.EventHandler(this.pbSaveShoot_Click);
-            // 
             // panelAddPictures
             // 
             this.panelAddPictures.Controls.Add(this.lbRaw);
@@ -273,9 +262,17 @@
             this.lblAddPictures.TabIndex = 0;
             this.lblAddPictures.Text = "RAW pictures";
             // 
-            // backgroundWorker1
+            // pbSaveShoot
             // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.pbSaveShoot.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pbSaveShoot.BackgroundImage = global::PicturebotGUI.Properties.Resources.Save;
+            this.pbSaveShoot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbSaveShoot.Location = new System.Drawing.Point(306, 422);
+            this.pbSaveShoot.Name = "pbSaveShoot";
+            this.pbSaveShoot.Size = new System.Drawing.Size(309, 50);
+            this.pbSaveShoot.TabIndex = 2;
+            this.pbSaveShoot.TabStop = false;
+            this.pbSaveShoot.Click += new System.EventHandler(this.pbSaveShoot_Click);
             // 
             // FormShoot
             // 
@@ -296,10 +293,10 @@
             this.tableLayoutAddInformation.PerformLayout();
             this.tableLayoutRadioBtns.ResumeLayout(false);
             this.tableLayoutRadioBtns.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).EndInit();
             this.panelAddPictures.ResumeLayout(false);
             this.panelLabelAddPictures.ResumeLayout(false);
             this.panelLabelAddPictures.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSaveShoot)).EndInit();
             this.ResumeLayout(false);
 
         }

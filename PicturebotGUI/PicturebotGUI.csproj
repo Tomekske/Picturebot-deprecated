@@ -148,6 +148,7 @@
     <Compile Include="src\Command\General.cs" />
     <Compile Include="Database\Database\SqliteDataAccess.cs" />
     <Compile Include="src\Enums\Appender.cs" />
+    <Compile Include="src\Enums\FileType.cs" />
     <Compile Include="src\Enums\LoggingLevel.cs" />
     <Compile Include="src\Forms\FormAddMetadata.cs">
       <SubType>Form</SubType>
