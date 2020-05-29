@@ -49,7 +49,7 @@ namespace PicturebotGUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.8")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -104,6 +104,30 @@ namespace PicturebotGUI.Properties {
             }
             set {
                 this["DefaultUploadType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ToolEditing {
+            get {
+                return ((string)(this["ToolEditing"]));
+            }
+            set {
+                this["ToolEditing"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ToolProcessing {
+            get {
+                return ((string)(this["ToolProcessing"]));
+            }
+            set {
+                this["ToolProcessing"] = value;
             }
         }
     }

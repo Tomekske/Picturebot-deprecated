@@ -32,25 +32,6 @@ namespace PicturebotGUI.src.Command
         }
 
         /// <summary>
-        /// Static method to open a RAW image with editing software
-        /// </summary>
-        /// <param name="path">Path to the image</param>
-        public static void EditingSoftware(string path)
-        {
-            log4net.ILog log = LogHelper.GetLogger();
-
-            if (Guard.Filesystem.IsPath(path))
-            {
-                Shell.Execute(External.Affinity, $"\"{path}\"");
-                log.Info($"{External.Affinity}: \"{path}\" opened");
-            }
-            else
-            {
-                log.Error($"{External.Affinity}: Unable to open the \"{path}\" file");
-            }
-        }
-
-        /// <summary>
         /// Static method to open a specified URL in the user's default browser
         /// </summary>
         /// <param name="url">URL to the website</param>

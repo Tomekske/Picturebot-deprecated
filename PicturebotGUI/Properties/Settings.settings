@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.7</Value>
+      <Value Profile="(Default)">1.0.8</Value>
     </Setting>
     <Setting Name="LoggingLevelFileAppender" Type="System.String" Scope="User">
       <Value Profile="(Default)">ERROR</Value>
@@ -22,6 +22,12 @@
     </Setting>
     <Setting Name="DefaultUploadType" Type="System.String" Scope="User">
       <Value Profile="(Default)">RAW</Value>
+    </Setting>
+    <Setting Name="ToolEditing" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ToolProcessing" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
