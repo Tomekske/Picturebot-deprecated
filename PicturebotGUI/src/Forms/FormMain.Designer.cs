@@ -47,6 +47,10 @@
             this.loggingConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defaultFileTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.compressedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.edtingToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bgwBackup = new System.ComponentModel.BackgroundWorker();
             this.bgwRename = new System.ComponentModel.BackgroundWorker();
             this.bgwConvert = new System.ComponentModel.BackgroundWorker();
@@ -83,9 +87,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblSelection = new System.Windows.Forms.Label();
             this.pbInstagram = new System.Windows.Forms.PictureBox();
-            this.defaultFileTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.compressedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutWorkspace.SuspendLayout();
             this.panelConfig.SuspendLayout();
@@ -218,7 +219,8 @@
             this.uploadSettingsToolStripMenuItem,
             this.loggingToolStripMenuItem,
             this.loggingConsoleToolStripMenuItem,
-            this.defaultFileTypeToolStripMenuItem});
+            this.defaultFileTypeToolStripMenuItem,
+            this.edtingToolsToolStripMenuItem});
             this.VersionTSMenuItem.ForeColor = System.Drawing.Color.White;
             this.VersionTSMenuItem.Name = "VersionTSMenuItem";
             this.VersionTSMenuItem.Size = new System.Drawing.Size(61, 21);
@@ -230,7 +232,7 @@
             this.uploadSettingsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.uploadSettingsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.uploadSettingsToolStripMenuItem.Name = "uploadSettingsToolStripMenuItem";
-            this.uploadSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uploadSettingsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.uploadSettingsToolStripMenuItem.Text = "Upload settings";
             this.uploadSettingsToolStripMenuItem.Click += new System.EventHandler(this.uploadSettingsToolStripMenuItem_Click);
             // 
@@ -243,7 +245,7 @@
             this.loggingToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.loggingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.loggingToolStripMenuItem.Text = "Logging level";
             // 
             // debugToolStripMenuItem
@@ -251,7 +253,7 @@
             this.debugToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.debugToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.debugToolStripMenuItem.Text = "Debug";
             this.debugToolStripMenuItem.Click += new System.EventHandler(this.debugToolStripMenuItem_Click);
             // 
@@ -260,7 +262,7 @@
             this.errorToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.errorToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.errorToolStripMenuItem.Text = "Error";
             this.errorToolStripMenuItem.Click += new System.EventHandler(this.errorToolStripMenuItem_Click);
             // 
@@ -273,7 +275,7 @@
             this.loggingConsoleToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.loggingConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loggingConsoleToolStripMenuItem.Name = "loggingConsoleToolStripMenuItem";
-            this.loggingConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggingConsoleToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.loggingConsoleToolStripMenuItem.Text = "Logging console";
             // 
             // debugConsoleToolStripMenuItem
@@ -281,7 +283,7 @@
             this.debugConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.debugConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.debugConsoleToolStripMenuItem.Name = "debugConsoleToolStripMenuItem";
-            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.debugConsoleToolStripMenuItem.Text = "Debug";
             this.debugConsoleToolStripMenuItem.Click += new System.EventHandler(this.debugConsoleToolStripMenuItem_Click);
             // 
@@ -290,9 +292,49 @@
             this.errorConsoleToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.errorConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.errorConsoleToolStripMenuItem.Name = "errorConsoleToolStripMenuItem";
-            this.errorConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorConsoleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.errorConsoleToolStripMenuItem.Text = "Error";
             this.errorConsoleToolStripMenuItem.Click += new System.EventHandler(this.errorConsoleToolStripMenuItem_Click);
+            // 
+            // defaultFileTypeToolStripMenuItem
+            // 
+            this.defaultFileTypeToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.defaultFileTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rawToolStripMenuItem,
+            this.compressedToolStripMenuItem});
+            this.defaultFileTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.defaultFileTypeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.defaultFileTypeToolStripMenuItem.Name = "defaultFileTypeToolStripMenuItem";
+            this.defaultFileTypeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.defaultFileTypeToolStripMenuItem.Text = "Default file type";
+            // 
+            // rawToolStripMenuItem
+            // 
+            this.rawToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.rawToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.rawToolStripMenuItem.Name = "rawToolStripMenuItem";
+            this.rawToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.rawToolStripMenuItem.Text = "RAW ";
+            this.rawToolStripMenuItem.Click += new System.EventHandler(this.rawToolStripMenuItem_Click);
+            // 
+            // compressedToolStripMenuItem
+            // 
+            this.compressedToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.compressedToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.compressedToolStripMenuItem.Name = "compressedToolStripMenuItem";
+            this.compressedToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.compressedToolStripMenuItem.Text = "Compressed";
+            this.compressedToolStripMenuItem.Click += new System.EventHandler(this.compressedToolStripMenuItem_Click);
+            // 
+            // edtingToolsToolStripMenuItem
+            // 
+            this.edtingToolsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.edtingToolsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.edtingToolsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.edtingToolsToolStripMenuItem.Name = "edtingToolsToolStripMenuItem";
+            this.edtingToolsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.edtingToolsToolStripMenuItem.Text = "Edting tools";
+            this.edtingToolsToolStripMenuItem.Click += new System.EventHandler(this.edtingToolsToolStripMenuItem_Click);
             // 
             // bgwBackup
             // 
@@ -706,36 +748,6 @@
             this.pbInstagram.TabStop = false;
             this.pbInstagram.Click += new System.EventHandler(this.pbInstagram_Click);
             // 
-            // defaultFileTypeToolStripMenuItem
-            // 
-            this.defaultFileTypeToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.defaultFileTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rawToolStripMenuItem,
-            this.compressedToolStripMenuItem});
-            this.defaultFileTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.defaultFileTypeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.defaultFileTypeToolStripMenuItem.Name = "defaultFileTypeToolStripMenuItem";
-            this.defaultFileTypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.defaultFileTypeToolStripMenuItem.Text = "Default file type";
-            // 
-            // rawToolStripMenuItem
-            // 
-            this.rawToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.rawToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.rawToolStripMenuItem.Name = "rawToolStripMenuItem";
-            this.rawToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.rawToolStripMenuItem.Text = "RAW ";
-            this.rawToolStripMenuItem.Click += new System.EventHandler(this.rawToolStripMenuItem_Click);
-            // 
-            // compressedToolStripMenuItem
-            // 
-            this.compressedToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.compressedToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.compressedToolStripMenuItem.Name = "compressedToolStripMenuItem";
-            this.compressedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.compressedToolStripMenuItem.Text = "Compressed";
-            this.compressedToolStripMenuItem.Click += new System.EventHandler(this.compressedToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -842,6 +854,7 @@
         private System.Windows.Forms.ToolStripMenuItem defaultFileTypeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rawToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compressedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem edtingToolsToolStripMenuItem;
     }
 }
 

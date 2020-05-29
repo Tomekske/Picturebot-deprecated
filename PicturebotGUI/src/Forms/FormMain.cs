@@ -335,9 +335,9 @@ namespace PicturebotGUI
             {
                 // Add menu items to the context menu strip
                 ContextMenuStrip menu = new ContextMenuStrip();
-                menu.Items.Add($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}");
+                menu.Items.Add($"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolEditing)}");
 
-                var menuItemLuminar = new ToolStripMenuItem($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}");
+                var menuItemLuminar = new ToolStripMenuItem($"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolProcessing)}");
                 menuItemLuminar.ShortcutKeyDisplayString = "L";
                 menu.Items.Add(menuItemLuminar);
 
@@ -362,9 +362,9 @@ namespace PicturebotGUI
             {
                 // Add menu items to the context menu strip
                 ContextMenuStrip menu = new ContextMenuStrip();
-                menu.Items.Add($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}");
+                menu.Items.Add($"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolEditing)}");
 
-                var menuItemLuminar = new ToolStripMenuItem($"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}");
+                var menuItemLuminar = new ToolStripMenuItem($"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolProcessing)}");
                 menuItemLuminar.ShortcutKeyDisplayString = "L";
                 menu.Items.Add(menuItemLuminar);
 
@@ -423,7 +423,7 @@ namespace PicturebotGUI
 
                 if(Guard.Filesystem.IsPath(picture.Absolute))
                 {
-                    src.Command.General.Program(External.Affinity, picture.Absolute);
+                    src.Command.General.Program(Properties.Settings.Default.ToolEditing, picture.Absolute);
                 }
 
                 else
@@ -439,16 +439,21 @@ namespace PicturebotGUI
         /// </summary>
         private void lbEdited_DoubleClick(object sender, EventArgs e)
         {
+            Picture picture = new Picture(_listEditedPictures[lbEdited.SelectedIndex].Absolute);
+
             if (lbEdited.Text != string.Empty)
             {
                 // Get the path to the affinity file within the editing flow
-                string path = Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Editing, $"{lbEdited.Text}{Extension.AFPHOTO}");
+                string path = Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Editing); //, $"{lbEdited.Text}{Extension.AFPHOTO}");
+
+                // Obtain just the RAW picture within the base flow
+                string selectedRawPicture = new Picture(Directory.GetFiles(path, $"{picture.Filename}.*")[0]).Absolute;
 
                 // Only open the affinity file when it's exists within the editing flow
-                if (File.Exists(path))
+                if (File.Exists(selectedRawPicture))
                 {
                     isWatcherCreated = true;
-                    src.Command.General.Program(External.Affinity, path);
+                    src.Command.General.Program(Properties.Settings.Default.ToolEditing, selectedRawPicture);
                 }
 
                 else
@@ -570,7 +575,7 @@ namespace PicturebotGUI
                 else if (e.KeyCode == Keys.L)
                 {
                     isWatcherCreated = true;
-                    src.Command.General.Program(External.Luminar, picture.Absolute);
+                    src.Command.General.Program(Properties.Settings.Default.ToolProcessing, picture.Absolute);
                 }
 
                 else if(e.KeyCode == Keys.Enter)
@@ -623,7 +628,7 @@ namespace PicturebotGUI
                 {
                     e.SuppressKeyPress = true;
                     isWatcherCreated = true;
-                    src.Command.General.Program(External.Luminar, picture.Absolute);
+                    src.Command.General.Program(Properties.Settings.Default.ToolProcessing, picture.Absolute);
                 }
 
                 else if (e.KeyCode == Keys.U)
@@ -1074,15 +1079,15 @@ namespace PicturebotGUI
                 src.Command.General.DeletePicture(picture, pbSelection, Flw);
             }
 
-            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
+            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolEditing)}")
             {
-                src.Command.General.Program(External.Affinity, picture.Absolute);
+                src.Command.General.Program(Properties.Settings.Default.ToolEditing, picture.Absolute);
             }
 
-            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
+            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolProcessing)}")
             {
                 isWatcherCreated = true;
-                src.Command.General.Program(External.Luminar, picture.Absolute);
+                src.Command.General.Program(Properties.Settings.Default.ToolProcessing, picture.Absolute);
             }
         }
 
@@ -1101,19 +1106,19 @@ namespace PicturebotGUI
                 src.Command.General.DeletePictureNotification(Config[WsIndex], picture, pbEdited, Flw, Config[WsIndex].Edited, false, true);
             }
 
-            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Luminar)}")
+            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolProcessing)}")
             {
                 isWatcherCreated = true;
-                src.Command.General.Program(External.Luminar, picture.Absolute);
+                src.Command.General.Program(Properties.Settings.Default.ToolProcessing, picture.Absolute);
             }
 
-            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(External.Affinity)}")
+            else if (e.ClickedItem.Text == $"{Strip.Edit} {Path.GetFileNameWithoutExtension(Properties.Settings.Default.ToolEditing)}")
             {
                 string pathToAffinity = Path.Combine(Config[WsIndex].Workspace, picture.ShootInfo, Config[WsIndex].Editing, $"{picture.Filename}{Extension.AFPHOTO}");
 
                 if (File.Exists(pathToAffinity))
                 {
-                    src.Command.General.Program(External.Affinity, pathToAffinity);
+                    src.Command.General.Program(Properties.Settings.Default.ToolEditing, pathToAffinity);
                 }
 
                 else
@@ -1305,6 +1310,15 @@ namespace PicturebotGUI
                 _log.Info("Toolstrip menu: Saved \"compressedToolStripMenuItem\" in config file");
                 Properties.Settings.Default.Save();
             }
+        }
+
+        /// <summary>
+        /// Open the configuration file within the default editor
+        /// </summary>
+        private void edtingToolsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSettingsEditingSoftware form = new FormSettingsEditingSoftware();
+            form.Show();
         }
         #endregion MenuStrip
 

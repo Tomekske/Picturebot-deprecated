@@ -169,6 +169,12 @@
     <Compile Include="src\Forms\FormReorderWorkspace.Designer.cs">
       <DependentUpon>FormReorderWorkspace.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Forms\FormSettingsEditingSoftware.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormSettingsEditingSoftware.Designer.cs">
+      <DependentUpon>FormSettingsEditingSoftware.cs</DependentUpon>
+    </Compile>
     <Compile Include="src\Forms\FormWorkspace.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="src\Forms\FormReorderWorkspace.resx">
       <DependentUpon>FormReorderWorkspace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormSettingsEditingSoftware.resx">
+      <DependentUpon>FormSettingsEditingSoftware.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Forms\FormWorkspace.resx">
       <DependentUpon>FormWorkspace.cs</DependentUpon>
