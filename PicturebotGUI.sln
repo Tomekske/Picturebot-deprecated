@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picturebot", "Picturebot\Pi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picturebot.Tests", "Picturebot.Tests\Picturebot.Tests.csproj", "{ACB8233A-F53F-4C3F-AD8F-3179D7EDB507}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicturebotWPF", "PicutrebotWPF\PicturebotWPF.csproj", "{94927FED-F082-4E40-8B08-897F067FD36E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{ACB8233A-F53F-4C3F-AD8F-3179D7EDB507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB8233A-F53F-4C3F-AD8F-3179D7EDB507}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB8233A-F53F-4C3F-AD8F-3179D7EDB507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94927FED-F082-4E40-8B08-897F067FD36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94927FED-F082-4E40-8B08-897F067FD36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94927FED-F082-4E40-8B08-897F067FD36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94927FED-F082-4E40-8B08-897F067FD36E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
