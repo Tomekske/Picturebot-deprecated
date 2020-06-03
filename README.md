@@ -38,6 +38,12 @@ The second oldest pictures in the shoot is marked with index two
 <a href="https://imgur.com/A1pWAMZ"><img src="https://i.imgur.com/A1pWAMZ.gif" title="source: imgur.com" /></a>
 
 ----
+## Download
+> Don't install the program within the program files directory until upcoming version update :warning:
+
+* Picturebot 1.0.8 - [download](https://www.dropbox.com/s/uvvahovbfz9u03g/Setup_Picturebot_V1.0.8.msi?dl=0)
+
+----
 ## Manual
 
 > Under construction :warning:
@@ -65,25 +71,29 @@ An in depth manual can be found on the wiki page of this Git repository [wiki](h
 ----
 ## TODO
 
-* Port the application to WPF using dotnet core(front-end and back-end), refactor code in doing so
-* Move to a database system instead of working with absolute file paths
-* Add functionality to import pictures to the new database system once the new system is rolled out
-* Add a picture rating system and the ability to filter pictures based on their rating
-* Speed up converting RAW pictures to a JPG picture format
-* Visual representation whether a shoot is fully edited, partially edited, or not edited at all
-* Investigate whether it is possible to add a tool to automatically upload pictures to google pictures
-* Add / configure an installer to install Picturebot on a machine
-* Ability to delete a picture when the user is browsing the pictures in the slideshow
-* Different themes 
-* Update the application whenever a newer version is available without overwriting the user’s settings
-* Investigate and implement the best way how to add a picture within the backup flow to the base flow
-* Add pictures to an existing shoot
-* Add meta-data information to pictures
-* Investigate and implement a way of dragging pictures to lightroom, since lightroom doesn’t support a CLI to open files
-* Import mixed file formats shoots (RAW and JPG combined)
-* CI to run C# tests
-* Detect whether an external memory-card is connected and automatically open the directory when adding a new shoot
-* Let the user decide how they want to format the datetime format
+| Functionality	| Priority	| Status	|
+| ------- | ----------------------------- | --------------- |
+| Port the application to WPF using dotnet core(front-end and back-end), refactor code in doing so                          | High      | :x: |
+| Move to a database system instead of working with absolute file paths                                                     | High      | :x: |
+| Add functionality to import pictures to the new database system once the new system is rolled out                         | High      | :x: |
+| Investigate and implement an alternative for the JSON configuration file                                                  | High      | :x: |
+| Add a picture rating system and the ability to filter pictures based on their rating                                      | Medium    | :x: |
+| Speed up converting RAW pictures to a JPG picture format                                                                  | High      | :x: |
+| Visual representation whether a shoot is fully edited, partially edited, or not edited at all                             | Medium	| :x: |
+| Investigate whether it is possible to add a tool to automatically upload pictures to google pictures                      | Medium	| :x: |
+| Add / configure an installer to install Picturebot on a machine                                                           | High      | :white_check_mark: |
+| Ability to delete a picture when the user is browsing the pictures in the slideshow                                       | Medium	| :x: |
+| Different themes                                                                                                          | Low       | :x: |
+| Update the application whenever a newer version is available without overwriting the user’s settings                      | Medium	| :x: |
+| Investigate and implement the best way how to add a picture within the backup flow to the base flow                       | Medium	| :x: |
+| Add pictures to an existing shoots                                                                                        | High	| :x: |
+| Add meta-data information to pictures                                                                                     | Medium	| :x: |
+| Investigate and implement a way of dragging pictures to lightroom, since lightroom doesn’t support a CLI to open files    | Low	| :x: |
+| Import mixed file formats shoots (RAW and JPG combined)                                                                   | Medium	| :x: |
+| CI to run C# tests                                                                                                        | Medium	| :x: |
+| Detect whether an external memory-card is connected and automatically open the directory when adding a new shoot          | High	| :x: |
+| Let the user decide how they want to format the datetime format                                                           | Low	| :x: |
+
 
 ----
 ## Converting pictures
