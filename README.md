@@ -93,6 +93,7 @@ An in depth manual can be found on the wiki page of this Git repository [wiki](h
 | CI to run C# tests                                                                                                        | Medium	| :x: |
 | Detect whether an external memory-card is connected and automatically open the directory when adding a new shoot          | High	| :x: |
 | Let the user decide how they want to format the datetime format                                                           | Low	| :x: |
+| Display an error message when the user tries to open the workspace directory when a workspace is not added yet            | High	| :x: |
 
 
 ----
