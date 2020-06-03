@@ -1,8 +1,5 @@
 # Picturebot
 
-----
-## Description
-
 Picturebot is photo organizer app which allows the user to organize photos in a proper way. It allows the user to easily add pictures to a shoot whereas the shoot is stored within a workspace.
 
 A shoot contains workflows, every workflow has a unique purpose. There are seven defined workflows: backup, editing, base, preview, selection, edited and Instagram.
