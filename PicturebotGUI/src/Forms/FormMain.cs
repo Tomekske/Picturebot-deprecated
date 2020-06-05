@@ -59,6 +59,10 @@ namespace PicturebotGUI
             Application.EnableVisualStyles();
 
             InitializeComponent();
+
+            // Change the log file save location
+            XmlConfig.UpdateAttributesSaveLocation(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "logger.log"));
+
             ReadConfigFile();
             GetWorkspaceShoots();
 
@@ -811,7 +815,7 @@ namespace PicturebotGUI
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the relative path to the log file
-            string relativePath = "logger.log";
+            string relativePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "logger.log");
 
             if (Guard.Filesystem.IsPath(relativePath))
             {
@@ -832,8 +836,8 @@ namespace PicturebotGUI
 
             else
             {
-                _log.Error($"Log file: \"{relativePath}\" relative path not found");
-                MessageBox.Show($"Log file: \"{relativePath}\" relative path not found");
+                _log.Error($"Log file: \"{relativePath}\" not found");
+                MessageBox.Show($"Log file: \"{relativePath}\" not found");
             }
         }
 
@@ -1264,7 +1268,7 @@ namespace PicturebotGUI
         /// </summary>
         private void openConfigFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string path = "config.json";
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "config.json");
 
             if(Guard.Filesystem.IsPath(path))
             {
