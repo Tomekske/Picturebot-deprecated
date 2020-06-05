@@ -13,6 +13,9 @@ using PicturebotGUI.src.GUIThread;
 using System.Diagnostics;
 using PicturebotGUI.src.Logger;
 using Picturebot.src.Helper;
+using System.Security.AccessControl;
+using System.Security.Permissions;
+using System.Security;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -60,9 +63,6 @@ namespace PicturebotGUI
 
             InitializeComponent();
 
-            // Change the log file save location
-            XmlConfig.UpdateAttributesSaveLocation(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "logger.log"));
-
             ReadConfigFile();
             GetWorkspaceShoots();
 
@@ -81,7 +81,7 @@ namespace PicturebotGUI
                 _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
             }
 
-            if(Properties.Settings.Default.DefaultUploadType == FileType.RAW)
+            if (Properties.Settings.Default.DefaultUploadType == FileType.RAW)
             {
                 rawToolStripMenuItem.Checked = true;
                 _log.Debug("Toolstrip menu: Checked item \"rawToolStripMenuItem\"");
@@ -105,7 +105,7 @@ namespace PicturebotGUI
                     _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
                 }
             #else
-            openConfigFileTSMenuItem.Visible = false;
+                openConfigFileTSMenuItem.Visible = false;
                 loggingConsoleToolStripMenuItem.Visible = false;
             #endif
         }
@@ -815,7 +815,7 @@ namespace PicturebotGUI
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Get the relative path to the log file
-            string relativePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "logger.log");
+            string relativePath = "logger.log";
 
             if (Guard.Filesystem.IsPath(relativePath))
             {

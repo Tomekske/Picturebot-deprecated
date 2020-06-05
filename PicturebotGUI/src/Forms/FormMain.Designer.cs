@@ -232,7 +232,7 @@
             this.uploadSettingsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.uploadSettingsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.uploadSettingsToolStripMenuItem.Name = "uploadSettingsToolStripMenuItem";
-            this.uploadSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uploadSettingsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.uploadSettingsToolStripMenuItem.Text = "Upload settings";
             this.uploadSettingsToolStripMenuItem.Click += new System.EventHandler(this.uploadSettingsToolStripMenuItem_Click);
             // 
@@ -245,7 +245,7 @@
             this.loggingToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.loggingToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggingToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.loggingToolStripMenuItem.Text = "Logging level";
             // 
             // debugToolStripMenuItem
@@ -253,7 +253,7 @@
             this.debugToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.debugToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.debugToolStripMenuItem.Text = "Debug";
             this.debugToolStripMenuItem.Click += new System.EventHandler(this.debugToolStripMenuItem_Click);
             // 
@@ -262,7 +262,7 @@
             this.errorToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.errorToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
-            this.errorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.errorToolStripMenuItem.Text = "Error";
             this.errorToolStripMenuItem.Click += new System.EventHandler(this.errorToolStripMenuItem_Click);
             // 
@@ -275,7 +275,7 @@
             this.loggingConsoleToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.loggingConsoleToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.loggingConsoleToolStripMenuItem.Name = "loggingConsoleToolStripMenuItem";
-            this.loggingConsoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggingConsoleToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.loggingConsoleToolStripMenuItem.Text = "Logging console";
             // 
             // debugConsoleToolStripMenuItem
@@ -305,7 +305,7 @@
             this.defaultFileTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.defaultFileTypeToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.defaultFileTypeToolStripMenuItem.Name = "defaultFileTypeToolStripMenuItem";
-            this.defaultFileTypeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.defaultFileTypeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.defaultFileTypeToolStripMenuItem.Text = "Default file type";
             // 
             // rawToolStripMenuItem
@@ -332,7 +332,7 @@
             this.edtingToolsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.edtingToolsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.edtingToolsToolStripMenuItem.Name = "edtingToolsToolStripMenuItem";
-            this.edtingToolsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.edtingToolsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.edtingToolsToolStripMenuItem.Text = "Edting tools";
             this.edtingToolsToolStripMenuItem.Click += new System.EventHandler(this.edtingToolsToolStripMenuItem_Click);
             // 

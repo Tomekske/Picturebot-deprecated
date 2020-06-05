@@ -41,9 +41,8 @@ The second oldest pictures in the shoot is marked with index two
 
 ----
 ## Download
-> Don't install the program within the program files directory until upcoming version update :warning:
 
-* Picturebot 1.8.1 - [download](https://www.dropbox.com/s/6c5uwq8oblb4ae8/Setup_Picturebot_V1.8.1.msi?dl=0)
+* Picturebot 1.8.2 - [download](https://www.dropbox.com/s/lt060xj9mitxmh1/Setup_Picturebot_V1.8.2.msi?dl=0)
 
 ----
 ## Manual

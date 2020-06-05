@@ -44,37 +44,5 @@ namespace PicturebotGUI.src.Helper
                 MessageBox.Show(e.Message);
             }
         }
-
-        /// <summary>
-        /// Update an attribute within the file element
-        /// </summary>
-        /// <param name="path">New path to the logger location</param>
-        public static void UpdateAttributesSaveLocation(string path)
-        {
-            log4net.ILog log = LogHelper.GetLogger();
-
-            string xml = "PicturebotGUI.exe.config";
-            string xpath = $"configuration/log4net/appender[@name='{Appender.File}']/file/@value";
-
-            XmlDocument xmlDoc = new XmlDocument();
-
-            try
-            {
-                xmlDoc.Load(xml);
-
-                XmlNode node = xmlDoc.SelectSingleNode(xpath);
-                // Update the debug level attribute within the configuration file
-                node.InnerText = path;
-
-                xmlDoc.Save(xml);
-                log.Info("UpdateAttributesXML: successfully updated the attribute with the new file path");
-
-            }
-            catch (Exception e)
-            {
-                log.Error("UpdateAttributesXML: failed to update the attribute with the new file path", e);
-                MessageBox.Show(e.Message);
-            }
-        }
     }
 }
