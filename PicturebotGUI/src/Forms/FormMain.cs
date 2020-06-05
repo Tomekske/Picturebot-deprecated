@@ -48,7 +48,6 @@ namespace PicturebotGUI
         private bool isShootDeleting = false;
 
         private bool isWatcherCreated = false;
-        private bool isWatcherRenamed = false;
         private bool isWatcherDeleted = false;
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
