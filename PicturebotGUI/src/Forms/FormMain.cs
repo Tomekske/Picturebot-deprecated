@@ -471,37 +471,50 @@ namespace PicturebotGUI
         /// </summary>
         private void lbShoot_KeyDown(object sender, KeyEventArgs e)
         {
-            string path = Path.Combine(Config[WsIndex].Workspace, _shoot);
-
-            // Make sure it's not possible to perform keyboard actions when the listBox is empty
-            if (lbShoot.Items.Count != 0)
+            try
             {
-                if (e.KeyCode == Keys.O)
-                {
-                    lbShoot.SelectedItem = _shoot;
-                    src.Command.General.Explorer(Config[WsIndex], _shoot);
-                    e.SuppressKeyPress = true;
-                }
+                string path = Path.Combine(Config[WsIndex].Workspace, _shoot);
 
-                else if (e.KeyCode == Keys.Delete)
+                // Make sure it's not possible to perform keyboard actions when the listBox is empty
+                if (lbShoot.Items.Count != 0)
                 {
-                    isWatcherDeleted = true;
-                    isShootDeleting = true;
-                    src.Command.General.DeleteShoot(path, Sht);
-                }
-
-                else if (e.KeyCode == Keys.F2)
-                {
-                    _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
-
-                    // Only refresh the workspace when a shoot was renamed
-                    if(_shoot != string.Empty)
+                    if (e.KeyCode == Keys.O)
                     {
-                        GetWorkspaceShoots();
                         lbShoot.SelectedItem = _shoot;
-                        ClearAndUpdateFlows(_shoot);
+                        src.Command.General.Explorer(Config[WsIndex], _shoot);
+                        e.SuppressKeyPress = true;
+                    }
+
+                    else if (e.KeyCode == Keys.Delete)
+                    {
+                        isWatcherDeleted = true;
+                        isShootDeleting = true;
+                        src.Command.General.DeleteShoot(path, Sht);
+                    }
+
+                    else if (e.KeyCode == Keys.F2)
+                    {
+                        _shoot = src.Command.General.RenameShoot(Config[WsIndex], Sht, _shoot);
+
+                        // Only refresh the workspace when a shoot was renamed
+                        if (_shoot != string.Empty)
+                        {
+                            GetWorkspaceShoots();
+                            lbShoot.SelectedItem = _shoot;
+                            ClearAndUpdateFlows(_shoot);
+                        }
                     }
                 }
+            }
+
+            catch (NullReferenceException ex)
+            {
+                _log.Info("Unable to browse through shoots, because there are no workspaces added to the project", ex);
+            }
+
+            catch  (ArgumentOutOfRangeException ex)
+            {
+                _log.Info("Unable to browse through shoots, because there are no workspaces added to the project", ex);
             }
         }
 
@@ -781,7 +794,15 @@ namespace PicturebotGUI
         /// </summary>
         private void openWorkspaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            src.Command.GUI.Explorer(Config[WsIndex].Workspace);
+            try
+            {
+                src.Command.GUI.Explorer(Config[WsIndex].Workspace);
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Unable to open workspace explorer because there are no workspaces added to the project");
+                _log.Info("Unable to open workspace explorer because there are no workspaces added to the project", ex);
+            }
         }
 
         /// <summary>

@@ -23,6 +23,8 @@ The second oldest pictures in the shoot is marked with index two
 
     <shoot_02-06-2020_2.jpg>
 
+<a href="https://imgur.com/cPW5UyG"><img src="https://i.imgur.com/cPW5UyG.png" title="source: imgur.com" /></a>
+
 ----
 ## Workflow
 
@@ -41,7 +43,7 @@ The second oldest pictures in the shoot is marked with index two
 ## Download
 > Don't install the program within the program files directory until upcoming version update :warning:
 
-* Picturebot 1.0.8 - [download](https://www.dropbox.com/s/uvvahovbfz9u03g/Setup_Picturebot_V1.0.8.msi?dl=0)
+* Picturebot 1.8.1 - [download](https://www.dropbox.com/s/6c5uwq8oblb4ae8/Setup_Picturebot_V1.8.1.msi?dl=0)
 
 ----
 ## Manual
@@ -77,24 +79,23 @@ An in depth manual can be found on the wiki page of this Git repository [wiki](h
 | Move to a database system instead of working with absolute file paths                                                     | High      | :x: |
 | Add functionality to import pictures to the new database system once the new system is rolled out                         | High      | :x: |
 | Investigate and implement an alternative for the JSON configuration file                                                  | High      | :x: |
-| Add a picture rating system and the ability to filter pictures based on their rating                                      | Medium    | :x: |
 | Speed up converting RAW pictures to a JPG picture format                                                                  | High      | :x: |
+| Add pictures to an existing shoots                                                                                        | High      | :x: |
+| Detect whether an external memory-card is connected and automatically open the directory when adding a new shoot          | High      | :x: |
+| Display an error message when the user tries to open the workspace directory when a workspace is not added yet            | High      | :white_check_mark: |
+| Add / configure an installer to install Picturebot on a machine                                                           | High      | :white_check_mark: |
+| Add a picture rating system and the ability to filter pictures based on their rating                                      | Medium    | :x: |
 | Visual representation whether a shoot is fully edited, partially edited, or not edited at all                             | Medium	| :x: |
 | Investigate whether it is possible to add a tool to automatically upload pictures to google pictures                      | Medium	| :x: |
-| Add / configure an installer to install Picturebot on a machine                                                           | High      | :white_check_mark: |
 | Ability to delete a picture when the user is browsing the pictures in the slideshow                                       | Medium	| :x: |
-| Different themes                                                                                                          | Low       | :x: |
 | Update the application whenever a newer version is available without overwriting the user’s settings                      | Medium	| :x: |
 | Investigate and implement the best way how to add a picture within the backup flow to the base flow                       | Medium	| :x: |
-| Add pictures to an existing shoots                                                                                        | High	| :x: |
 | Add meta-data information to pictures                                                                                     | Medium	| :x: |
-| Investigate and implement a way of dragging pictures to lightroom, since lightroom doesn’t support a CLI to open files    | Low	| :x: |
 | Import mixed file formats shoots (RAW and JPG combined)                                                                   | Medium	| :x: |
 | CI to run C# tests                                                                                                        | Medium	| :x: |
-| Detect whether an external memory-card is connected and automatically open the directory when adding a new shoot          | High	| :x: |
+| Investigate and implement a way of dragging pictures to lightroom, since lightroom doesn’t support a CLI to open files    | Low	| :x: |
+| Different themes                                                                                                          | Low   | :x: |
 | Let the user decide how they want to format the datetime format                                                           | Low	| :x: |
-| Display an error message when the user tries to open the workspace directory when a workspace is not added yet            | High	| :x: |
-
 
 ----
 ## Converting pictures
