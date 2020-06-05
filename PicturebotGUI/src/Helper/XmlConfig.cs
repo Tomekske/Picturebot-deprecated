@@ -1,4 +1,5 @@
 ﻿using Picturebot.src.Logger;
+using PicturebotGUI.src.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

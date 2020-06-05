@@ -7,6 +7,7 @@ using System.IO;
 using Picturebot.src.Logger;
 using System.Linq;
 using System.Windows.Forms;
+using System;
 
 namespace Picturebot
 {
@@ -27,10 +28,12 @@ namespace Picturebot
 
                 return JsonConvert.DeserializeObject<List<Config>>(utf);
             #else
-                if (Guard.Filesystem.IsPath("config.json"))
+                string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments),"Picturebot","config.json");
+
+                if (Guard.Filesystem.IsPath(path))
                 {
                     // Convert byte array to a UTF8 string
-                    string json = File.ReadAllText("config.json");
+                    string json = File.ReadAllText(path);
 
                     return JsonConvert.DeserializeObject<List<Config>>(json);
                 }
@@ -45,10 +48,18 @@ namespace Picturebot
         /// <param name="config">The configuration list containing config objects</param>
         public static void Write(List<Config> config)
         {
+            string pathMyDocuments = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot");
+            string path = Path.Combine(pathMyDocuments, "config.json");
+            
+            if(!Guard.Filesystem.IsPath(pathMyDocuments))
+            {
+                Directory.CreateDirectory(pathMyDocuments);
+            }
+
             log4net.ILog log = LogHelper.GetLogger();
 
             string json = JsonConvert.SerializeObject(config, Formatting.Indented);
-            File.WriteAllText("config.json", json);
+            File.WriteAllText(path, json);
 
             log.Info("Write: Data to configuration file written");
         }

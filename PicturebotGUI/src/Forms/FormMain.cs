@@ -13,6 +13,9 @@ using PicturebotGUI.src.GUIThread;
 using System.Diagnostics;
 using PicturebotGUI.src.Logger;
 using Picturebot.src.Helper;
+using System.Security.AccessControl;
+using System.Security.Permissions;
+using System.Security;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -59,6 +62,7 @@ namespace PicturebotGUI
             Application.EnableVisualStyles();
 
             InitializeComponent();
+
             ReadConfigFile();
             GetWorkspaceShoots();
 
@@ -77,7 +81,7 @@ namespace PicturebotGUI
                 _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
             }
 
-            if(Properties.Settings.Default.DefaultUploadType == FileType.RAW)
+            if (Properties.Settings.Default.DefaultUploadType == FileType.RAW)
             {
                 rawToolStripMenuItem.Checked = true;
                 _log.Debug("Toolstrip menu: Checked item \"rawToolStripMenuItem\"");
@@ -101,7 +105,7 @@ namespace PicturebotGUI
                     _log.Debug("Toolstrip menu: Checked item \"errorToolStripMenuItem\"");
                 }
             #else
-            openConfigFileTSMenuItem.Visible = false;
+                openConfigFileTSMenuItem.Visible = false;
                 loggingConsoleToolStripMenuItem.Visible = false;
             #endif
         }
@@ -832,8 +836,8 @@ namespace PicturebotGUI
 
             else
             {
-                _log.Error($"Log file: \"{relativePath}\" relative path not found");
-                MessageBox.Show($"Log file: \"{relativePath}\" relative path not found");
+                _log.Error($"Log file: \"{relativePath}\" not found");
+                MessageBox.Show($"Log file: \"{relativePath}\" not found");
             }
         }
 
@@ -1264,7 +1268,7 @@ namespace PicturebotGUI
         /// </summary>
         private void openConfigFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string path = "config.json";
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "config.json");
 
             if(Guard.Filesystem.IsPath(path))
             {
