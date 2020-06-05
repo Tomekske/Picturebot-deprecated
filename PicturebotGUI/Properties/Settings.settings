@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.8.1</Value>
+      <Value Profile="(Default)">1.8.2</Value>
     </Setting>
     <Setting Name="LoggingLevelFileAppender" Type="System.String" Scope="User">
       <Value Profile="(Default)">ERROR</Value>
