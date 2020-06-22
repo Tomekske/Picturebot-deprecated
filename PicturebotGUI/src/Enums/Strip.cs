@@ -8,7 +8,7 @@
         public static string Convert { get { return "Convert"; } }
         public static string Delete { get { return "Delete"; } }
         public static string RenameShoot { get { return "Rename shoot"; } }
-        public static string RenameBaseflow { get { return "Rename baseflow"; } }
+        public static string StartOrganizing { get { return "Start organizing"; } }
         public static string Metadata { get { return "Metadata"; } }
         public static string CopyDescription { get { return "Copy description"; } }
         public static string Explorer { get { return "Open shoot in explorer"; } }

@@ -51,7 +51,6 @@ namespace PicturebotGUI
         private bool isShootDeleting = false;
 
         private bool isWatcherCreated = false;
-        private bool isWatcherRenamed = false;
         private bool isWatcherDeleted = false;
 
         private static readonly log4net.ILog _log = LogHelper.GetLogger();
@@ -284,7 +283,7 @@ namespace PicturebotGUI
                 // A shoot can only be renamed when the selection folder contains files
                 if (countFileSelectionFlow == 0)
                 {
-                    menu.Items.Add(Strip.RenameBaseflow);
+                    menu.Items.Add(Strip.StartOrganizing);
                 }
 
                 var menuRenameShoot = new ToolStripMenuItem(Strip.RenameShoot);
@@ -814,15 +813,16 @@ namespace PicturebotGUI
         /// </summary>
         private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Get the relative path to the log file
-            string relativePath = "logger.log";
+            // Get the path to the log file
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "logger.log");
 
-            if (Guard.Filesystem.IsPath(relativePath))
+
+            if (Guard.Filesystem.IsPath(path))
             {
                 // Get the absolute path to the logging file
-                string absolutePath = Path.GetFullPath(relativePath);
+                string absolutePath = Path.GetFullPath(path);
 
-                if (Guard.Filesystem.IsPath(relativePath))
+                if (Guard.Filesystem.IsPath(path))
                 {
                     Process.Start(absolutePath);
                     _log.Info($"Log file: \"{absolutePath}\" found");
@@ -836,8 +836,8 @@ namespace PicturebotGUI
 
             else
             {
-                _log.Error($"Log file: \"{relativePath}\" not found");
-                MessageBox.Show($"Log file: \"{relativePath}\" not found");
+                _log.Error($"Log file: \"{path}\" not found");
+                MessageBox.Show($"Log file: \"{path}\" not found");
             }
         }
 
@@ -1041,7 +1041,7 @@ namespace PicturebotGUI
                 src.Command.General.DeleteShoot(path, Sht);
             }
 
-            else if (e.ClickedItem.Text == Strip.RenameBaseflow)
+            else if (e.ClickedItem.Text == Strip.StartOrganizing)
             {
                 flow.Rename(path, true, true);
 
@@ -1270,7 +1270,7 @@ namespace PicturebotGUI
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "Picturebot", "config.json");
 
-            if(Guard.Filesystem.IsPath(path))
+            if (Guard.Filesystem.IsPath(path))
             {
                 src.Command.GUI.OpenFile(path);
             }
@@ -1387,11 +1387,9 @@ namespace PicturebotGUI
                 ClearAndUpdateFlow(lbEdited, pbEdited, lblEdited, _listEditedPictures, Config[WsIndex].Edited, Config[WsIndex].Edited, e.FullPath);
             }
 
-            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Instagram)) && isWatcherCreated)
+            else if (!e.FullPath.Contains("jpg_exiftool_tmp") && e.FullPath.Contains(Path.Combine(Config[WsIndex].Workspace, _shoot, Config[WsIndex].Instagram)))
             {
                 ClearAndUpdateFlow(lbInstagram, pbInstagram, lblInstagram, _listInstagramPictures, Config[WsIndex].Instagram, Config[WsIndex].Instagram, e.FullPath);
-                isFileSaving = true;
-                isWatcherCreated = false;
             }
         }
 
